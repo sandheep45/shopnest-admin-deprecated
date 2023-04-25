@@ -20,10 +20,99 @@ model Example {
     updatedAt DateTime @updatedAt
 }
 
+enum Role {
+    ADMIN
+    USER
+}
+
+enum ProductStatus {
+    PUBLISHED
+    DRAFT
+    INACTIVE
+    SCHEDULED
+}
+
+type Image {
+    url    String
+    alt    String
+    height Int
+    width  Int
+}
+
+type Quantity {
+    onSelf      Int
+    inWareHouse Int
+}
+
+model Media {
+    id    String  @id @default(auto()) @map("_id") @db.ObjectId
+    image Image[]
+}
+
+model MetaData {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    title       String
+    description String
+    keywords    String[]
+
+    categoryId String?   @db.ObjectId
+    Category   Category? @relation(fields: [categoryId], references: [id])
+
+    productId String   @db.ObjectId
+    Product   Product? @relation(fields: [productId], references: [id])
+}
+
+model Variant {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    description String
+    image       Image
+    price       Int
+    sku         String
+    barcode     String
+    quantity    Quantity
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    productId String  @db.ObjectId
+    product   Product @relation(fields: [productId], references: [id])
+}
+
+model Product {
+    id          String        @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    image       Image
+    description String
+    category    String
+    tags        String[]
+    status      ProductStatus @default(DRAFT)
+    price       Int
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+
+    Variant  Variant[]
+    MetaData MetaData[]
+
+    categoryId String?   @db.ObjectId
+    Category   Category? @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    description String
+    image       Image
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    Product  Product[]
+    MetaData MetaData[]
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(auto()) @map("_id") @db.ObjectId
-    userId            String @db.ObjectId
+    userId            String  @db.ObjectId
     type              String
     provider          String
     providerAccountId String
@@ -51,7 +140,9 @@ model User {
     id            String    @id @default(auto()) @map("_id") @db.ObjectId
     name          String?
     email         String?   @unique
+    username      String?   @unique
     emailVerified DateTime?
+    role          Role      @default(ADMIN)
     image         String?
     accounts      Account[]
     sessions      Session[]
