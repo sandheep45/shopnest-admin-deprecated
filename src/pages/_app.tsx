@@ -5,6 +5,8 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "react-aria /utils/api";
 
 import "react-aria /styles/globals.css";
+import MainLayout from "react-aria /components/Layouts/MainLayout";
+import ThemeContextProvider from "react-aria /context/ThemeContextProvider";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -12,7 +14,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <ThemeContextProvider>
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      </ThemeContextProvider>
     </SessionProvider>
   );
 };
