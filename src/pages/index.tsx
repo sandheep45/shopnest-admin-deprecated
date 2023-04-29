@@ -1,9 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useThemeContext } from "react-aria /context/ThemeContextProvider";
 
 const Home: NextPage = () => {
-  const { isDarkTheme, setIsDarkTheme } = useThemeContext();
   return (
     <>
       <Head>
@@ -12,9 +10,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <button onClick={() => setIsDarkTheme(!isDarkTheme)}>
-          Toggle Theme
-        </button>
         <div className="">hello world</div>
       </main>
     </>
