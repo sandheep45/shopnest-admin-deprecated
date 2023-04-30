@@ -1,7 +1,6 @@
 import { useThemeContext } from "react-aria /context/ThemeContextProvider";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
-import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 interface MainLayoutProps {
   children: React.ReactNode;
