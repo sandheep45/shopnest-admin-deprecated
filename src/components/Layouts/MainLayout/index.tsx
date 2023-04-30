@@ -10,12 +10,10 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { isDarkTheme } = useThemeContext();
   return (
-    <div className={`${isDarkTheme ? "dark" : ""}`}>
-      <div className="flex min-h-screen">
-        <div className="relative">
-          <Sidebar />
-        </div>
-        <div className="flex-1">
+    <div className={` ${isDarkTheme ? "dark" : ""}`}>
+      <div className="flex ">
+        <Sidebar />
+        <div className="flex-1 max-h-screen overflow-y-auto">
           <TopBar />
           {children}
         </div>
