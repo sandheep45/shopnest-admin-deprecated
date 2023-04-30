@@ -2,7 +2,9 @@ import React from 'react'
 
 const Admin = () => {
   return (
-    <div>Admin</div>
+    <div
+      className='bg-[#f5f8fa] h-[2000px]'
+    >Admin</div>
   )
 }
 
