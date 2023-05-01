@@ -8,7 +8,7 @@ const Auth = () => {
       {/* below div is for theme purpose only */}
       <div className="flex h-full w-full items-center justify-center bg-[rgba(227,230,237,.5)] py-7 dark:bg-[rgba(20,24,36,.9)]">
         {/* Auth Box container */}
-        <div className="grid h-full w-[90%] gap-x-3 rounded-lg border border-gray-300 bg-white p-5 md:w-[85%] lg:w-[65%] lg:grid-cols-5">
+        <div className="max-xl grid h-full w-[90%] gap-x-3 rounded-lg border border-gray-300 bg-white p-5 md:w-[85%] lg:w-[65%] lg:grid-cols-5">
           {/* Left Section */}
           <div className="hidden flex-col justify-between rounded-md bg-[#eff2f6] bg-[url('/images/img1.png')] bg-bottom bg-no-repeat px-10 py-12 lg:col-span-2 lg:flex">
             <div className="flex flex-col gap-4">
