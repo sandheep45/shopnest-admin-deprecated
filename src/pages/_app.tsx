@@ -14,10 +14,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   const router = useRouter();
+  const pathToExclude = ["/signup", "/signin"];
   return (
     <SessionProvider session={session}>
       <ThemeContextProvider>
-        {router.asPath === "/auth" ? (
+        {pathToExclude.includes(router.asPath) ? (
           <Component {...pageProps} />
         ) : (
           <MainLayout>
