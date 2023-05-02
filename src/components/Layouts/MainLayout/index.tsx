@@ -12,7 +12,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <div className={` ${isDarkTheme ? "dark" : ""}`}>
       <div className="flex ">
         <Sidebar />
-        <div className="flex-1 max-h-screen overflow-y-auto">
+        <div className="max-h-screen flex-1 overflow-y-auto bg-[#f5f8fa] dark:bg-[#151521]">
           <TopBar />
           {children}
         </div>

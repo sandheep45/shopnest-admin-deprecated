@@ -54,17 +54,17 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`group relative flex h-screen flex-col gap-4 border-r py-10 transition-all duration-300 dark:bg-[#1E1E2D] ${
-        isHoverActive ? "w-16 hover:w-56" : "w-56"
+      className={`group relative hidden h-screen flex-col gap-4 border-r py-10 transition-all duration-300 dark:bg-[#1E1E2D] md:flex ${
+        isHoverActive ? "w-16 hover:w-64" : "w-64"
       }`}
     >
       <div>
         <button
           onClick={handleIsHoverActive}
-          className="absolute -right-5 top-3 z-10 w-fit rounded-md border bg-white p-2 dark:border-gray-400 dark:bg-[#0e1138]"
+          className="absolute -right-5 top-3 z-[11] w-fit rounded-md border bg-white p-2 dark:border-gray-400 dark:bg-[#0e1138]"
         >
           <MdKeyboardDoubleArrowRight
-            className={`transform text-2xl text-gray-700 transition-all duration-300 dark:text-gray-400 dark:hover:text-gray-300 ${
+            className={`transform text-2xl text-gray-700 transition-all duration-300 group-hover:rotate-[-180deg] dark:text-gray-400 dark:hover:text-gray-300 ${
               isHoverActive
                 ? "rotate-[360deg] text-blue-500 "
                 : "rotate-[-180deg]"
