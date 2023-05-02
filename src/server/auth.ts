@@ -85,10 +85,6 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
-    redirect({ url, baseUrl }) {
-      console.log(89, url, baseUrl);
-      return baseUrl;
-    },
     jwt({ token, account, profile }) {
       // Persist the OAuth access_token and or the user id to the token right after signin
       if (account) {
