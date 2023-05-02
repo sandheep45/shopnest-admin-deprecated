@@ -1,7 +1,19 @@
+import { useEffect } from "react";
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      void router.push("/signin");
+    }
+  }, [status, router]);
+
   return (
     <>
       <Head>
