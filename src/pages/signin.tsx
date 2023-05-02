@@ -4,10 +4,8 @@ import { BsFacebook, BsFillPersonFill, BsKeyFill } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 const Auth = () => {
-  const router = useRouter();
   const oauthSignin = async (provider: "google" | "facebook") => {
     try {
       await signIn(provider, { callbackUrl: "/" });

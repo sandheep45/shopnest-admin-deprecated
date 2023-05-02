@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { BsFillBox2HeartFill, BsDatabaseFillAdd } from "react-icons/bs";
 import {
@@ -37,9 +38,9 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
-  const [isHoverActive, setIsHoverActive] = React.useState(false);
+  const router = useRouter();
 
-  const [activeSidebarTab, setActiveSidebarTab] = React.useState("");
+  const [isHoverActive, setIsHoverActive] = React.useState(false);
 
   const handleIsHoverActive = () => {
     localStorage.setItem("isHoverActive", JSON.stringify(!isHoverActive));
@@ -53,34 +54,33 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`group relative flex h-screen flex-col gap-4 border-r bg-[#1E1E2D] py-10 transition-all duration-300 ${
-        isHoverActive ? "w-16 hover:w-64" : "w-64"
+      className={`group relative flex h-screen flex-col gap-4 border-r py-10 transition-all duration-300 dark:bg-[#1E1E2D] ${
+        isHoverActive ? "w-16 hover:w-56" : "w-56"
       }`}
     >
       <div>
         <button
           onClick={handleIsHoverActive}
-          className="absolute -right-5 top-3 z-10 w-fit rounded-md border border-none bg-white p-2"
+          className="absolute -right-5 top-3 z-10 w-fit rounded-md border bg-white p-2 dark:border-gray-400 dark:bg-[#0e1138]"
         >
           <MdKeyboardDoubleArrowRight
-            className={`transform text-2xl ${
+            className={`transform text-2xl text-gray-700 transition-all duration-300 dark:text-gray-400 dark:hover:text-gray-300 ${
               isHoverActive
                 ? "rotate-[360deg] text-blue-500 "
                 : "rotate-[-180deg]"
-            } transition-all duration-300`}
+            }`}
           />
         </button>
       </div>
 
       {sidebarItems.map((item) => (
         <Link
-          onClick={() => setActiveSidebarTab(item.link)}
           href={item.link}
           key={item.name}
-          className={`flex items-center gap-5 p-3 text-[#505061] hover:text-white ${
-            activeSidebarTab === item.link
-              ? "m-1 rounded-xl bg-[#2A2A3C] text-gray-300 transition-all duration-300"
-              : ""
+          className={`mx-2 flex items-center gap-5 rounded-md p-3 hover:text-black hover:dark:text-gray-400 ${
+            router.asPath === item.link
+              ? "bg-[#f4f6fa] text-blue-400 transition-all duration-300 dark:bg-[#2A2A3C]"
+              : "text-[#5E6278]"
           } }`}
         >
           <span className="text-2xl">{item.icon}</span>
