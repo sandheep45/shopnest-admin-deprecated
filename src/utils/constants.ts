@@ -12,7 +12,7 @@ export const productStatusOptions = [
     value: "scheduled",
   },
   {
-    name: "Inactive",
-    value: "inactive",
+    name: "Draft",
+    value: "draft",
   },
 ];

@@ -27,7 +27,7 @@ const TopBar = () => {
         </button>
         <Image
           className="rounded-full"
-          src={data?.user.image as string}
+          src={(data?.user.image as string) || "/svg/Profile.svg"}
           height={45}
           width={45}
           alt="profile"

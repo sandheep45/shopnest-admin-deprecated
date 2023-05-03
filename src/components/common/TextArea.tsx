@@ -1,28 +1,29 @@
 import React from "react";
 
-interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+interface ITextAreaProps
+  extends React.InputHTMLAttributes<HTMLTextAreaElement> {
+  lable?: string;
   descriptionTag?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
-  return (
-    <div className="flex w-full flex-col gap-2">
-      {props.label && (
-        <label htmlFor={props.id} className="text-sm font-semibold">
-          {props.label}
-        </label>
-      )}
-      <div className="flex w-full flex-col gap-1">
-        <input
+const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
+  (props, ref) => {
+    return (
+      <div className="flex w-full flex-col gap-2">
+        {props.lable && (
+          <label htmlFor={props.id} className="text-sm font-semibold">
+            {props.lable}
+          </label>
+        )}
+        <textarea
           id={props.id}
+          rows={10}
           ref={ref}
           onFocus={props.onFocus}
           onBlur={props.onBlur}
           value={props.value}
           onChange={props.onChange}
           placeholder={props.placeholder}
-          type={props.type}
           onKeyDown={props.onKeyDown}
           className={`w-full rounded-md border border-gray-300 p-2 outline-none dark:border-gray-700 dark:bg-[#1e1e2d] dark:text-gray-300 ${
             props.className ? props.className : ""
@@ -34,10 +35,10 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
           </span>
         )}
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
-Input.displayName = "Input";
+TextArea.displayName = "Input";
 
-export default Input;
+export default TextArea;
