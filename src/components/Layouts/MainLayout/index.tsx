@@ -2,7 +2,7 @@ import { useThemeContext } from "@src/context/ThemeContextProvider";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 
-interface MainLayoutProps {
+interface MainLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 

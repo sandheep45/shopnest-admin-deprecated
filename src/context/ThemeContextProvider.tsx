@@ -3,7 +3,7 @@ import * as React from "react";
 const initialState = {
   isDarkTheme: false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setIsDarkTheme: () => { },
+  setIsDarkTheme: () => {},
 };
 
 interface IContext {
@@ -14,7 +14,7 @@ interface IContext {
 const ThemeContext = React.createContext<IContext>(initialState);
 
 const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const [isDarkTheme, setIsDarkTheme] = React.useState(true);
   const themeContextObj = React.useMemo(
     () => ({
       isDarkTheme: isDarkTheme,

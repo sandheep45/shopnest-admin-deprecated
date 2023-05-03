@@ -5,11 +5,8 @@ interface List {
   value: string;
 }
 
-interface DropdownProps {
+interface DropdownProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   list: List[];
-  onClick?: () => void;
-  value?: string;
-  name?: string;
 }
 
 const DropDown: React.FC<DropdownProps> = ({ list, name, onClick, value }) => {

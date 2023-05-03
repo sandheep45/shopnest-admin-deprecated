@@ -1,16 +1,16 @@
 import Image from "next/image";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
-import Input from "@src/components/common/Input";
 import { useThemeContext } from "@src/context/ThemeContextProvider";
 import { productStatusOptions } from "@src/utils/constants";
-
 import { CiEdit } from "react-icons/ci";
+import Tagify from "@src/components/common/Tagify";
 
 const AddProduct = () => {
   const { isDarkTheme } = useThemeContext();
   const statusOption = useMemo(() => productStatusOptions, []);
+
   return (
     <div className="item-center flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start">
       {/* left section */}
@@ -69,7 +69,7 @@ const AddProduct = () => {
 
           <div className="flex w-full flex-col justify-between gap-1">
             <h6>Tags</h6>
-            <Input />
+            <Tagify tags={[]} />
             <span className="text-sm dark:text-gray-500">
               Add tags to a category.
             </span>
@@ -103,7 +103,7 @@ const AddProduct = () => {
       </div>
 
       {/* right section */}
-      <div className="flex-1">right section</div>
+      <div className="flex-1"></div>
     </div>
   );
 };

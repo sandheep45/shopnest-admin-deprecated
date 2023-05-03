@@ -54,7 +54,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`group relative hidden h-screen flex-col gap-4 border-r py-10 transition-all duration-300 dark:bg-[#1E1E2D] md:flex ${
+      className={`group relative hidden h-screen flex-col gap-4  py-10 transition-all duration-300 dark:bg-[#1E1E2D] md:flex ${
         isHoverActive ? "w-16 hover:w-64" : "w-64"
       }`}
     >

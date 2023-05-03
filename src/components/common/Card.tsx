@@ -1,7 +1,6 @@
 import React from "react";
 
-interface ICardProps {
-  children: React.ReactNode;
+interface ICardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
