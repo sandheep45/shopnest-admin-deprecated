@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React, { useMemo } from "react";
-import Card from "react-aria /components/common/Card";
-import DropDown from "react-aria /components/common/DropDown";
-import Input from "react-aria /components/common/Input";
-import { useThemeContext } from "react-aria /context/ThemeContextProvider";
-import { productStatusOptions } from "react-aria /utils/constants";
+import Card from "@src/components/common/Card";
+import DropDown from "@src/components/common/DropDown";
+import Input from "@src/components/common/Input";
+import { useThemeContext } from "@src/context/ThemeContextProvider";
+import { productStatusOptions } from "@src/utils/constants";
 
 import { CiEdit } from "react-icons/ci";
 

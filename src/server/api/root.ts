@@ -1,5 +1,5 @@
-import { createTRPCRouter } from "react-aria /server/api/trpc";
-import { exampleRouter } from "react-aria /server/api/routers/example";
+import { createTRPCRouter } from "@src/server/api/trpc";
+import { exampleRouter } from "@src/server/api/routers/example";
 import { productRouter } from "./routers/product";
 import { categoryRouter } from "./routers/category";
 

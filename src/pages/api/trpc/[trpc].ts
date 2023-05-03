@@ -1,8 +1,8 @@
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 
-import { env } from "react-aria /env.mjs";
-import { createTRPCContext } from "react-aria /server/api/trpc";
-import { appRouter } from "react-aria /server/api/root";
+import { env } from "@src/env.mjs";
+import { createTRPCContext } from "@src/server/api/trpc";
+import { appRouter } from "@src/server/api/root";
 
 // export API handler
 export default createNextApiHandler({

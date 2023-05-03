@@ -66,7 +66,7 @@ const Sidebar = () => {
           <MdKeyboardDoubleArrowRight
             className={`transform text-2xl text-gray-700 transition-all duration-300 group-hover:rotate-[-180deg] dark:text-gray-400 dark:hover:text-gray-300 ${
               isHoverActive
-                ? "rotate-[360deg] text-blue-500 "
+                ? "rotate-[360deg] text-blue-600 drop-shadow-2xl "
                 : "rotate-[-180deg]"
             }`}
           />
@@ -79,7 +79,7 @@ const Sidebar = () => {
           key={item.name}
           className={`mx-2 flex items-center gap-5 rounded-md p-3 hover:text-black hover:dark:text-gray-400 ${
             router.asPath === item.link
-              ? "bg-[#f4f6fa] text-blue-400 transition-all duration-300 dark:bg-[#2A2A3C]"
+              ? "bg-[#f4f6fa] text-blue-600 drop-shadow-2xl transition-all duration-300 dark:bg-[#2A2A3C]"
               : "text-[#5E6278]"
           } }`}
         >

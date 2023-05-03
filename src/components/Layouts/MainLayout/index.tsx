@@ -1,4 +1,4 @@
-import { useThemeContext } from "react-aria /context/ThemeContextProvider";
+import { useThemeContext } from "@src/context/ThemeContextProvider";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 

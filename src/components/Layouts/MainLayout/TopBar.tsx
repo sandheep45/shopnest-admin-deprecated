@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
-import { useThemeContext } from "react-aria /context/ThemeContextProvider";
+import { useThemeContext } from "@src/context/ThemeContextProvider";
 import { BsCloudMoon, BsSun } from "react-icons/bs";
 const TopBar = () => {
   const { isDarkTheme, setIsDarkTheme } = useThemeContext();

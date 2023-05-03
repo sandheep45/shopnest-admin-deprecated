@@ -4,7 +4,7 @@ import {
   createTRPCRouter,
   publicProcedure,
   protectedProcedure,
-} from "react-aria /server/api/trpc";
+} from "@src/server/api/trpc";
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
