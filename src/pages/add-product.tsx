@@ -1,14 +1,13 @@
-import Image from "next/image";
 import React, { useMemo } from "react";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
-import { useThemeContext } from "@src/context/ThemeContextProvider";
 import { productStatusOptions } from "@src/utils/constants";
-import { CiEdit } from "react-icons/ci";
 import Tagify from "@src/components/common/Tagify";
 import useTabs, { type ITabComponentProps } from "@src/hooks/useTabs";
-import General from "@src/components/Pages/Product/General";
-import Advanced from "@src/components/Pages/Product/Advanced";
+import General from "@src/components/Pages/product/General";
+import Advanced from "@src/components/Pages/product/Advanced";
+import ThumbnailCard from "@src/components/Pages/global/ThumbnailCard";
+import StatusCard from "@src/components/Pages/global/StatusCard";
 
 const MAIN_TABS = ["General", "Advanced"];
 
@@ -30,7 +29,6 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 );
 
 const AddProduct = () => {
-  const { isDarkTheme } = useThemeContext();
   const [Tabs, currentTabIndex] = useTabs({
     TabComponent: MainTabButton,
     tabs: MAIN_TABS,
@@ -41,50 +39,16 @@ const AddProduct = () => {
     <div className="item-center flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start">
       {/* left section */}
       <div className="flex w-full flex-col gap-6 md:w-72">
-        {/* thumbnail card */}
-        <Card className="flex-col gap-6 p-7">
-          <h3 className="text-2xl font-semibold">Thumbnail</h3>
-          <div className="relative w-full">
-            <button className="absolute -top-5 right-5 rounded-full bg-gray-100 p-3 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-300">
-              <CiEdit className="scale-125 " />
-            </button>
-            <Image
-              className="mx-auto rounded-md shadow-2xl"
-              src={`${
-                isDarkTheme
-                  ? "/svg/blank-image-dark.svg"
-                  : "/svg/blank-image.svg"
-              }`}
-              alt="upload-thumbnail"
-              height={150}
-              width={150}
-            />
-          </div>
-          <span className="px-2 text-center text-sm dark:text-gray-500">
-            Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image
-            files are accepted
-          </span>
-        </Card>
+        <ThumbnailCard />
 
-        {/* status card */}
-        <Card className="flex-col gap-4 py-8">
-          <div className="flex w-full items-center justify-between">
-            <h3 className="text-xl font-semibold">Status</h3>
-            <div className="h-4 w-4 rounded-full bg-green-700" />
-          </div>
-
-          <DropDown
-            descriptionTag="Set the product status."
-            list={statusOption}
-          />
-        </Card>
+        <StatusCard statusOption={statusOption} />
 
         {/* Deatils card */}
         <Card className="flex-col gap-5 pb-10 pt-8">
-          <h3 className="text-xl font-semibold">Product Details</h3>
+          <h2 className="text-xl font-semibold">Product Details</h2>
 
           <div className="flex w-full flex-col justify-between gap-1">
-            <h6>Categories</h6>
+            <h3>Categories</h3>
             <DropDown
               descriptionTag="Add product to a category."
               list={statusOption}
@@ -92,14 +56,14 @@ const AddProduct = () => {
           </div>
 
           <div className="flex w-full flex-col justify-between gap-1">
-            <h6>Tags</h6>
+            <h3>Tags</h3>
             <Tagify descriptionTag="Add tags to a category." tags={[]} />
           </div>
         </Card>
 
         {/* weekly sales */}
         <Card className="flex-col gap-4 pb-12 pt-8">
-          <h3 className="text-xl font-semibold">Weekly Sales</h3>
+          <h2 className="text-xl font-semibold">Weekly Sales</h2>
 
           <div className="relative w-full">
             <span className="text-sm dark:text-gray-500">
@@ -111,7 +75,7 @@ const AddProduct = () => {
 
         {/* template card */}
         <Card className="flex-col gap-4 pb-12 pt-8">
-          <h3 className="text-xl font-semibold">Product Template</h3>
+          <h2 className="text-xl font-semibold">Product Template</h2>
 
           <DropDown
             descriptionTag="Assign a template from your current theme to define how a single

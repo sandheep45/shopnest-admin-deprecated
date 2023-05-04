@@ -1,9 +1,9 @@
+import React from "react";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
-import TextArea from "@src/components/common/TextArea";
-import React from "react";
 import { IoCloudUpload } from "react-icons/io5";
+import GeneralCard from "../global/GeneralCard";
 
 interface IGeneratProps {
   className?: string;
@@ -23,22 +23,7 @@ const General: React.FC<IGeneratProps> = ({ statusOption, isCurrentTab }) => {
           : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
       }`}
     >
-      {/* general */}
-      <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
-        <h3 className="text-xl font-semibold">General</h3>
-
-        <Input
-          descriptionTag="A product name is required and recommended to be unique."
-          label="Product Name"
-          id="product-name"
-        />
-
-        <TextArea
-          descriptionTag="Set a description to the product for better visibility."
-          lable="Description"
-          id="description"
-        />
-      </Card>
+      <GeneralCard />
 
       {/* media */}
       <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
