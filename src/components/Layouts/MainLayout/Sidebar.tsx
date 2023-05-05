@@ -60,6 +60,7 @@ const Sidebar = () => {
     >
       <div>
         <Button
+          aria-label="Toggle Sidebar"
           onPress={handleIsHoverActive}
           className="absolute -right-5 top-3 z-[11] w-fit rounded-md border bg-white p-2 dark:border-gray-400 dark:bg-[#0e1138]"
         >
