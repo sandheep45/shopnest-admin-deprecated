@@ -9,7 +9,7 @@ const ThumbnailCard = () => {
   const { isDarkTheme } = useThemeContext();
   return (
     <Card className="flex-col gap-6 p-7">
-      <h3 className="text-2xl font-semibold">Thumbnail</h3>
+      <h2 className="text-2xl font-semibold">Thumbnail</h2>
       <div className="relative mx-auto w-fit">
         <Button
           aria-label="Edit Thumbnail"

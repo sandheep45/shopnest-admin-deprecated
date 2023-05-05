@@ -32,9 +32,9 @@ const General: React.FC<IGeneratProps> = ({ statusOption, isCurrentTab }) => {
         <div className="flex w-full items-center gap-10 rounded-md border border-dashed border-blue-500 bg-blue-500/10 px-10 py-7">
           <IoCloudUpload className="scale-[2] text-blue-500/60" />
           <div className="flex flex-col">
-            <h6 className="text-lg font-semibold ">
+            <h2 className="text-lg font-semibold ">
               Drop files here or click to upload.
-            </h6>
+            </h2>
             <span className="text-sm dark:text-gray-500">
               Upload up to 10 images. Only *.png, *.jpg and *.jpeg image
             </span>
