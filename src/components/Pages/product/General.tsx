@@ -75,6 +75,7 @@ const General: React.FC<IGeneratProps> = ({ statusOption, isCurrentTab }) => {
             list={statusOption}
           />
           <Input
+            id="vat"
             descriptionTag="Set the product VAT about."
             className="flex-1"
             label="VAT Amount (%)"

@@ -51,6 +51,9 @@ const Tagify: React.FC<ITagifyProps> = (props) => {
         </div>
         <div className="relative flex w-full">
           <Input
+            label="Tags"
+            hideLabel
+            id="tags"
             onFocus={() => setShowSuggestion(true)}
             ref={inputRef}
             className="border-0"

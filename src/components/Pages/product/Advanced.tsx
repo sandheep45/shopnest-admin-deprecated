@@ -30,11 +30,17 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
 
         <div className="flex w-full items-center gap-3">
           <Input
+            id="quantity"
             descriptionTag="Enter the product quantity."
             className="flex-1"
             label="Quantity"
           />
-          <Input className="flex-1" />
+          <Input
+            label="Ware house"
+            id="ware-house"
+            hideLabel
+            className="flex-1"
+          />
         </div>
       </Card>
 
@@ -44,7 +50,7 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
 
         <div className="flex w-full items-end gap-4">
           <Input label="Add Product Variations" id="add-variants" />
-          <Input id="sku" />
+          <Input label="Variation" hideLabel id="variantion" />
         </div>
       </Card>
 
@@ -58,14 +64,19 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
           id="weight"
         />
 
-        <div className="flex w-full items-center gap-3">
-          <Input
-            descriptionTag="Enter the product dimensions(cm)."
-            className="flex-1"
-            label="Dimensions"
-          />
-          <Input className="flex-1" />
-          <Input className="flex-1" />
+        <div className="flex w-full flex-col gap-3">
+          <h4 className="text-sm font-semibold">Dimention</h4>
+          <div className="flex w-full items-start gap-3">
+            <Input
+              descriptionTag="Enter the product dimensions(cm)."
+              className="flex-1"
+              id="width"
+              label="Width"
+              hideLabel
+            />
+            <Input label="Height" hideLabel id="height" className="flex-1" />
+            <Input label="length" hideLabel id="length" className="flex-1" />
+          </div>
         </div>
       </Card>
 

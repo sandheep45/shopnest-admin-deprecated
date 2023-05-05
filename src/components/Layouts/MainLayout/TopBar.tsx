@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import { useThemeContext } from "@src/context/ThemeContextProvider";
 import { BsCloudMoon, BsSun } from "react-icons/bs";
+import ToggleButton from "@src/components/common/ToggleButton";
 const TopBar = () => {
   const { isDarkTheme, setIsDarkTheme } = useThemeContext();
   const { data } = useSession();
@@ -13,7 +14,10 @@ const TopBar = () => {
       </h1>
 
       <div className="flex items-center gap-4">
-        <button onClick={() => setIsDarkTheme(!isDarkTheme)}>
+        <ToggleButton
+          aria-label="Toggle theme"
+          onPress={() => setIsDarkTheme(!isDarkTheme)}
+        >
           <BsSun
             className={`scale-75 transition-all duration-1000 ${
               isDarkTheme ? "h-10 w-10" : "h-0 w-0"
@@ -24,7 +28,7 @@ const TopBar = () => {
               !isDarkTheme ? "h-10 w-10" : "h-0 w-0"
             } `}
           />
-        </button>
+        </ToggleButton>
         <Image
           className="rounded-full"
           src={(data?.user.image as string) || "/svg/Profile.svg"}

@@ -1,3 +1,4 @@
+import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
 import { useThemeContext } from "@src/context/ThemeContextProvider";
 import Image from "next/image";
@@ -10,9 +11,12 @@ const ThumbnailCard = () => {
     <Card className="flex-col gap-6 p-7">
       <h3 className="text-2xl font-semibold">Thumbnail</h3>
       <div className="relative mx-auto w-fit">
-        <button className="absolute -right-4 -top-4 rounded-full bg-gray-100 p-3 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-300">
+        <Button
+          aria-label="Edit Thumbnail"
+          className="absolute -right-4 -top-4 rounded-full bg-gray-100 p-3 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-300"
+        >
           <CiEdit className="scale-125 " />
-        </button>
+        </Button>
         <Image
           className="mx-auto rounded-md shadow-2xl"
           src={`${
