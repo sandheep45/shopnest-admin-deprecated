@@ -108,15 +108,18 @@ const Categories = () => {
   return (
     <>
       <Head>
-        <title>View All Categories</title>
+        <title>View All Products</title>
         <meta name="description" content="Add Products to ShopNest database" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex w-full flex-col items-center justify-center gap-5 p-8 transition-all duration-300 dark:text-gray-300 ">
-        <div className="flex w-full items-center justify-between">
-          <h1 className="text-2xl font-semibold">All Category</h1>
-        </div>
-        <Card className="w-full">
+      <div
+        className={`flex w-full grow flex-col gap-6 px-5 py-6 transition-all duration-300`}
+      >
+        <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
+          <div className="flex w-full items-center justify-between">
+            <h2 className="text-2xl font-semibold">Customer Review</h2>
+            <span>Rating</span>
+          </div>
           <Table
             className="w-full table-auto"
             tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"

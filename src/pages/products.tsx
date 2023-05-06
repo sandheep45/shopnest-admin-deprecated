@@ -1,9 +1,10 @@
-import type { Variant, Product, Category } from "@prisma/client";
+import type { Product, Variant, Category } from "@prisma/client";
 import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
 import Table from "@src/components/common/Table";
 import { api } from "@src/utils/api";
 import { createColumnHelper } from "@tanstack/react-table";
+import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
@@ -37,7 +38,7 @@ const columns = [
       id: "product",
       header: () => <span className="text-left">Product</span>,
       cell: (info) => (
-        <span className="flex items-center justify-center gap-3">
+        <span className="flex items-center gap-3">
           <Image
             className="h-10 w-10 rounded-full"
             alt={info.getValue().image.alt}
@@ -51,11 +52,11 @@ const columns = [
     }
   ),
   columnHelper.accessor("Category", {
-    header: () => <span className="text-left">Comment</span>,
+    header: () => <span className="text-left">Category</span>,
     cell: (info) => <span className="">{info.getValue()?.name}</span>,
   }),
   columnHelper.accessor("Variant", {
-    header: () => <span className="">Customer</span>,
+    header: () => <span className="">Variant</span>,
     cell: (info) => (
       <span className="flex items-center  gap-3">{info.getValue().length}</span>
     ),
@@ -69,11 +70,11 @@ const columns = [
   columnHelper.accessor("tags", {
     header: () => <span className="">Tags</span>,
     cell: (info) => (
-      <span className="flex items-center  gap-3">{info.getValue().length}</span>
+      <span className="flex items-center">{info.getValue().length}</span>
     ),
   }),
   columnHelper.accessor("status", {
-    header: () => <span className="">Customer</span>,
+    header: () => <span className="">Status</span>,
     cell: (info) => (
       <span className="flex items-center  gap-3">{info.getValue()}</span>
     ),
@@ -88,13 +89,14 @@ const columns = [
   }),
 ];
 
-const Products = () => {
+const Products: NextPage = () => {
   const { data } = api.product.getAllProducts.useQuery({
     limit: 10,
     offset: 0,
   });
 
   if (!data) return null;
+
   return (
     <>
       <Head>
@@ -102,11 +104,14 @@ const Products = () => {
         <meta name="description" content="Add Products to ShopNest database" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex w-full flex-col items-center justify-center gap-5 p-8 transition-all duration-300 dark:text-gray-300 ">
-        <div className="flex w-full items-center justify-between">
-          <h1 className="text-2xl font-semibold">All Products</h1>
-        </div>
-        <Card className="w-full">
+      <div
+        className={`flex w-full grow flex-col gap-6 px-5 py-6 transition-all duration-300`}
+      >
+        <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
+          <div className="flex w-full items-center justify-between">
+            <h2 className="text-2xl font-semibold">Customer Review</h2>
+            <span>Rating</span>
+          </div>
           <Table
             className="w-full table-auto"
             tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"
