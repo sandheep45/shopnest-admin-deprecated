@@ -115,12 +115,13 @@ model CustomerReview {
 }
 
 model Category {
-    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    id          String        @id @default(auto()) @map("_id") @db.ObjectId
     name        String
     description String
+    status      ProductStatus @default(DRAFT)
     image       Image
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
 
     Product  Product[]
     MetaData MetaData[]

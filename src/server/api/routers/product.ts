@@ -12,21 +12,21 @@ export const productRouter = createTRPCRouter({
         .optional()
     )
     .query(({ ctx, input }) => {
-      return {
-        products: ctx.prisma.product.findMany({
-          take: input?.limit,
-          skip: input?.offset,
-        }),
-      };
+      return ctx.prisma.product.findMany({
+        take: input?.limit,
+        skip: input?.offset,
+        include: {
+          Category: true,
+          Variant: true,
+        },
+      });
     }),
 
   getProduct: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return {
-      product: ctx.prisma.product.findUnique({
-        where: {
-          id: input,
-        },
-      }),
-    };
+    return ctx.prisma.product.findUnique({
+      where: {
+        id: input,
+      },
+    });
   }),
 });
