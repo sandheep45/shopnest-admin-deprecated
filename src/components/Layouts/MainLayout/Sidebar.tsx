@@ -1,4 +1,6 @@
+import Button from "@src/components/common/Button";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { BsFillBox2HeartFill, BsDatabaseFillAdd } from "react-icons/bs";
 import {
@@ -37,9 +39,8 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
+  const router = useRouter();
   const [isHoverActive, setIsHoverActive] = React.useState(false);
-
-  const [activeSidebarTab, setActiveSidebarTab] = React.useState("");
 
   const handleIsHoverActive = () => {
     localStorage.setItem("isHoverActive", JSON.stringify(!isHoverActive));
@@ -53,34 +54,34 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`group relative flex h-screen flex-col gap-4 border-r bg-[#1E1E2D] py-10 transition-all duration-300 ${
+      className={`group relative hidden h-screen flex-col gap-4  py-10 transition-all duration-300 dark:bg-[#1E1E2D] md:flex ${
         isHoverActive ? "w-16 hover:w-64" : "w-64"
       }`}
     >
       <div>
-        <button
-          onClick={handleIsHoverActive}
-          className="absolute -right-5 top-3 z-10 w-fit rounded-md border border-none bg-white p-2"
+        <Button
+          aria-label="Toggle Sidebar"
+          onPress={handleIsHoverActive}
+          className="absolute -right-5 top-3 z-[11] w-fit rounded-md border bg-white p-2 dark:border-gray-400 dark:bg-[#0e1138]"
         >
           <MdKeyboardDoubleArrowRight
-            className={`transform text-2xl ${
+            className={`transform text-2xl text-gray-700 transition-all duration-300 group-hover:rotate-[-180deg] dark:text-gray-400 dark:hover:text-gray-300 ${
               isHoverActive
-                ? "rotate-[360deg] text-blue-500 "
+                ? "rotate-[360deg] text-blue-600 drop-shadow-2xl "
                 : "rotate-[-180deg]"
-            } transition-all duration-300`}
+            }`}
           />
-        </button>
+        </Button>
       </div>
 
       {sidebarItems.map((item) => (
         <Link
-          onClick={() => setActiveSidebarTab(item.link)}
           href={item.link}
           key={item.name}
-          className={`flex items-center gap-5 p-3 text-[#505061] hover:text-white ${
-            activeSidebarTab === item.link
-              ? "m-1 rounded-xl bg-[#2A2A3C] text-gray-300 transition-all duration-300"
-              : ""
+          className={`mx-2 flex items-center gap-5 rounded-md p-3 hover:text-black hover:dark:text-gray-400 ${
+            router.asPath === item.link
+              ? "bg-[#f4f6fa] text-blue-600 drop-shadow-2xl transition-all duration-300 dark:bg-[#2A2A3C]"
+              : "text-[#5E6278]"
           } }`}
         >
           <span className="text-2xl">{item.icon}</span>
