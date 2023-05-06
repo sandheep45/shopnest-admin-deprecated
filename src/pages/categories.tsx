@@ -2,11 +2,13 @@ import { type Category } from "@prisma/client";
 import type { Product } from "@prisma/client";
 import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
+import Loader from "@src/components/common/Loader";
 import Table from "@src/components/common/Table";
-import { api } from "@src/utils/api";
+import useGetAllCategories from "@src/hooks/api/useGetAllCategories";
 import { createColumnHelper } from "@tanstack/react-table";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface ICategoryData extends Category {
@@ -32,35 +34,16 @@ const columns = [
     (row) => ({
       name: row.name,
       image: row.image,
-    }),
-    {
-      id: "product",
-      header: () => <span className="text-left">Product</span>,
-      cell: (info) => (
-        <span className="flex items-center justify-center gap-3">
-          <Image
-            className="h-10 w-10 rounded-full"
-            alt={info.getValue().image.alt}
-            src={`/images/logo.png`}
-            height={info.getValue().image.height}
-            width={info.getValue().image.width}
-          />
-          <span>{info.getValue().name}</span>
-        </span>
-      ),
-    }
-  ),
-  columnHelper.accessor(
-    (row) => ({
-      name: row.name,
-      image: row.image,
-      description: row.description,
+      id: row.id,
     }),
     {
       id: "category",
       header: () => <span className="">Category</span>,
       cell: (info) => (
-        <span className="flex items-center gap-3">
+        <Link
+          href={`/category/${info.getValue().id}`}
+          className="flex items-center gap-3"
+        >
           <Image
             className="h-10 w-10 rounded-full"
             alt={info.getValue().image.alt}
@@ -68,12 +51,20 @@ const columns = [
             height={info.getValue().image.height}
             width={info.getValue().image.width}
           />
-          <span>
-            <span>{info.getValue().name}</span>
-            <span>{info.getValue().description}</span>
-          </span>
-        </span>
+
+          <span>{info.getValue().name}</span>
+        </Link>
       ),
+    }
+  ),
+  columnHelper.accessor(
+    (row) => ({
+      description: row.description,
+    }),
+    {
+      id: "description",
+      header: () => <span className="">Description</span>,
+      cell: (info) => <span>{info.getValue().description}</span>,
     }
   ),
   columnHelper.accessor("Product", {
@@ -99,7 +90,7 @@ const columns = [
 ];
 
 const Categories = () => {
-  const { data } = api.category.getAllCategory.useQuery({
+  const { data, isLoading, isFetching } = useGetAllCategories({
     limit: 10,
     offset: 0,
   });
@@ -117,17 +108,24 @@ const Categories = () => {
       >
         <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
           <div className="flex w-full items-center justify-between">
-            <h2 className="text-2xl font-semibold">Customer Review</h2>
-            <span>Rating</span>
+            <h2 className="text-2xl font-semibold">All Categories</h2>
+            <Link href={`/add-category`}>Add Category</Link>
           </div>
-          <Table
-            className="w-full table-auto"
-            tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"
-            tableHeaderClassName="text-left"
-            tableBodyCellClassName="border-t border-dashed dark:border-gray-400 border-gray-500 py-3 px-4"
-            columns={columns}
-            data={data}
-          />
+          {(isLoading || isFetching) && (
+            <div className="flex h-full items-center justify-center">
+              <Loader className="h-20 w-20" />
+            </div>
+          )}
+          {data && !isLoading && !isFetching && (
+            <Table
+              className="w-full table-auto"
+              tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"
+              tableHeaderClassName="text-left"
+              tableBodyCellClassName="border-t border-dashed dark:border-gray-400 border-gray-500 py-3 px-4"
+              columns={columns}
+              data={data}
+            />
+          )}
         </Card>
       </div>
     </>

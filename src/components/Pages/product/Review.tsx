@@ -1,6 +1,7 @@
 import { type User, type CustomerReview } from "@prisma/client";
 import Card from "@src/components/common/Card";
 import Table from "@src/components/common/Table";
+import useGetReviewOfSingleProduct from "@src/hooks/api/useGetSingleProduct";
 import { api } from "@src/utils/api";
 import { createColumnHelper } from "@tanstack/react-table";
 import Image from "next/image";
@@ -63,7 +64,7 @@ const columns = [
 ];
 
 const Review: React.FC<IReviewProps> = ({ isCurrentTab, productId }) => {
-  const { data } = api.customerReview.getSingleReview.useQuery({
+  const { data } = useGetReviewOfSingleProduct({
     productId: productId,
   });
 
@@ -77,7 +78,7 @@ const Review: React.FC<IReviewProps> = ({ isCurrentTab, productId }) => {
           : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
       }`}
     >
-      <Card className="w-full flex-col gap-5 px-8 pb-12 pt-8">
+      <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
         <div className="flex w-full items-center justify-between">
           <h2 className="text-2xl font-semibold">Customer Review</h2>
           <span>Rating</span>

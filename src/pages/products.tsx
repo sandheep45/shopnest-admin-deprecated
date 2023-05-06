@@ -1,12 +1,14 @@
 import type { Product, Variant, Category } from "@prisma/client";
 import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
+import Loader from "@src/components/common/Loader";
 import Table from "@src/components/common/Table";
-import { api } from "@src/utils/api";
+import useGetAllProduct from "@src/hooks/api/useGetAllProduct";
 import { createColumnHelper } from "@tanstack/react-table";
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface IProductData extends Product {
@@ -33,12 +35,16 @@ const columns = [
     (row) => ({
       name: row.name,
       image: row.image,
+      id: row.id,
     }),
     {
       id: "product",
       header: () => <span className="text-left">Product</span>,
       cell: (info) => (
-        <span className="flex items-center gap-3">
+        <Link
+          href={`/product/${info.getValue().id}`}
+          className="flex items-center gap-3"
+        >
           <Image
             className="h-10 w-10 rounded-full"
             alt={info.getValue().image.alt}
@@ -47,7 +53,7 @@ const columns = [
             width={info.getValue().image.width}
           />
           <span>{info.getValue().name}</span>
-        </span>
+        </Link>
       ),
     }
   ),
@@ -90,12 +96,10 @@ const columns = [
 ];
 
 const Products: NextPage = () => {
-  const { data } = api.product.getAllProducts.useQuery({
+  const { data, isLoading, isFetching } = useGetAllProduct({
     limit: 10,
     offset: 0,
   });
-
-  if (!data) return null;
 
   return (
     <>
@@ -109,17 +113,24 @@ const Products: NextPage = () => {
       >
         <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
           <div className="flex w-full items-center justify-between">
-            <h2 className="text-2xl font-semibold">Customer Review</h2>
-            <span>Rating</span>
+            <h2 className="text-2xl font-semibold">All Products</h2>
+            <Link href={`/add-product`}>Add Product</Link>
           </div>
-          <Table
-            className="w-full table-auto"
-            tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"
-            tableHeaderClassName="text-left"
-            tableBodyCellClassName="border-t border-dashed dark:border-gray-400 border-gray-500 py-3 px-4"
-            columns={columns}
-            data={data}
-          />
+          {(isLoading || isFetching) && (
+            <div className="flex h-full items-center justify-center">
+              <Loader className="h-20 w-20" />
+            </div>
+          )}
+          {data && !isLoading && !isFetching && (
+            <Table
+              className="w-full table-auto"
+              tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"
+              tableHeaderClassName="text-left"
+              tableBodyCellClassName="border-t border-dashed dark:border-gray-400 border-gray-500 py-3 px-4"
+              columns={columns}
+              data={data}
+            />
+          )}
         </Card>
       </div>
     </>
