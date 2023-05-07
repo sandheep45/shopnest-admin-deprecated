@@ -4,11 +4,11 @@ import Table from "@src/components/common/Table";
 import useGetReviewOfSingleProduct from "@src/hooks/api/useGetSingleProduct";
 import { createColumnHelper } from "@tanstack/react-table";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 interface IReviewProps {
   isCurrentTab?: boolean;
-  productId: string;
 }
 
 interface IReviewData extends CustomerReview {
@@ -64,9 +64,10 @@ const columns = [
   }),
 ];
 
-const Review: React.FC<IReviewProps> = ({ isCurrentTab, productId }) => {
+const Review: React.FC<IReviewProps> = ({ isCurrentTab }) => {
+  const { productId } = useRouter().query;
   const { data } = useGetReviewOfSingleProduct({
-    productId: productId,
+    productId: productId as string,
   });
 
   if (!data) return null;
