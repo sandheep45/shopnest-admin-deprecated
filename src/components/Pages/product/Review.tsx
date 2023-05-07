@@ -2,7 +2,6 @@ import { type User, type CustomerReview } from "@prisma/client";
 import Card from "@src/components/common/Card";
 import Table from "@src/components/common/Table";
 import useGetReviewOfSingleProduct from "@src/hooks/api/useGetSingleProduct";
-import { api } from "@src/utils/api";
 import { createColumnHelper } from "@tanstack/react-table";
 import Image from "next/image";
 import React from "react";
@@ -13,7 +12,7 @@ interface IReviewProps {
 }
 
 interface IReviewData extends CustomerReview {
-  customer: User;
+  customer: User | null;
 }
 
 const columnHelper = createColumnHelper<IReviewData>();
@@ -41,13 +40,13 @@ const columns = [
     cell: (info) => (
       <span className="flex items-center  gap-3">
         <Image
-          src={info.getValue().image || "/svg/Profile.svg"}
+          src={(info && info?.getValue()?.image) || "/svg/Profile.svg"}
           alt="avatar"
           width={30}
           height={30}
           className="h-10 w-10 rounded-full"
         />
-        <span className="truncate">{info.getValue().name}</span>
+        <span className="truncate">{info && info?.getValue()?.name}</span>
       </span>
     ),
   }),
@@ -58,7 +57,9 @@ const columns = [
   columnHelper.accessor("updatedAt", {
     header: "Date",
     cell: (info) => (
-      <span className="flex-1">{info.getValue().toLocaleDateString()}</span>
+      <span className="flex-1">
+        {info && info?.getValue()?.toLocaleDateString()}
+      </span>
     ),
   }),
 ];
