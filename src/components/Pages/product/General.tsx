@@ -4,6 +4,7 @@ import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
 import { IoCloudUpload } from "react-icons/io5";
 import GeneralCard from "../global/GeneralCard";
+import { useFormContext } from "react-hook-form";
 
 interface IGeneratProps {
   className?: string;
@@ -15,6 +16,7 @@ interface IGeneratProps {
 }
 
 const General: React.FC<IGeneratProps> = ({ statusOption, isCurrentTab }) => {
+  const { register } = useFormContext();
   return (
     <div
       className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${
@@ -47,6 +49,7 @@ const General: React.FC<IGeneratProps> = ({ statusOption, isCurrentTab }) => {
         <h3 className="text-xl font-semibold">Pricing</h3>
 
         <Input
+          {...register("price")}
           descriptionTag="Base price is the original price of the product."
           label="Base Price"
           id="price"
@@ -69,12 +72,14 @@ const General: React.FC<IGeneratProps> = ({ statusOption, isCurrentTab }) => {
 
         <div className="flex w-full gap-7">
           <DropDown
+            {...register("Tax Class")}
             descriptionTag="Set the product tax class."
             className="flex-1"
             label="Tax Class"
             list={statusOption}
           />
           <Input
+            {...register("vat")}
             id="vat"
             descriptionTag="Set the product VAT about."
             className="flex-1"

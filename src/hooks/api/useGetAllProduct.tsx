@@ -15,6 +15,7 @@ const useGetAllProduct = ({ limit, offset }: IUseGetAllProduct) => {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
+      staleTime: 1000 * 20, // 20 seconds
     }
   );
   return allProducts;

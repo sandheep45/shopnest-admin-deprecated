@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import Input from "./Input";
 import Card from "./Card";
+import { useFormContext } from "react-hook-form";
 
 interface ITagifyProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -11,6 +12,7 @@ interface ITagifyProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Tagify: React.FC<ITagifyProps> = (props) => {
+  const { register } = useFormContext();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const {
@@ -51,6 +53,7 @@ const Tagify: React.FC<ITagifyProps> = (props) => {
         </div>
         <div className="relative flex w-full">
           <Input
+            {...register("tags")}
             label="Tags"
             hideLabel
             id="tags"

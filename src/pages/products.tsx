@@ -1,15 +1,18 @@
 import type { Product, Variant, Category } from "@prisma/client";
 import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
+import DropDown from "@src/components/common/DropDown";
+import Input from "@src/components/common/Input";
 import Loader from "@src/components/common/Loader";
 import Table from "@src/components/common/Table";
 import useGetAllProduct from "@src/hooks/api/useGetAllProduct";
+import { productStatusOptions } from "@src/utils/constants";
 import { createColumnHelper } from "@tanstack/react-table";
 import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 
 interface IProductData extends Product {
   Variant: Variant[];
@@ -100,6 +103,7 @@ const Products: NextPage = () => {
     limit: 10,
     offset: 0,
   });
+  const statusOption = useMemo(() => productStatusOptions, []);
 
   return (
     <>
@@ -111,10 +115,28 @@ const Products: NextPage = () => {
       <div
         className={`flex w-full grow flex-col gap-6 px-5 py-6 transition-all duration-300`}
       >
+        <h2 className="text-2xl font-semibold dark:text-gray-300">
+          All Products
+        </h2>
         <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
-          <div className="flex w-full items-center justify-between">
-            <h2 className="text-2xl font-semibold">All Products</h2>
-            <Link href={`/add-product`}>Add Product</Link>
+          <div className="flex w-full flex-col items-center justify-between sm:flex-row sm:gap-5">
+            <Input
+              wrapperClassName="w-full sm:w-1/2 md:max-w-xs"
+              className="w-full"
+              id="search"
+              label="search"
+              hideLabel
+            />
+            <div className="flex w-full flex-col items-center sm:max-w-fit sm:flex-row sm:gap-6 md:gap-8">
+              <DropDown
+                className="min-w-max pr-6 md:max-w-min"
+                list={statusOption}
+              />
+
+              <Link className="min-w-fit md:max-w-fit" href={`/add-product`}>
+                Add Product
+              </Link>
+            </div>
           </div>
           {(isLoading || isFetching) && (
             <div className="flex h-full items-center justify-center">
@@ -122,14 +144,20 @@ const Products: NextPage = () => {
             </div>
           )}
           {data && !isLoading && !isFetching && (
-            <Table
-              className="w-full table-auto"
-              tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"
-              tableHeaderClassName="text-left"
-              tableBodyCellClassName="border-t border-dashed dark:border-gray-400 border-gray-500 py-3 px-4"
-              columns={columns}
-              data={data}
-            />
+            <div className="flex h-full flex-col justify-between">
+              <Table
+                className="w-full table-auto"
+                tableHeaderCellClassName="dark:text-gray-700 py-3 px-4"
+                tableHeaderClassName="text-left"
+                tableBodyCellClassName="border-t border-dashed dark:border-gray-400 border-gray-500 py-3 px-4"
+                columns={columns}
+                data={data}
+              />
+              <div className="flex items-center justify-between">
+                <div>page</div>
+                <div>pagination</div>
+              </div>
+            </div>
           )}
         </Card>
       </div>

@@ -9,6 +9,7 @@ const useGetReviewOfSingleProduct = ({ productId }: { productId: string }) => {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
+      staleTime: 1000 * 20, // 20 seconds
     }
   );
   return reviewOfSingleProduct;

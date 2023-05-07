@@ -15,6 +15,7 @@ const useGetAllCategories = ({ limit, offset }: IUseGetAllCategories) => {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
+      staleTime: 1000 * 20, // 20 seconds
     }
   );
   return allCategories;

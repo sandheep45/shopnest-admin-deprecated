@@ -8,30 +8,25 @@ interface ITextAreaProps
 
 const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
   (props, ref) => {
+    const { lable, descriptionTag, ...restProps } = props;
     return (
       <div className="flex w-full flex-col gap-2">
-        {props.lable && (
+        {lable && (
           <label htmlFor={props.id} className="text-sm font-semibold">
-            {props.lable}
+            {lable}
           </label>
         )}
         <textarea
-          id={props.id}
-          rows={10}
+          {...restProps}
           ref={ref}
-          onFocus={props.onFocus}
-          onBlur={props.onBlur}
-          value={props.value}
-          onChange={props.onChange}
-          placeholder={props.placeholder}
-          onKeyDown={props.onKeyDown}
+          rows={10}
           className={`w-full rounded-md border border-gray-300 p-2 outline-none dark:border-gray-700 dark:bg-[#1e1e2d] dark:text-gray-300 ${
             props.className ? props.className : ""
           }`}
         />
-        {props.descriptionTag && (
+        {descriptionTag && (
           <span className="px-3 text-sm dark:text-gray-500">
-            {props.descriptionTag}
+            {descriptionTag}
           </span>
         )}
       </div>
@@ -39,6 +34,6 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, ITextAreaProps>(
   }
 );
 
-TextArea.displayName = "Input";
+TextArea.displayName = "TextArea";
 
 export default TextArea;
