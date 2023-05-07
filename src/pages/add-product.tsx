@@ -1,17 +1,13 @@
 import React, { useMemo } from "react";
-import Card from "@src/components/common/Card";
-import DropDown from "@src/components/common/DropDown";
 import { productStatusOptions } from "@src/utils/constants";
-import Tagify from "@src/components/common/Tagify";
 import useTabs, { type ITabComponentProps } from "@src/hooks/useTabs";
 import General from "@src/components/Pages/product/General";
 import Advanced from "@src/components/Pages/product/Advanced";
-import ThumbnailCard from "@src/components/Pages/global/ThumbnailCard";
-import StatusCard from "@src/components/Pages/global/StatusCard";
 import Head from "next/head";
 import { api } from "@src/utils/api";
 import { useForm, FormProvider } from "react-hook-form";
 import { type Prisma } from "@prisma/client";
+import LeftSection from "@src/components/Pages/product/LeftSection";
 
 const MAIN_TABS = ["General", "Advanced"];
 
@@ -45,7 +41,6 @@ const AddProduct = () => {
     tabs: MAIN_TABS,
   });
   const statusOption = useMemo(() => productStatusOptions, []);
-
   const onSubmit = (data: any) => console.log(data);
 
   return (
@@ -61,54 +56,7 @@ const AddProduct = () => {
           className="item-center flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start"
         >
           {/* left section */}
-          <div className="flex w-full flex-col gap-6 md:w-72">
-            <ThumbnailCard />
-
-            <StatusCard statusOption={statusOption} />
-
-            {/* Deatils card */}
-            <Card className="flex-col gap-5 pb-10 pt-8">
-              <h2 className="text-xl font-semibold">Product Details</h2>
-
-              <div className="flex w-full flex-col justify-between gap-1">
-                <h3>Categories</h3>
-                <DropDown
-                  {...methods.register("category")}
-                  descriptionTag="Add product to a category."
-                  list={statusOption}
-                />
-              </div>
-
-              <div className="flex w-full flex-col justify-between gap-1">
-                <h4>Tags</h4>
-                <Tagify descriptionTag="Add tags to a category." tags={[]} />
-              </div>
-            </Card>
-
-            {/* weekly sales */}
-            <Card className="flex-col gap-4 pb-12 pt-8">
-              <h2 className="text-xl font-semibold">Weekly Sales</h2>
-
-              <div className="relative w-full">
-                <span className="text-sm dark:text-gray-500">
-                  No data available. Sales data will begin capturing once
-                  product has been published.
-                </span>
-              </div>
-            </Card>
-
-            {/* template card */}
-            <Card className="flex-col gap-4 pb-12 pt-8">
-              <h2 className="text-xl font-semibold">Product Template</h2>
-
-              <DropDown
-                {...methods.register("template")}
-                descriptionTag="Assign a template from your current theme to define how a single
-                product is displayed."
-                list={statusOption}
-              />
-            </Card>
-          </div>
+          <LeftSection />
 
           {/* right section */}
           <div className="flex flex-1 flex-col gap-10">
