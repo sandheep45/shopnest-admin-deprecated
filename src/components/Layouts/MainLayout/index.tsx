@@ -1,9 +1,8 @@
-import { useThemeContext } from "react-aria /context/ThemeContextProvider";
+import { useThemeContext } from "@src/context/ThemeContextProvider";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
-import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
-interface MainLayoutProps {
+interface MainLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
@@ -13,7 +12,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <div className={` ${isDarkTheme ? "dark" : ""}`}>
       <div className="flex ">
         <Sidebar />
-        <div className="flex-1 max-h-screen overflow-y-auto">
+        <div className="max-h-screen flex-1 overflow-y-auto bg-[#f5f8fa] dark:bg-[#151521]">
           <TopBar />
           {children}
         </div>

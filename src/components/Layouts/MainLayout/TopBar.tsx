@@ -1,52 +1,43 @@
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import React from "react";
-const topbarItems = [
-  {
-    name: 'Dashboards',
-    link: '/dashboards',
-  },
-  {
-    name: 'Pages',
-    link: '/pages',
-  },
-  {
-    name: 'Apps',
-    link: '/apps',
-  },
-  {
-    name: 'Layout',
-    link: '/Layout',
-  },
-  {
-    name: 'Help',
-    link: '/help',
-  },
-  {
-    name: 'Dark Mode',
-    link: '/darkmode',
-  },
-  {
-    name: 'User Profile',
-    link: '/userProfile',
-  },
-]
+import { useThemeContext } from "@src/context/ThemeContextProvider";
+import { BsCloudMoon, BsSun } from "react-icons/bs";
+import ToggleButton from "@src/components/common/ToggleButton";
 const TopBar = () => {
-  const [activeTopBarTab, setActiveTopBarTab] = React.useState('');
+  const { isDarkTheme, setIsDarkTheme } = useThemeContext();
+  const { data } = useSession();
   return (
-    <div
-      className="sticky top-0 shadow-md bg-white w-full flex items-center gap-8 py-5 px-10 font-bold text-[#797C8F]">
-      {
-        topbarItems.map((item, indx) => (
-          <div
-            key={indx}
-            onClick={() => setActiveTopBarTab(item.link)}
-            className={`p-1 cursor-pointer rounded-lg ${activeTopBarTab === item.link ? 'text-[#1FA9F7] bg-[#f9f9f0]' : ''}`}
-          >
-            <h1 >
-              {item.name}
-            </h1>
-          </div>
-        ))
-      }
+    <div className="sticky top-0 z-10 flex w-full items-center justify-between gap-8 bg-[#f5f8fa] px-10 py-3 font-bold text-[#797C8F] shadow-md transition-all duration-300 dark:border-b dark:border-dashed dark:border-gray-700 dark:bg-[#1E1E2D]">
+      <h1 className="text-xl transition-all duration-300 dark:text-gray-300">
+        Add Product Form
+      </h1>
+
+      <div className="flex items-center gap-4">
+        <ToggleButton
+          className="outline-none"
+          aria-label="Toggle theme"
+          onPress={() => setIsDarkTheme(!isDarkTheme)}
+        >
+          <BsSun
+            className={`scale-75 transition-all duration-1000 ${
+              isDarkTheme ? "h-10 w-10" : "h-0 w-0"
+            } `}
+          />
+          <BsCloudMoon
+            className={`scale-75 transition-all duration-1000 ${
+              !isDarkTheme ? "h-10 w-10" : "h-0 w-0"
+            } `}
+          />
+        </ToggleButton>
+        <Image
+          className="rounded-full"
+          src={(data?.user.image as string) || "/svg/Profile.svg"}
+          height={45}
+          width={45}
+          alt="profile"
+        />
+      </div>
     </div>
   );
 };

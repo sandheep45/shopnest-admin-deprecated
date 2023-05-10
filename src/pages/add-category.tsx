@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React from "react";
 
 import { MdOutlineFilterAlt } from 'react-icons/md'
@@ -7,6 +8,7 @@ import { BsPencilFill } from 'react-icons/bs'
 import { useForm } from "react-hook-form";
 
 const AddCategory = () => {
+<<<<<<< HEAD
 
 
   return (
@@ -61,6 +63,17 @@ const AddCategory = () => {
         <div>automation</div>
       </div>
     </div>
+=======
+  return (
+    <>
+      <Head>
+        <title>Add Categories page</title>
+        <meta name="description" content="Add Products to ShopNest database" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div>AddCategory</div>;
+    </>
+>>>>>>> sandheep
   );
 };
 

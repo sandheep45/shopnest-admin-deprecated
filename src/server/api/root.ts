@@ -1,7 +1,7 @@
-import { createTRPCRouter } from "react-aria /server/api/trpc";
-import { exampleRouter } from "react-aria /server/api/routers/example";
+import { createTRPCRouter } from "@src/server/api/trpc";
 import { productRouter } from "./routers/product";
 import { categoryRouter } from "./routers/category";
+import { customerReviewRouter } from "./routers/customerReview";
 
 /**
  * This is the primary router for your server.
@@ -9,9 +9,9 @@ import { categoryRouter } from "./routers/category";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  example: exampleRouter,
   product: productRouter,
   category: categoryRouter,
+  customerReview: customerReviewRouter,
 });
 
 // export type definition of API
