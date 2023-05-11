@@ -9,6 +9,7 @@ import Table from "@src/components/common/Table";
 import useGetAllCategories from "@src/hooks/api/useGetAllCategories";
 import { productStatusOptions } from "@src/utils/constants";
 import { createColumnHelper } from "@tanstack/react-table";
+import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -92,14 +93,13 @@ const columns = [
   }),
 ];
 
-const Categories = () => {
+const Categories: NextPage = () => {
   const { data, isLoading, isFetching } = useGetAllCategories({
     limit: 10,
     offset: 0,
   });
   const statusOption = useMemo(() => productStatusOptions, []);
 
-  if (!data) return null;
   return (
     <>
       <Head>

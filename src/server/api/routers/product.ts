@@ -27,6 +27,11 @@ export const productRouter = createTRPCRouter({
       where: {
         id: input,
       },
+      include: {
+        CustomerReview: true,
+        MetaData: true,
+        Variant: true,
+      },
     });
   }),
 
@@ -37,7 +42,7 @@ export const productRouter = createTRPCRouter({
         description: z.string(),
         price: z.number(),
         categoryId: z.string(),
-        variants: z.array(z.string()),
+        variants: z.array(z.string()).optional(),
         tags: z.array(z.string()).optional(),
         image: z.object({
           url: z.string(),
@@ -45,11 +50,13 @@ export const productRouter = createTRPCRouter({
           height: z.number(),
           width: z.number(),
         }),
-        metaData: z.object({
-          keywords: z.array(z.string()).optional(),
-          description: z.string().optional(),
-          title: z.string().optional(),
-        }),
+        metaData: z
+          .object({
+            keywords: z.array(z.string()).optional(),
+            description: z.string().optional(),
+            title: z.string().optional(),
+          })
+          .optional(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -67,7 +74,7 @@ export const productRouter = createTRPCRouter({
           tags: input.tags,
           categoryId: input.categoryId,
           Variant: {
-            connect: input.variants.map((variantId) => ({
+            connect: input.variants?.map((variantId) => ({
               id: variantId,
             })),
           },

@@ -11,10 +11,10 @@ const GeneralCard = () => {
       <h3 className="text-xl font-semibold">General</h3>
 
       <Input
-        {...register("product-name")}
+        {...register("name")}
         descriptionTag="A product name is required and recommended to be unique."
         label="Product Name"
-        id="product-name"
+        id="name"
       />
 
       <TextArea

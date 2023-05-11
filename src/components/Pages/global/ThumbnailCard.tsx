@@ -6,6 +6,14 @@ import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { useFormContext } from "react-hook-form";
 
+const setDefaultImageOrSelectedImage = (
+  image: string,
+  isDarkTheme: boolean
+) => {
+  if (image) return image;
+  return `/svg/blank-image-${isDarkTheme ? "dark" : ""}.svg`;
+};
+
 const ThumbnailCard = () => {
   const { isDarkTheme } = useThemeContext();
   const { register } = useFormContext();
@@ -30,10 +38,8 @@ const ThumbnailCard = () => {
           className="hidden"
         />
         <Image
-          className="mx-auto rounded-md shadow-2xl"
-          src={`${
-            isDarkTheme ? "/svg/blank-image-dark.svg" : "/svg/blank-image.svg"
-          }`}
+          className="mx-auto h-40 w-40 rounded-md shadow-2xl"
+          src={`${setDefaultImageOrSelectedImage("", isDarkTheme)}`}
           alt="upload-thumbnail"
           height={150}
           width={150}

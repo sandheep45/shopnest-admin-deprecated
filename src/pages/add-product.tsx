@@ -1,20 +1,44 @@
 import React from "react";
 import Head from "next/head";
 import { api } from "@src/utils/api";
-import { useForm, FormProvider } from "react-hook-form";
-import { type Prisma } from "@prisma/client";
+import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import LeftSection from "@src/components/Pages/product/LeftSection";
 import RightSection from "@src/components/Pages/product/RightSection";
+import useUploadFileToCloudinary from "@src/hooks/api/useUploadFileToCloudinary";
+import type { TProduct } from "@src/utils/types";
+import { imageToBase64 } from "@src/utils/convertImageToBlog";
 
 const AddProduct = () => {
   const utils = api.useContext();
-  const methods = useForm<Prisma.ProductCreateInput>();
-  const { mutate, isLoading } = api.product.createProduct.useMutation({
+  const { uploadImage } = useUploadFileToCloudinary();
+  const methods = useForm<TProduct>();
+  const { mutate } = api.product.createProduct.useMutation({
     onSuccess: async () => {
       await utils.product.getAllProducts.invalidate();
     },
   });
-  const onSubmit = (data: any) => console.log(data);
+
+  const onSubmit: SubmitHandler<TProduct> = async (data) => {
+    const blob = await imageToBase64((data.image as FileList)[0] as File);
+    const image = await uploadImage({
+      contentType: "image",
+      file: blob,
+      public_id: "product",
+    });
+    mutate({
+      categoryId: data.categoryId as string,
+      description: data.description,
+      image: {
+        alt: image.original_filename,
+        url: image.secure_url,
+        height: image.height,
+        width: image.width,
+      },
+      name: data.name,
+      price: data.price,
+      // tags: data.tags as string[],
+    });
+  };
 
   return (
     <>

@@ -87,7 +87,7 @@ model Product {
     MetaData       MetaData[]
     CustomerReview CustomerReview[]
 
-    categoryId String?   @db.ObjectId
+    categoryId String    @db.ObjectId
     Category   Category? @relation(fields: [categoryId], references: [id])
 }
 

@@ -20,4 +20,13 @@ export const categoryRouter = createTRPCRouter({
         },
       });
     }),
+
+  getAllCategoryNameAndId: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.category.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }),
 });
