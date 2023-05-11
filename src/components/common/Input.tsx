@@ -1,22 +1,29 @@
 import React from "react";
 
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  id: string;
   label: string;
   descriptionTag?: string;
   hideLabel?: boolean;
+  wrapperClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
+  const { label, descriptionTag, hideLabel, wrapperClassName, ...restProps } =
+    props;
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div
+      className={`flex w-full flex-col gap-2 ${
+        wrapperClassName ? wrapperClassName : ""
+      }`}
+    >
       <label
         htmlFor={props.id}
-        className={`text-sm font-semibold ${props.hideLabel ? "sr-only" : ""}`}
+        className={`text-sm font-semibold ${hideLabel ? "sr-only" : ""}`}
       >
-        {props.label}
+        {label}
       </label>
       <input
+        {...restProps}
         id={props.id}
         ref={ref}
         onFocus={props.onFocus}
@@ -30,9 +37,9 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
           props.className ? props.className : ""
         }`}
       />
-      {props.descriptionTag && (
+      {descriptionTag && (
         <span className="px-3 text-sm dark:text-gray-500">
-          {props.descriptionTag}
+          {descriptionTag}
         </span>
       )}
     </div>

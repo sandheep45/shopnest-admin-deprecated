@@ -1,18 +1,18 @@
 import { type User, type CustomerReview } from "@prisma/client";
 import Card from "@src/components/common/Card";
 import Table from "@src/components/common/Table";
-import { api } from "@src/utils/api";
+import useGetReviewOfSingleProduct from "@src/hooks/api/useGetSingleProduct";
 import { createColumnHelper } from "@tanstack/react-table";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 interface IReviewProps {
   isCurrentTab?: boolean;
-  productId: string;
 }
 
 interface IReviewData extends CustomerReview {
-  customer: User;
+  customer: User | null;
 }
 
 const columnHelper = createColumnHelper<IReviewData>();
@@ -40,13 +40,13 @@ const columns = [
     cell: (info) => (
       <span className="flex items-center  gap-3">
         <Image
-          src={info.getValue().image || "/svg/Profile.svg"}
+          src={(info && info?.getValue()?.image) || "/svg/Profile.svg"}
           alt="avatar"
           width={30}
           height={30}
           className="h-10 w-10 rounded-full"
         />
-        <span className="truncate">{info.getValue().name}</span>
+        <span className="truncate">{info && info?.getValue()?.name}</span>
       </span>
     ),
   }),
@@ -57,14 +57,17 @@ const columns = [
   columnHelper.accessor("updatedAt", {
     header: "Date",
     cell: (info) => (
-      <span className="flex-1">{info.getValue().toLocaleDateString()}</span>
+      <span className="flex-1">
+        {info && info?.getValue()?.toLocaleDateString()}
+      </span>
     ),
   }),
 ];
 
-const Review: React.FC<IReviewProps> = ({ isCurrentTab, productId }) => {
-  const { data } = api.customerReview.getSingleReview.useQuery({
-    productId: productId,
+const Review: React.FC<IReviewProps> = ({ isCurrentTab }) => {
+  const { productId } = useRouter().query;
+  const { data } = useGetReviewOfSingleProduct({
+    productId: productId as string,
   });
 
   if (!data) return null;
@@ -77,7 +80,7 @@ const Review: React.FC<IReviewProps> = ({ isCurrentTab, productId }) => {
           : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
       }`}
     >
-      <Card className="w-full flex-col gap-5 px-8 pb-12 pt-8">
+      <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
         <div className="flex w-full items-center justify-between">
           <h2 className="text-2xl font-semibold">Customer Review</h2>
           <span>Rating</span>

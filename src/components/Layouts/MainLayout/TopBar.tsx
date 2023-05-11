@@ -15,6 +15,7 @@ const TopBar = () => {
 
       <div className="flex items-center gap-4">
         <ToggleButton
+          className="outline-none"
           aria-label="Toggle theme"
           onPress={() => setIsDarkTheme(!isDarkTheme)}
         >
