@@ -10,7 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 const Product = () => {
   const { productId } = useRouter().query;
-
+  const methods = useForm<TProduct>();
   const { isLoading, isFetching } = api.product.getProduct.useQuery(
     productId as string,
     {
@@ -23,9 +23,6 @@ const Product = () => {
       },
     }
   );
-  const methods = useForm<TProduct>();
-
-  if (!productId) return null;
 
   return (
     <>
@@ -37,8 +34,8 @@ const Product = () => {
       <FormProvider {...methods}>
         <div className="item-center relative flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start">
           {(isLoading || isFetching) && (
-            <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex h-full w-full items-center justify-center backdrop-blur">
-              <Loader className="h-20 w-20" />
+            <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex h-full w-full items-center justify-center backdrop-blur-sm">
+              <Loader className=" h-20 w-20" />
             </div>
           )}
           {/* left section */}
