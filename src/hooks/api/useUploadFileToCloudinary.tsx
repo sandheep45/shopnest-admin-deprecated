@@ -1,3 +1,4 @@
+import { env } from "@src/env.mjs";
 import CryptoJS from "crypto-js";
 
 interface IProps {
@@ -33,9 +34,9 @@ export interface CloudinaryUploadImageResponse {
 const useUploadFileToCloudinary = () => {
   return {
     uploadImage: async ({ contentType, file, public_id }: IProps) => {
-      const API_KEY = "232119299682464";
-      const SECRET = "ZY0ey727GM5RsY5m0ENUlkLGiGw";
-      const CLOUD_NAME = "dsvm26gtf";
+      const API_KEY = env.CLOUDINARY_API_KEY;
+      const SECRET = env.CLOUDINARY_SECRET;
+      const CLOUD_NAME = env.CLOUDINARY_CLOUD_NAME;
       const timestamp = ((Date.now() / 1000) | 0).toString();
       const apiKey = API_KEY;
       const apiSecret = SECRET;
