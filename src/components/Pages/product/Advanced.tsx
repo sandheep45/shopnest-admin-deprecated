@@ -36,7 +36,7 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
           id="barcode"
         />
 
-        <div className="flex w-full items-center gap-3">
+        <div className="flex w-full flex-wrap items-center gap-3">
           <Input
             {...register("quantity")}
             id="quantity"
@@ -58,7 +58,7 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
       <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
         <h3 className="text-xl font-semibold">Varinats</h3>
 
-        <div className="flex w-full items-end gap-4">
+        <div className="flex w-full flex-wrap items-end gap-4">
           <Input
             {...register("add-variants")}
             label="Add Product Variations"
@@ -86,7 +86,7 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
 
         <div className="flex w-full flex-col gap-3">
           <h4 className="text-sm font-semibold">Dimention</h4>
-          <div className="flex w-full items-start gap-3">
+          <div className="flex w-full flex-wrap items-start gap-3">
             <Input
               {...register("width")}
               descriptionTag="Enter the product dimensions(cm)."

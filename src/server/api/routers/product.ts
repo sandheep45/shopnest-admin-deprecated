@@ -12,27 +12,36 @@ export const productRouter = createTRPCRouter({
         .optional()
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.product.findMany({
-        take: input?.limit,
-        skip: input?.offset,
-        include: {
-          Category: true,
-          Variant: true,
-        },
-      });
+      try {
+        return ctx.prisma.product.findMany({
+          take: input?.limit,
+          skip: input?.offset,
+          include: {
+            Category: true,
+            Variant: true,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }),
 
   getProduct: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.prisma.product.findUnique({
-      where: {
-        id: input,
-      },
-      include: {
-        CustomerReview: true,
-        MetaData: true,
-        Variant: true,
-      },
-    });
+    try {
+      if (!input) return null;
+      return ctx.prisma.product.findUnique({
+        where: {
+          id: input,
+        },
+        include: {
+          CustomerReview: true,
+          MetaData: true,
+          Variant: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }),
 
   createProduct: protectedProcedure
@@ -60,26 +69,30 @@ export const productRouter = createTRPCRouter({
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.product.create({
-        data: {
-          name: input.name,
-          description: input.description,
-          price: input.price,
-          image: {
-            url: input.image.url,
-            alt: input.image.alt,
-            height: input.image.height,
-            width: input.image.width,
+      try {
+        return ctx.prisma.product.create({
+          data: {
+            name: input.name,
+            description: input.description,
+            price: input.price,
+            image: {
+              url: input.image.url,
+              alt: input.image.alt,
+              height: input.image.height,
+              width: input.image.width,
+            },
+            tags: input.tags,
+            categoryId: input.categoryId,
+            Variant: {
+              connect: input.variants?.map((variantId) => ({
+                id: variantId,
+              })),
+            },
           },
-          tags: input.tags,
-          categoryId: input.categoryId,
-          Variant: {
-            connect: input.variants?.map((variantId) => ({
-              id: variantId,
-            })),
-          },
-        },
-      });
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }),
 
   updateProduct: protectedProcedure
@@ -102,33 +115,37 @@ export const productRouter = createTRPCRouter({
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.product.update({
-        where: {
-          id: input.id,
-        },
-        data: {
-          name: input.name,
-          description: input.description,
-          price: input.price,
-          image: {
-            url: input.image.url,
-            alt: input.image.alt,
-            height: input.image.height,
-            width: input.image.width,
+      try {
+        return ctx.prisma.product.update({
+          where: {
+            id: input.id,
           },
-          tags: input.tags,
-          categoryId: input.categoryId,
-          Variant: {
-            connect: input.variants?.map((variantId) => ({
-              id: variantId,
-            })),
+          data: {
+            name: input.name,
+            description: input.description,
+            price: input.price,
+            image: {
+              url: input.image.url,
+              alt: input.image.alt,
+              height: input.image.height,
+              width: input.image.width,
+            },
+            tags: input.tags,
+            categoryId: input.categoryId,
+            Variant: {
+              connect: input.variants?.map((variantId) => ({
+                id: variantId,
+              })),
+            },
+            MetaData: {
+              connect: input.metaData?.map((metaDataId) => ({
+                id: metaDataId,
+              })),
+            },
           },
-          MetaData: {
-            connect: input.metaData?.map((metaDataId) => ({
-              id: metaDataId,
-            })),
-          },
-        },
-      });
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }),
 });

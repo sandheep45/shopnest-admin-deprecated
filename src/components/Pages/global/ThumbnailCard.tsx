@@ -5,18 +5,29 @@ import Image from "next/image";
 import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { useFormContext } from "react-hook-form";
+import { type TProduct } from "@src/utils/types";
+import { imageToBase64 } from "@src/utils/convertImageToBase64";
 
 const setDefaultImageOrSelectedImage = (
   image: string,
   isDarkTheme: boolean
 ) => {
   if (image) return image;
-  return `/svg/blank-image-${isDarkTheme ? "dark" : ""}.svg`;
+  return `/svg/blank-image${isDarkTheme ? "-dark" : ""}.svg`;
 };
 
 const ThumbnailCard = () => {
   const { isDarkTheme } = useThemeContext();
-  const { register } = useFormContext();
+  const { reset, watch } = useFormContext<TProduct>();
+
+  const selectImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const blob = await imageToBase64((e.target.files as FileList)[0] as File);
+    reset({
+      image: {
+        url: blob,
+      },
+    });
+  };
 
   return (
     <Card className="flex-col gap-6 p-7">
@@ -32,14 +43,17 @@ const ThumbnailCard = () => {
         </Button>
         <input
           id="file"
-          {...register("image")}
+          onChange={selectImage}
           accept="image/png, image/jpeg"
           type="file"
           className="hidden"
         />
         <Image
           className="mx-auto h-40 w-40 rounded-md shadow-2xl"
-          src={`${setDefaultImageOrSelectedImage("", isDarkTheme)}`}
+          src={`${setDefaultImageOrSelectedImage(
+            watch().image?.url,
+            isDarkTheme
+          )}`}
           alt="upload-thumbnail"
           height={150}
           width={150}

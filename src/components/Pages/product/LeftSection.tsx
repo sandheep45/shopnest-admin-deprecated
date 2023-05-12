@@ -22,7 +22,7 @@ const LeftSection = () => {
     [categoryList]
   );
   return (
-    <div className="flex w-full flex-col gap-6 md:w-72">
+    <div className="flex w-full flex-col gap-6 sm:w-72">
       <ThumbnailCard />
 
       <StatusCard statusOption={statusOption} />
@@ -37,7 +37,7 @@ const LeftSection = () => {
             {...register("categoryId")}
             descriptionTag="Add product to a category."
             list={categoryOptions ? categoryOptions : []}
-            value={""}
+            value={watch("categoryId")}
           />
         </div>
 

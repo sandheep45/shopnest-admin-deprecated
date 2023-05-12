@@ -12,7 +12,7 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
     props;
   return (
     <div
-      className={`flex w-full flex-col gap-2 ${
+      className={`flex w-auto flex-col gap-2 ${
         wrapperClassName ? wrapperClassName : ""
       }`}
     >
@@ -33,7 +33,7 @@ const Input = React.forwardRef<HTMLInputElement, IInputProps>((props, ref) => {
         placeholder={props.placeholder}
         type={props.type}
         onKeyDown={props.onKeyDown}
-        className={`w-full rounded-md border border-gray-300 p-2 outline-none dark:border-gray-700 dark:bg-[#1e1e2d] dark:text-gray-300 ${
+        className={`w-auto rounded-md border border-gray-300 p-2 outline-none dark:border-gray-700 dark:bg-[#1e1e2d] dark:text-gray-300 ${
           props.className ? props.className : ""
         }`}
       />

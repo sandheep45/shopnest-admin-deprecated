@@ -59,7 +59,7 @@ export type Variant = {
 export type TProduct = {
   id: string;
   name: string;
-  image: FileList | Image;
+  image: Image;
   description: string;
   tags: string[];
   status?: Status;

@@ -9,26 +9,34 @@ interface DropdownProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   list: List[];
   label?: string;
   descriptionTag?: string;
+  wrapperClassName?: string;
 }
 
 const DropDown = forwardRef<HTMLSelectElement, DropdownProps>((props, ref) => {
-  const { label, descriptionTag, list, ...restProps } = props;
+  const { label, descriptionTag, list, value, wrapperClassName, ...restProps } =
+    props;
+
   return (
-    <div className=" flex w-full flex-col gap-2">
+    <div
+      className={`flex w-auto flex-col gap-2 ${
+        wrapperClassName ? wrapperClassName : ""
+      }`}
+    >
       {label && (
         <label htmlFor={props.id} className="text-sm font-semibold">
           {label}
         </label>
       )}
       <div
-        className={`flex w-full items-center justify-between gap-3 rounded-md border border-gray-300 py-3 pl-1 pr-3 dark:border-gray-700 ${
-          props.className ? props.className : ""
-        }`}
+        className={`relative rounded-md border border-gray-300 dark:border-gray-700`}
       >
         <select
           ref={ref}
           {...restProps}
-          className={`w-full appearance-none px-2 outline-none dark:bg-[#1e1e2d] dark:text-gray-300 `}
+          className={`w-full appearance-none rounded-md py-3 pl-3 pr-10 outline-none dark:bg-[#1e1e2d] dark:text-gray-300 ${
+            props.className ? props.className : ""
+          }`}
+          value={value}
         >
           {list.map((item) => (
             <option key={item.value} value={item.value}>
@@ -36,9 +44,9 @@ const DropDown = forwardRef<HTMLSelectElement, DropdownProps>((props, ref) => {
             </option>
           ))}
         </select>
-        <label htmlFor={props.id}>
+        <button className="absolute right-3 top-[18px]">
           <MdKeyboardArrowDown className="scale-[1.7] text-gray-500" />
-        </label>
+        </button>
       </div>
       {descriptionTag && (
         <span className="px-3 text-sm dark:text-gray-500">

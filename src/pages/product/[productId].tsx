@@ -12,13 +12,14 @@ const Product = () => {
   const { productId } = useRouter().query;
   const methods = useForm<TProduct>();
   const { isLoading, isFetching } = api.product.getProduct.useQuery(
-    productId as string,
+    (productId as string) || "",
     {
       onSuccess: (data) => {
         methods.reset({
           name: data?.name,
           description: data?.description,
           price: data?.price,
+          tags: data?.tags || [],
         });
       },
     }

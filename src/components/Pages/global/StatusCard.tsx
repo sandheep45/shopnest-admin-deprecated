@@ -1,5 +1,6 @@
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
+import { type TProduct } from "@src/utils/types";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -8,7 +9,7 @@ interface IStatusCardProps {
 }
 
 const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
-  const { register } = useFormContext();
+  const { register, watch } = useFormContext<TProduct>();
   return (
     <Card className="flex-col gap-4 py-8">
       <div className="flex w-full items-center justify-between">
@@ -20,6 +21,7 @@ const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
         {...register("status")}
         descriptionTag="Set the product status."
         list={statusOption}
+        value={watch("status")}
       />
     </Card>
   );
