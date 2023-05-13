@@ -12,12 +12,29 @@ export const categoryRouter = createTRPCRouter({
         .optional()
     )
     .query(({ ctx, input }) => {
+      try {
+        return ctx.prisma.category.findMany({
+          take: input?.limit,
+          skip: input?.offset,
+          include: {
+            Product: true,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+
+  getAllCategoryNameAndId: protectedProcedure.query(({ ctx }) => {
+    try {
       return ctx.prisma.category.findMany({
-        take: input?.limit,
-        skip: input?.offset,
-        include: {
-          Product: true,
+        select: {
+          id: true,
+          name: true,
         },
       });
-    }),
+    } catch (error) {
+      console.log(error);
+    }
+  }),
 });

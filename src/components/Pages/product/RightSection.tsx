@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useTabs, { type ITabComponentProps } from "@src/hooks/useTabs";
 import { productStatusOptions } from "@src/utils/constants";
 import General from "./General";
@@ -27,13 +27,20 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 
 const RightSection = () => {
   const { productId } = useRouter().query;
+  const [tabs, SetTabs] = useState(MAIN_TABS);
   const [Tabs, currentTabIndex] = useTabs({
     TabComponent: MainTabButton,
-    tabs: MAIN_TABS,
+    tabs: tabs,
   });
   const statusOption = useMemo(() => productStatusOptions, []);
 
-  if (productId && !MAIN_TABS.includes("Review")) MAIN_TABS.push("Review");
+  useEffect(() => {
+    if (productId && !tabs.includes("Review"))
+      SetTabs([...MAIN_TABS, "Review"]);
+
+    if (!productId && tabs.includes("Review"))
+      SetTabs((currentTab) => currentTab.slice(0, 2));
+  }, [productId, tabs]);
 
   return (
     <div className="flex flex-1 flex-col gap-10">
@@ -45,8 +52,8 @@ const RightSection = () => {
       <div className="flex-1">
         <div className="relative flex-1">
           <General
-            isCurrentTab={currentTabIndex === 0}
             statusOption={statusOption}
+            isCurrentTab={currentTabIndex === 0}
           />
         </div>
         <div className="relative flex-1">
@@ -58,6 +65,7 @@ const RightSection = () => {
           </div>
         )}
       </div>
+      <button type="submit">Submit</button>
     </div>
   );
 };

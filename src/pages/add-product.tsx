@@ -1,20 +1,53 @@
 import React from "react";
 import Head from "next/head";
 import { api } from "@src/utils/api";
-import { useForm, FormProvider } from "react-hook-form";
-import { type Prisma } from "@prisma/client";
+import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import LeftSection from "@src/components/Pages/product/LeftSection";
 import RightSection from "@src/components/Pages/product/RightSection";
+import useUploadFileToCloudinary from "@src/hooks/api/useUploadFileToCloudinary";
+import type {
+  Variant,
+  Product,
+  MetaData,
+  CustomerReview,
+} from "@prisma/client";
+
+interface IProduct extends Product {
+  variant: Variant;
+  metaData: MetaData;
+  customerReview: CustomerReview;
+}
 
 const AddProduct = () => {
   const utils = api.useContext();
-  const methods = useForm<Prisma.ProductCreateInput>();
-  const { mutate, isLoading } = api.product.createProduct.useMutation({
+  const { uploadImage } = useUploadFileToCloudinary();
+  const methods = useForm<IProduct>();
+  const { mutate } = api.product.createProduct.useMutation({
     onSuccess: async () => {
       await utils.product.getAllProducts.invalidate();
     },
   });
-  const onSubmit = (data: any) => console.log(data);
+
+  const onSubmit: SubmitHandler<IProduct> = (data) => {
+    console.log(data);
+    // const image = await uploadImage({
+    //   contentType: "image",
+    //   file: data.image.url,
+    //   public_id: "product",
+    // });
+    // mutate({
+    //   categoryId: data.categoryId,
+    //   description: data.description,
+    //   image: {
+    //     alt: image.original_filename,
+    //     url: image.secure_url,
+    //     height: image.height,
+    //     width: image.width,
+    //   },
+    //   name: data.name,
+    //   tags: data.tags,
+    // });
+  };
 
   return (
     <>
@@ -26,7 +59,7 @@ const AddProduct = () => {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          className="item-center flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start"
+          className="item-center flex flex-col justify-center gap-8 p-4 transition-all duration-300 sm:flex-row sm:items-start sm:p-8"
         >
           {/* left section */}
           <LeftSection />

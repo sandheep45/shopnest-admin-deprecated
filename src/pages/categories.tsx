@@ -9,6 +9,7 @@ import Table from "@src/components/common/Table";
 import useGetAllCategories from "@src/hooks/api/useGetAllCategories";
 import { productStatusOptions } from "@src/utils/constants";
 import { createColumnHelper } from "@tanstack/react-table";
+import { type NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -92,14 +93,13 @@ const columns = [
   }),
 ];
 
-const Categories = () => {
+const Categories: NextPage = () => {
   const { data, isLoading, isFetching } = useGetAllCategories({
     limit: 10,
     offset: 0,
   });
   const statusOption = useMemo(() => productStatusOptions, []);
 
-  if (!data) return null;
   return (
     <>
       <Head>
@@ -116,17 +116,15 @@ const Categories = () => {
         <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
           <div className="flex w-full flex-col items-center justify-between sm:flex-row sm:gap-5">
             <Input
-              wrapperClassName="w-full sm:w-1/2 md:max-w-xs"
+              wrapperClassName=""
               className="w-full"
               id="search"
               label="search"
               hideLabel
             />
-            <div className="flex w-full flex-col items-center sm:max-w-fit sm:flex-row sm:gap-6 md:gap-8">
-              <DropDown
-                className="min-w-max pr-6 md:max-w-min"
-                list={statusOption}
-              />
+            <div className="flex flex-col items-center sm:flex-row sm:gap-6 md:gap-8">
+              <DropDown id="status" className="pr-6" list={statusOption} />
+
               <Link className="min-w-fit md:max-w-fit" href={`/add-category`}>
                 Add Category
               </Link>

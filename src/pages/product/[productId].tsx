@@ -1,6 +1,8 @@
-import { type Prisma } from "@prisma/client";
+import { type Product as TProduct } from "@prisma/client";
 import LeftSection from "@src/components/Pages/product/LeftSection";
 import RightSection from "@src/components/Pages/product/RightSection";
+import Loader from "@src/components/common/Loader";
+import { api } from "@src/utils/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
@@ -8,9 +10,25 @@ import { FormProvider, useForm } from "react-hook-form";
 
 const Product = () => {
   const { productId } = useRouter().query;
-  const methods = useForm<Prisma.ProductUpdateInput>();
-
-  if (!productId) return null;
+  const methods = useForm<TProduct>();
+  const { isLoading, isFetching } = api.product.getProduct.useQuery(
+    (productId as string) || "",
+    {
+      onSuccess: (data) => {
+        methods.reset({
+          name: data?.name,
+          description: data?.description,
+          tags: data?.tags,
+          status: data?.status,
+          image: data?.image,
+        });
+      },
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      staleTime: 1000 * 20, // 20 seconds
+    }
+  );
 
   return (
     <>
@@ -20,7 +38,12 @@ const Product = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <FormProvider {...methods}>
-        <div className="item-center flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start">
+        <div className="item-center relative flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start">
+          {(isLoading || isFetching) && (
+            <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex h-full w-full items-center justify-center backdrop-blur-sm">
+              <Loader className=" h-20 w-20" />
+            </div>
+          )}
           {/* left section */}
           <LeftSection />
 
