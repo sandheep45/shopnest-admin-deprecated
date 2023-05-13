@@ -70,12 +70,6 @@ const columns = [
       <span className="flex items-center  gap-3">{info.getValue().length}</span>
     ),
   }),
-  columnHelper.accessor("price", {
-    header: () => <span className="">Price</span>,
-    cell: (info) => (
-      <span className="flex items-center  gap-3">{info.getValue()}</span>
-    ),
-  }),
   columnHelper.accessor("tags", {
     header: () => <span className="">Tags</span>,
     cell: (info) => (
