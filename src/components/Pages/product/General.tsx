@@ -10,6 +10,7 @@ import type {
   MetaData,
   CustomerReview,
 } from "@prisma/client";
+import TextArea from "@src/components/common/TextArea";
 
 interface IGeneratProps {
   className?: string;
@@ -22,7 +23,7 @@ interface IGeneratProps {
 
 interface IProduct extends Product {
   variant: Variant;
-  metaData: MetaData;
+  productMetaData: MetaData;
   customerReview: CustomerReview;
 }
 
@@ -57,48 +58,30 @@ const General: React.FC<IGeneratProps> = ({ isCurrentTab, statusOption }) => {
         </div>
       </Card>
 
-      {/* pricing */}
+      {/* meta option */}
       <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
-        <h3 className="text-xl font-semibold">Pricing</h3>
+        <h3 className="text-xl font-semibold">Meta Options for Product</h3>
 
         <Input
-          {...register("variant.price")}
-          descriptionTag="Base price is the original price of the product."
-          label="Base Price"
-          id="price"
+          {...register("productMetaData.title")}
+          descriptionTag="Set a meta tag title. Recommended to be simple and precise keywords."
+          label="Meta Tag Title"
+          id="meta-tag-title"
         />
 
-        <div className="relative flex w-full flex-col gap-2">
-          <span>Discount Price</span>
-          <div className="flex w-full flex-wrap gap-7">
-            <div className="flex-1 rounded-md border border-dashed border-blue-500 bg-blue-500/10 p-5 ">
-              No Discount
-            </div>
-            <div className="flex-1 rounded-md border border-dashed border-blue-500 bg-blue-500/10 p-5 ">
-              Percentage %
-            </div>
-            <div className="flex-1 rounded-md border border-dashed border-blue-500 bg-blue-500/10 p-5 ">
-              Fixed Price
-            </div>
-          </div>
-        </div>
+        <TextArea
+          {...register("productMetaData.description")}
+          descriptionTag="Set a description to the product for better visibility."
+          lable="Meta Tag Description"
+          id="meta-tag-description"
+        />
 
-        <div className="flex w-full flex-wrap gap-7">
-          <DropDown
-            {...register("variant.image.alt")}
-            descriptionTag="Set the product tax class."
-            className="flex-1"
-            label="Tax Class"
-            list={statusOption}
-          />
-          <Input
-            {...register("variant.image.width")}
-            id="vat"
-            descriptionTag="Set the product VAT about."
-            className="flex-1"
-            label="VAT Amount (%)"
-          />
-        </div>
+        <Input
+          {...register("productMetaData.keywords")}
+          descriptionTag="Set a list of keywords that the product is related to. Separate the keywords by adding a comma , between each keyword."
+          label="Meta Tag Keywords"
+          id="meta-tag-keywords"
+        />
       </Card>
     </div>
   );

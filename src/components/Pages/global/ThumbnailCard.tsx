@@ -5,8 +5,8 @@ import Image from "next/image";
 import React from "react";
 import { CiEdit } from "react-icons/ci";
 import { useFormContext } from "react-hook-form";
-import { type TProduct } from "@src/utils/types";
 import { imageToBase64 } from "@src/utils/convertImageToBase64";
+import type { Image as TImage } from "@prisma/client";
 
 const setDefaultImageOrSelectedImage = (
   image: string,
@@ -16,9 +16,13 @@ const setDefaultImageOrSelectedImage = (
   return `/svg/blank-image${isDarkTheme ? "-dark" : ""}.svg`;
 };
 
+interface IImage {
+  image: TImage;
+}
+
 const ThumbnailCard = () => {
   const { isDarkTheme } = useThemeContext();
-  const { watch, setValue } = useFormContext<TProduct>();
+  const { watch, setValue } = useFormContext<IImage>();
 
   const selectImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const blob = await imageToBase64((e.target.files as FileList)[0] as File);

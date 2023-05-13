@@ -7,18 +7,10 @@ import Tagify from "@src/components/common/Tagify";
 import { useFormContext } from "react-hook-form";
 import { productStatusOptions } from "@src/utils/constants";
 import useGetAllcategoryNameAndId from "@src/hooks/api/useGetAllcategoryNameAndId";
-import { type TProduct } from "@src/utils/types";
-import type {
-  CustomerReview,
-  MetaData,
-  Product,
-  Variant,
-} from "@prisma/client";
+import type { Product, Variant } from "@prisma/client";
 
 interface IProduct extends Product {
   variant: Variant;
-  metaData: MetaData;
-  customerReview: CustomerReview;
 }
 
 const LeftSection = () => {

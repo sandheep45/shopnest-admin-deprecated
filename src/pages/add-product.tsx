@@ -14,7 +14,8 @@ import type {
 
 interface IProduct extends Product {
   variant: Variant;
-  metaData: MetaData;
+  variantMetaData: MetaData;
+  productMetaData: MetaData;
   customerReview: CustomerReview;
 }
 

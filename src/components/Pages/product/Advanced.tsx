@@ -5,6 +5,7 @@ import type {
   Variant,
 } from "@prisma/client";
 import Card from "@src/components/common/Card";
+import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
 import TextArea from "@src/components/common/TextArea";
 import React from "react";
@@ -13,15 +14,19 @@ import { IoCloudUpload } from "react-icons/io5";
 
 interface IAdvanceProps {
   isCurrentTab?: boolean;
+  statusOption: {
+    name: string;
+    value: string;
+  }[];
 }
 
 interface IProduct extends Product {
   variant: Variant;
-  metaData: MetaData;
+  variantMetaData: MetaData;
   customerReview: CustomerReview;
 }
 
-const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
+const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab, statusOption }) => {
   const { register } = useFormContext<IProduct>();
   return (
     <div
@@ -63,6 +68,50 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
             id="ware-house"
             hideLabel
             className="flex-1"
+          />
+        </div>
+      </Card>
+
+      {/* pricing */}
+      <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
+        <h3 className="text-xl font-semibold">Pricing</h3>
+
+        <Input
+          {...register("variant.price")}
+          descriptionTag="Base price is the original price of the product."
+          label="Base Price"
+          id="price"
+        />
+
+        <div className="relative flex w-full flex-col gap-2">
+          <span>Discount Price</span>
+          <div className="flex w-full flex-wrap gap-7">
+            <div className="flex-1 rounded-md border border-dashed border-blue-500 bg-blue-500/10 p-5 ">
+              No Discount
+            </div>
+            <div className="flex-1 rounded-md border border-dashed border-blue-500 bg-blue-500/10 p-5 ">
+              Percentage %
+            </div>
+            <div className="flex-1 rounded-md border border-dashed border-blue-500 bg-blue-500/10 p-5 ">
+              Fixed Price
+            </div>
+          </div>
+        </div>
+
+        <div className="flex w-full flex-wrap gap-7">
+          <DropDown
+            {...register("variant.image.alt")}
+            descriptionTag="Set the product tax class."
+            className="flex-1"
+            label="Tax Class"
+            list={statusOption}
+          />
+          <Input
+            {...register("variant.image.width")}
+            id="vat"
+            descriptionTag="Set the product VAT about."
+            className="flex-1"
+            label="VAT Amount (%)"
           />
         </div>
       </Card>
@@ -126,24 +175,24 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab }) => {
 
       {/* meta option */}
       <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
-        <h3 className="text-xl font-semibold">Meta Options</h3>
+        <h3 className="text-xl font-semibold">Meta Options for Varinat</h3>
 
         <Input
-          {...register("metaData.title")}
+          {...register("variantMetaData.title")}
           descriptionTag="Set a meta tag title. Recommended to be simple and precise keywords."
           label="Meta Tag Title"
           id="meta-tag-title"
         />
 
         <TextArea
-          {...register("metaData.description")}
+          {...register("variantMetaData.description")}
           descriptionTag="Set a description to the product for better visibility."
           lable="Meta Tag Description"
           id="meta-tag-description"
         />
 
         <Input
-          {...register("metaData.keywords")}
+          {...register("variantMetaData.keywords")}
           descriptionTag="Set a list of keywords that the product is related to. Separate the keywords by adding a comma , between each keyword."
           label="Meta Tag Keywords"
           id="meta-tag-keywords"
