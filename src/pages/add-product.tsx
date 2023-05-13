@@ -5,32 +5,38 @@ import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import LeftSection from "@src/components/Pages/product/LeftSection";
 import RightSection from "@src/components/Pages/product/RightSection";
 import useUploadFileToCloudinary from "@src/hooks/api/useUploadFileToCloudinary";
-import type { TProduct } from "@src/utils/types";
+import type {
+  Variant,
+  Product,
+  MetaData,
+  CustomerReview,
+} from "@prisma/client";
+
+interface IProduct extends Product {
+  variant: Variant;
+  metaData: MetaData;
+  customerReview: CustomerReview;
+}
 
 const AddProduct = () => {
   const utils = api.useContext();
   const { uploadImage } = useUploadFileToCloudinary();
-  const methods = useForm<TProduct>({
-    defaultValues: {
-      tags: [],
-    },
-  });
+  const methods = useForm<IProduct>();
   const { mutate } = api.product.createProduct.useMutation({
     onSuccess: async () => {
       await utils.product.getAllProducts.invalidate();
     },
   });
 
-  const onSubmit: SubmitHandler<TProduct> = (data) => {
+  const onSubmit: SubmitHandler<IProduct> = (data) => {
     console.log(data);
-    // const blob = await imageToBase64((data.image as FileList)[0] as File);
     // const image = await uploadImage({
     //   contentType: "image",
-    //   file: blob,
+    //   file: data.image.url,
     //   public_id: "product",
     // });
     // mutate({
-    //   categoryId: data.categoryId as string,
+    //   categoryId: data.categoryId,
     //   description: data.description,
     //   image: {
     //     alt: image.original_filename,
@@ -39,8 +45,7 @@ const AddProduct = () => {
     //     width: image.width,
     //   },
     //   name: data.name,
-    //   price: data.price,
-    //   tags: data.tags as string[],
+    //   tags: data.tags,
     // });
   };
 

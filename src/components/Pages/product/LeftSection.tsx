@@ -8,9 +8,21 @@ import { useFormContext } from "react-hook-form";
 import { productStatusOptions } from "@src/utils/constants";
 import useGetAllcategoryNameAndId from "@src/hooks/api/useGetAllcategoryNameAndId";
 import { type TProduct } from "@src/utils/types";
+import type {
+  CustomerReview,
+  MetaData,
+  Product,
+  Variant,
+} from "@prisma/client";
+
+interface IProduct extends Product {
+  variant: Variant;
+  metaData: MetaData;
+  customerReview: CustomerReview;
+}
 
 const LeftSection = () => {
-  const { register, watch } = useFormContext<TProduct>();
+  const { register, watch } = useFormContext<IProduct>();
   const { data: categoryList } = useGetAllcategoryNameAndId();
   const statusOption = useMemo(() => productStatusOptions, []);
   const categoryOptions = useMemo(
@@ -21,6 +33,7 @@ const LeftSection = () => {
       })),
     [categoryList]
   );
+
   return (
     <div className="flex w-full flex-col gap-6 sm:w-72">
       <ThumbnailCard />
@@ -43,7 +56,10 @@ const LeftSection = () => {
 
         <div className="flex w-full flex-col justify-between gap-1">
           <h4>Tags</h4>
-          <Tagify descriptionTag="Add tags to a category." tags={[]} />
+          <Tagify
+            descriptionTag="Add tags to a category."
+            tags={watch("tags") || ""}
+          />
         </div>
       </Card>
 
@@ -64,7 +80,7 @@ const LeftSection = () => {
         <h2 className="text-xl font-semibold">Product Template</h2>
 
         <DropDown
-          {...register("Category.description")}
+          {...register("variant.barcode")}
           descriptionTag="Assign a template from your current theme to define how a single
                 product is displayed."
           list={statusOption}

@@ -8,12 +8,12 @@ import { type TProduct } from "@src/utils/types";
 
 interface ITagifyProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
-  tags: string[];
+  tags: string;
   descriptionTag?: string;
 }
 
 const Tagify: React.FC<ITagifyProps> = (props) => {
-  const { reset } = useFormContext<TProduct>();
+  const { setValue } = useFormContext<TProduct>();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const {
@@ -30,8 +30,8 @@ const Tagify: React.FC<ITagifyProps> = (props) => {
   });
 
   useEffect(() => {
-    reset({ tags: selectedTags.map((tag) => tag.label) || [] });
-  }, [selectedTags, reset]);
+    setValue("tags", selectedTags.map((tag) => tag.label).join(",") || "");
+  }, [selectedTags, setValue]);
 
   function focusInputOnClickDiv() {
     if (inputRef.current) {

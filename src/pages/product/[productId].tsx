@@ -1,8 +1,8 @@
+import { type Product as TProduct } from "@prisma/client";
 import LeftSection from "@src/components/Pages/product/LeftSection";
 import RightSection from "@src/components/Pages/product/RightSection";
 import Loader from "@src/components/common/Loader";
 import { api } from "@src/utils/api";
-import { type TProduct } from "@src/utils/types";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
@@ -18,10 +18,15 @@ const Product = () => {
         methods.reset({
           name: data?.name,
           description: data?.description,
-          price: data?.price,
-          tags: data?.tags || [],
+          tags: data?.tags,
+          status: data?.status,
+          image: data?.image,
         });
       },
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      staleTime: 1000 * 20, // 20 seconds
     }
   );
 

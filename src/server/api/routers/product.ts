@@ -11,9 +11,9 @@ export const productRouter = createTRPCRouter({
         })
         .optional()
     )
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       try {
-        return ctx.prisma.product.findMany({
+        return await ctx.prisma.product.findMany({
           take: input?.limit,
           skip: input?.offset,
           include: {
@@ -26,33 +26,34 @@ export const productRouter = createTRPCRouter({
       }
     }),
 
-  getProduct: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    try {
-      if (!input) return null;
-      return ctx.prisma.product.findUnique({
-        where: {
-          id: input,
-        },
-        include: {
-          CustomerReview: true,
-          MetaData: true,
-          Variant: true,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }),
+  getProduct: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      try {
+        if (!input) return null;
+        return await ctx.prisma.product.findUnique({
+          where: {
+            id: input,
+          },
+          include: {
+            CustomerReview: true,
+            MetaData: true,
+            Variant: true,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }),
 
   createProduct: protectedProcedure
     .input(
       z.object({
         name: z.string(),
         description: z.string(),
-        price: z.number(),
         categoryId: z.string(),
         variants: z.array(z.string()).optional(),
-        tags: z.array(z.string()).optional(),
+        tags: z.string(),
         image: z.object({
           url: z.string(),
           alt: z.string(),
@@ -68,13 +69,12 @@ export const productRouter = createTRPCRouter({
           .optional(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       try {
-        return ctx.prisma.product.create({
+        return await ctx.prisma.product.create({
           data: {
             name: input.name,
             description: input.description,
-            price: input.price,
             image: {
               url: input.image.url,
               alt: input.image.alt,
@@ -101,10 +101,9 @@ export const productRouter = createTRPCRouter({
         id: z.string(),
         name: z.string().optional(),
         description: z.string().optional(),
-        price: z.number().optional(),
         categoryId: z.string().optional(),
         variants: z.array(z.string()).optional(),
-        tags: z.array(z.string()).optional(),
+        tags: z.string().optional(),
         image: z.object({
           url: z.string(),
           alt: z.string(),
@@ -114,16 +113,15 @@ export const productRouter = createTRPCRouter({
         metaData: z.array(z.string()).optional(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       try {
-        return ctx.prisma.product.update({
+        return await ctx.prisma.product.update({
           where: {
             id: input.id,
           },
           data: {
             name: input.name,
             description: input.description,
-            price: input.price,
             image: {
               url: input.image.url,
               alt: input.image.alt,

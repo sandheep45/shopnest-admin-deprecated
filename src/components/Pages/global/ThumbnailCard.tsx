@@ -18,15 +18,11 @@ const setDefaultImageOrSelectedImage = (
 
 const ThumbnailCard = () => {
   const { isDarkTheme } = useThemeContext();
-  const { reset, watch } = useFormContext<TProduct>();
+  const { watch, setValue } = useFormContext<TProduct>();
 
   const selectImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const blob = await imageToBase64((e.target.files as FileList)[0] as File);
-    reset({
-      image: {
-        url: blob,
-      },
-    });
+    setValue("image.url", blob);
   };
 
   return (
@@ -34,6 +30,7 @@ const ThumbnailCard = () => {
       <h2 className="text-2xl font-semibold">Thumbnail</h2>
       <div className="relative mx-auto w-fit">
         <Button
+          type="button"
           aria-label="Edit Thumbnail"
           className="absolute -right-4 -top-4 cursor-default rounded-full bg-gray-100 p-3 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-300"
         >

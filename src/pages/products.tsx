@@ -51,7 +51,7 @@ const columns = [
           <Image
             className="h-10 w-10 rounded-full"
             alt={info.getValue().image.alt}
-            src={`/images/logo.png`}
+            src={info.getValue().image.url}
             height={info.getValue().image.height}
             width={info.getValue().image.width}
           />

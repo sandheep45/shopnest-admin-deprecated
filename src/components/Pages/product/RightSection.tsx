@@ -52,8 +52,8 @@ const RightSection = () => {
       <div className="flex-1">
         <div className="relative flex-1">
           <General
-            isCurrentTab={currentTabIndex === 0}
             statusOption={statusOption}
+            isCurrentTab={currentTabIndex === 0}
           />
         </div>
         <div className="relative flex-1">

@@ -10,6 +10,7 @@ interface IStatusCardProps {
 
 const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
   const { register, watch } = useFormContext<TProduct>();
+
   return (
     <Card className="flex-col gap-4 py-8">
       <div className="flex w-full items-center justify-between">

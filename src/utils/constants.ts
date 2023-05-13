@@ -1,18 +1,18 @@
 export const productStatusOptions = [
   {
     name: "Published",
-    value: "published",
+    value: "PUBLISHED",
   },
   {
     name: "Inactive",
-    value: "inactive",
+    value: "INACTIVE",
   },
   {
     name: "Scheduled",
-    value: "scheduled",
+    value: "SCHEDULED",
   },
   {
     name: "Draft",
-    value: "draft",
+    value: "DRAFT",
   },
 ];
