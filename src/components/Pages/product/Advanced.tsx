@@ -4,16 +4,19 @@ import type {
   Product,
   Variant,
 } from "@prisma/client";
+import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
 import TextArea from "@src/components/common/TextArea";
+import { useRouter } from "next/router";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { IoCloudUpload } from "react-icons/io5";
 
 interface IAdvanceProps {
   isCurrentTab?: boolean;
+  setCurrentTabIndex: React.Dispatch<React.SetStateAction<number>>;
   statusOption: {
     name: string;
     value: string;
@@ -26,7 +29,12 @@ interface IProduct extends Product {
   customerReview: CustomerReview;
 }
 
-const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab, statusOption }) => {
+const Advanced: React.FC<IAdvanceProps> = ({
+  isCurrentTab,
+  statusOption,
+  setCurrentTabIndex,
+}) => {
+  const { productId } = useRouter().query;
   const { register } = useFormContext<IProduct>();
   return (
     <div
@@ -198,6 +206,21 @@ const Advanced: React.FC<IAdvanceProps> = ({ isCurrentTab, statusOption }) => {
           id="meta-tag-keywords"
         />
       </Card>
+      <div className="flex w-full justify-end gap-4">
+        <Button
+          onPress={() => setCurrentTabIndex(0)}
+          className="w-fit rounded-md bg-gray-300 px-6 py-2 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
+          type="button"
+        >
+          Cancel
+        </Button>
+        <Button
+          className="w-fit rounded-md bg-[#0095e8] px-6 py-2 text-white"
+          type="button"
+        >
+          Save {productId ? "Changes" : "Product"}
+        </Button>
+      </div>
     </div>
   );
 };

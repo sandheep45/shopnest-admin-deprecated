@@ -11,9 +11,9 @@ export const categoryRouter = createTRPCRouter({
         })
         .optional()
     )
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       try {
-        return ctx.prisma.category.findMany({
+        return await ctx.prisma.category.findMany({
           take: input?.limit,
           skip: input?.offset,
           include: {
@@ -21,20 +21,20 @@ export const categoryRouter = createTRPCRouter({
           },
         });
       } catch (error) {
-        console.log(error);
+        console.log(error, "getAllCategory");
       }
     }),
 
-  getAllCategoryNameAndId: protectedProcedure.query(({ ctx }) => {
+  getAllCategoryNameAndId: protectedProcedure.query(async ({ ctx }) => {
     try {
-      return ctx.prisma.category.findMany({
+      return await ctx.prisma.category.findMany({
         select: {
           id: true,
           name: true,
         },
       });
     } catch (error) {
-      console.log(error);
+      console.log(error, "getAllCategoryNameAndId");
     }
   }),
 });

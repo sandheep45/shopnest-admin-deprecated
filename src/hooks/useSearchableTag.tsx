@@ -34,6 +34,7 @@ const useSearchableTags = ({ options, placeholder = "Search..." }: Props) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { key } = event;
     if (key === "Enter" && inputValue) {
+      event.preventDefault();
       const newTag: Tag = {
         label: inputValue,
         id: Math.random().toString(36).substring(7),
@@ -42,6 +43,7 @@ const useSearchableTags = ({ options, placeholder = "Search..." }: Props) => {
       setInputValue("");
     }
     if (key === "Backspace" && !inputValue) {
+      event.preventDefault();
       setSelectedTags(selectedTags.slice(0, selectedTags.length - 1));
     }
     //on tab press, select the first element in the filteredOptions
