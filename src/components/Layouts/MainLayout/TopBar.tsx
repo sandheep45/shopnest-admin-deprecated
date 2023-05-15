@@ -23,7 +23,7 @@ const TopBar = () => {
         <ToggleButton
           className="outline-none"
           aria-label="Toggle theme"
-          onPress={toggleTheme}
+          onClick={toggleTheme}
         >
           <BsSun
             className={`scale-75 transition-all duration-1000 ${
