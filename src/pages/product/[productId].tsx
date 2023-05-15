@@ -5,13 +5,13 @@ import Loader from "@src/components/common/Loader";
 import { api } from "@src/utils/api";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const Product = () => {
   const { productId } = useRouter().query;
   const methods = useForm<TProduct>();
-  const { isLoading, isFetching } = api.product.getProduct.useQuery(
+  const { isLoading, isFetching, refetch } = api.product.getProduct.useQuery(
     (productId as string) || "",
     {
       onSuccess: (data) => {
@@ -29,6 +29,14 @@ const Product = () => {
       staleTime: 1000 * 20, // 20 seconds
     }
   );
+
+  useEffect(() => {
+    if (productId) {
+      refetch()
+        .then(() => undefined)
+        .catch(() => undefined);
+    }
+  }, [productId, refetch]);
 
   return (
     <>

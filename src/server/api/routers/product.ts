@@ -54,12 +54,16 @@ export const productRouter = createTRPCRouter({
         categoryId: z.string(),
         variants: z.array(z.string()).optional(),
         tags: z.string(),
+        status: z
+          .enum(["DRAFT", "PUBLISHED", "SCHEDULED", "INACTIVE"])
+          .optional(),
         image: z.object({
           url: z.string(),
           alt: z.string(),
           height: z.number(),
           width: z.number(),
         }),
+        taxPercent: z.number(),
         metaData: z
           .object({
             keywords: z.array(z.string()).optional(),
@@ -82,12 +86,14 @@ export const productRouter = createTRPCRouter({
               width: input.image.width,
             },
             tags: input.tags,
+            taxPercent: input.taxPercent,
             categoryId: input.categoryId,
             Variant: {
               connect: input.variants?.map((variantId) => ({
                 id: variantId,
               })),
             },
+            status: input.status,
           },
         });
       } catch (error) {
@@ -104,6 +110,7 @@ export const productRouter = createTRPCRouter({
         categoryId: z.string().optional(),
         variants: z.array(z.string()).optional(),
         tags: z.string().optional(),
+        taxPercent: z.number().optional(),
         image: z.object({
           url: z.string(),
           alt: z.string(),
@@ -129,6 +136,7 @@ export const productRouter = createTRPCRouter({
               width: input.image.width,
             },
             tags: input.tags,
+            taxPercent: input.taxPercent,
             categoryId: input.categoryId,
             Variant: {
               connect: input.variants?.map((variantId) => ({

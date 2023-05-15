@@ -9,13 +9,14 @@ import type {
   Variant,
   Product,
   MetaData,
-  // CustomerReview,
+  CustomerReview,
 } from "@prisma/client";
 
 interface IProduct extends Product {
   variant: Variant;
-  metaData: MetaData;
-  // customerReview: CustomerReview;
+  variantMetaData: MetaData;
+  productMetaData: MetaData;
+  customerReview: CustomerReview;
 }
 
 const AddProduct = () => {

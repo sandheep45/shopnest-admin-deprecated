@@ -1,6 +1,6 @@
+import { type Status } from "@prisma/client";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
-import { type TProduct } from "@src/utils/types";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -8,8 +8,12 @@ interface IStatusCardProps {
   statusOption: { name: string; value: string }[];
 }
 
+interface IStatus {
+  status: Status;
+}
+
 const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
-  const { register, watch } = useFormContext<TProduct>();
+  const { register, watch } = useFormContext<IStatus>();
 
   return (
     <Card className="flex-col gap-4 py-8">

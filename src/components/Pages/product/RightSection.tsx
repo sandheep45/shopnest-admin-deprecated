@@ -56,7 +56,10 @@ const RightSection = () => {
           />
         </div>
         <div className="relative flex-1">
-          <Advanced isCurrentTab={currentTabIndex === 1} />
+          <Advanced
+            statusOption={statusOption}
+            isCurrentTab={currentTabIndex === 1}
+          />
         </div>
         {productId && (
           <div className="relative flex-1">
