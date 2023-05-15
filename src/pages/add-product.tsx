@@ -9,18 +9,18 @@ import type {
   Variant,
   Product,
   MetaData,
-  CustomerReview,
+  // CustomerReview,
 } from "@prisma/client";
 
 interface IProduct extends Product {
   variant: Variant;
   metaData: MetaData;
-  customerReview: CustomerReview;
+  // customerReview: CustomerReview;
 }
 
 const AddProduct = () => {
   const utils = api.useContext();
-  const { uploadImage } = useUploadFileToCloudinary();
+  // const { uploadImage } = useUploadFileToCloudinary();
   const methods = useForm<IProduct>();
   const { mutate } = api.product.createProduct.useMutation({
     onSuccess: async () => {

@@ -8,7 +8,7 @@ import type {
   Variant,
   Product,
   MetaData,
-  CustomerReview,
+  // CustomerReview,
 } from "@prisma/client";
 
 interface IGeneratProps {
@@ -23,18 +23,17 @@ interface IGeneratProps {
 interface IProduct extends Product {
   variant: Variant;
   metaData: MetaData;
-  customerReview: CustomerReview;
+  // customerReview: CustomerReview;
 }
 
 const General: React.FC<IGeneratProps> = ({ isCurrentTab, statusOption }) => {
   const { register } = useFormContext<IProduct>();
   return (
     <div
-      className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${
-        isCurrentTab
-          ? ""
-          : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
-      }`}
+      className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${isCurrentTab
+        ? ""
+        : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
+        }`}
     >
       <GeneralCard />
 
