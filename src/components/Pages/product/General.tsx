@@ -29,6 +29,7 @@ interface IGeneratProps {
 
 interface IProduct extends Product {
   variant: Variant;
+  metaData: MetaData;
   productMetaData: MetaData;
   customerReview: CustomerReview;
   option: VariantOption[] | undefined;
@@ -55,11 +56,10 @@ const General: React.FC<IGeneratProps> = ({
 
   return (
     <div
-      className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${
-        isCurrentTab
-          ? ""
-          : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
-      }`}
+      className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${isCurrentTab
+        ? ""
+        : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
+        }`}
     >
       <GeneralCard />
 

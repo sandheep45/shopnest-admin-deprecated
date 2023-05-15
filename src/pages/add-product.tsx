@@ -21,7 +21,7 @@ interface IProduct extends Product {
 
 const AddProduct = () => {
   const utils = api.useContext();
-  const { uploadImage } = useUploadFileToCloudinary();
+  // const { uploadImage } = useUploadFileToCloudinary();
   const methods = useForm<IProduct>();
   const { mutate } = api.product.createProduct.useMutation({
     onSuccess: async () => {
