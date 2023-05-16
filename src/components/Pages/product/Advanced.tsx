@@ -208,7 +208,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
       </Card>
       <div className="flex w-full justify-end gap-4">
         <Button
-          onPress={() => setCurrentTabIndex(0)}
+          onClick={() => setCurrentTabIndex(0)}
           className="w-fit rounded-md bg-gray-300 px-6 py-2 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
           type="button"
         >

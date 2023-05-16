@@ -56,10 +56,11 @@ const General: React.FC<IGeneratProps> = ({
 
   return (
     <div
-      className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${isCurrentTab
-        ? ""
-        : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
-        }`}
+      className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${
+        isCurrentTab
+          ? ""
+          : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
+      }`}
     >
       <GeneralCard />
 
@@ -123,7 +124,7 @@ const General: React.FC<IGeneratProps> = ({
       </Card>
       <div className="flex w-full justify-end gap-4">
         <Button
-          onPress={() => router.push("/products")}
+          onClick={() => router.push("/products")}
           className="w-fit rounded-md bg-gray-300 px-6 py-2 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
           type="button"
         >
@@ -132,7 +133,7 @@ const General: React.FC<IGeneratProps> = ({
         <Button
           className="w-fit rounded-md bg-[#0095e8] px-6 py-2 text-white"
           type="button"
-          onPress={() => setCurrentTabIndex(1)}
+          onClick={() => setCurrentTabIndex(1)}
         >
           Add Variant
         </Button>

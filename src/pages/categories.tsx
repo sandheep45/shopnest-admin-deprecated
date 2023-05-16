@@ -87,7 +87,7 @@ const columns = [
     header: () => <span className="">Action</span>,
     cell: (info) => (
       <span className="flex items-center  gap-3">
-        <Button onPress={() => alert(info.getValue())}>Delete</Button>
+        <Button onClick={() => alert(info.getValue())}>Delete</Button>
       </span>
     ),
   }),
