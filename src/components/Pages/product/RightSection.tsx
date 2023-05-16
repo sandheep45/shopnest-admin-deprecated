@@ -27,7 +27,7 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 const RightSection = () => {
   const { productId } = useRouter().query;
   const [tabs, SetTabs] = useState(MAIN_TABS);
-  const [Tabs, currentTabIndex] = useTabs({
+  const [Tabs, currentTabIndex, setCurrentTabIndex] = useTabs({
     TabComponent: MainTabButton,
     tabs: tabs,
   });
@@ -52,11 +52,13 @@ const RightSection = () => {
         <div className="relative flex-1">
           <General
             statusOption={statusOption}
+            setCurrentTabIndex={setCurrentTabIndex}
             isCurrentTab={currentTabIndex === 0}
           />
         </div>
         <div className="relative flex-1">
           <Advanced
+            setCurrentTabIndex={setCurrentTabIndex}
             statusOption={statusOption}
             isCurrentTab={currentTabIndex === 1}
           />
@@ -67,7 +69,6 @@ const RightSection = () => {
           </div>
         )}
       </div>
-      <button type="submit">Submit</button>
     </div>
   );
 };

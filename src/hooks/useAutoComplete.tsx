@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
-type AutocompleteResult = {
+export type AutocompleteResult = {
   value: string;
   label: string;
 };
 
-type AutocompleteHook = {
+export type AutocompleteHook = {
   inputValue: string;
   results: AutocompleteResult[];
   loading: boolean;
@@ -13,7 +13,9 @@ type AutocompleteHook = {
   setInputValue: (value: string) => void;
 };
 
-type SearchFunction = (query: string) => AutocompleteResult[] | Promise<AutocompleteResult[]>;
+export type SearchFunction = (
+  query: string
+) => AutocompleteResult[] | Promise<AutocompleteResult[]> | undefined;
 
 const useAutocomplete = (
   searchFunction: SearchFunction,
@@ -35,12 +37,11 @@ const useAutocomplete = (
         const searchResults = await searchFunction(inputValue);
 
         if (!cancel) {
-          setResults(searchResults);
+          setResults(searchResults || []);
         }
       } catch (e) {
         if (e instanceof Error) {
-
-            setError(e.message);
+          setError(e.message);
         }
       }
 
@@ -48,7 +49,9 @@ const useAutocomplete = (
     };
 
     if (inputValue) {
-      fetchData().then(() => undefined).catch(() => undefined)
+      fetchData()
+        .then(() => undefined)
+        .catch(() => undefined);
     } else {
       setResults([]);
     }

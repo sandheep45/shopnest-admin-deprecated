@@ -1,33 +1,16 @@
-import { useToggleState } from "react-stately";
-import {
-  type AriaToggleButtonProps,
-  useToggleButton,
-  useHover,
-  useFocus,
-  mergeProps,
-} from "react-aria";
-import { useRef } from "react";
-
-interface IToggleButtonProps extends AriaToggleButtonProps {
+import React from "react";
+import * as Toggle from "@radix-ui/react-toggle";
+interface IToggleButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   className?: string;
+  children?: React.ReactNode;
 }
 
 const ToggleButton: React.FC<IToggleButtonProps> = (props) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const state = useToggleState(props);
-  const { hoverProps } = useHover(props);
-  const { focusProps } = useFocus(props);
-  const { buttonProps } = useToggleButton(props, state, ref);
-
+  const { children, ...restProps } = props;
   return (
-    <button
-      {...mergeProps(buttonProps, hoverProps, focusProps)}
-      className={props.className}
-      {...buttonProps}
-      ref={ref}
-    >
-      {props.children}
-    </button>
+    <Toggle.Root className={props.className} {...restProps}>
+      {children}
+    </Toggle.Root>
   );
 };
 

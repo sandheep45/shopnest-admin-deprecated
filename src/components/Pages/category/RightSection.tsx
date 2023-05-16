@@ -3,6 +3,7 @@ import useTabs, { type ITabComponentProps } from "@src/hooks/useTabs";
 import { productStatusOptions } from "@src/utils/constants";
 import { useRouter } from "next/router";
 import General from "./General";
+import { useFormContext } from "react-hook-form";
 
 const MAIN_TABS = ["General"];
 
@@ -14,8 +15,8 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
     <button
         onClick={onClick}
         className={`text-lg hover:underline hover:decoration-blue-600 hover:underline-offset-[16px] ${isCurrentTab
-            ? "text-blue-600 underline underline-offset-[16px]"
-            : "text-gray-500"
+                ? "text-blue-600 underline underline-offset-[16px]"
+                : "text-gray-500"
             }`}
     >
         {tab}
