@@ -33,17 +33,14 @@ const conditionRadioList = ["All Conditions", "Any Conditions"] as const;
 
 type TSetSelected = Dispatch<SetStateAction<string>>;
 
-const General: React.FC<IGenerateProps> = ({ statusOption, isCurrentTab }) => {
+const General = () => {
     const { register } = useFormContext();
     const [selected, setSelected]: [string, TSetSelected] = React.useState('');
     const [conditionSelected, setConditionSelected]: [string, TSetSelected] = React.useState('');
 
     return (
         <div
-            className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300 ${isCurrentTab
-                ? ""
-                : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
-                }`}
+            className={`flex w-full flex-1 flex-col gap-6 transition-all duration-300`}
         >
             <GeneralCard />
 

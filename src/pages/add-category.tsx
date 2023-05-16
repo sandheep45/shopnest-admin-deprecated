@@ -5,6 +5,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import LeftSection from "@src/components/Pages/category/LeftSection";
 import RightSection from "@src/components/Pages/category/RightSection";
 
+
+
 const AddCategory = () => {
   const methods = useForm();
   const onSubmit = (data: any) => console.log(data);

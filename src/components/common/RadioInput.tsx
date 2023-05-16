@@ -1,4 +1,4 @@
-import React, { type Dispatch, type SetStateAction } from "react";
+import React, { useEffect, type Dispatch, type SetStateAction } from "react";
 import { RadioGroupInputContext } from "./RadioGroupInput";
 import { type RadioGroupState } from "react-stately";
 import { useFocusRing, useRadio, VisuallyHidden } from "react-aria";
@@ -13,7 +13,7 @@ interface IRadioInputProps {
 }
 
 const RadioInput = (props: IRadioInputProps) => {
-    console.log("props: ", props);
+    // console.log("props: ", props);
     const { value, children, selectedRadioInput, setSelectedRadioInput } = props;
     const stateOrNull = React.useContext(RadioGroupInputContext);
     const state = stateOrNull as RadioGroupState
@@ -21,7 +21,10 @@ const RadioInput = (props: IRadioInputProps) => {
     const { inputProps, isDisabled, isSelected } = useRadio(props, state, ref);
     const { isFocusVisible, focusProps } = useFocusRing();
     const strokeWidth = isSelected ? 6 : 2;
-    setSelectedRadioInput(() => isSelected ? value : '');
+    useEffect(() => {
+        setSelectedRadioInput(() => isSelected ? value : '');
+    }, [isSelected, value, setSelectedRadioInput]);
+    // setSelectedRadioInput(() => isSelected ? value : '');`
     // console.log("inputProps: ", inputProps);
 
     return (
@@ -31,6 +34,7 @@ const RadioInput = (props: IRadioInputProps) => {
         // </label>
         <label
             className="flex justify-center items-center gap-4"
+            id={`radio-${value}`}
         >
             <VisuallyHidden>
                 <input {...inputProps} {...focusProps} ref={ref} />

@@ -23,28 +23,15 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 );
 
 const RightSection = () => {
-    const { productId } = useRouter().query;
-    const [Tabs, currentTabIndex] = useTabs({
-        TabComponent: MainTabButton,
-        tabs: MAIN_TABS,
-    });
+    const { categoryId } = useRouter().query;
     const statusOption = useMemo(() => productStatusOptions, []);
-
-    if (productId && !MAIN_TABS.includes("Review")) MAIN_TABS.push("Review");
 
     return (
         <div className="flex flex-1 flex-col gap-10">
             {/* tabs */}
-            <div className="flex gap-5">
-                <Tabs />
-            </div>
-
             <div className="flex-1">
                 <div className="relative flex-1">
-                    <General
-                        isCurrentTab={currentTabIndex === 0}
-                        statusOption={statusOption}
-                    />
+                    <General />
                 </div>
             </div>
         </div>
