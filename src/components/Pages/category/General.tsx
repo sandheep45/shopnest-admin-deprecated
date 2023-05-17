@@ -6,6 +6,7 @@ import { IoCloudUpload } from "react-icons/io5";
 import GeneralCard from "../global/GeneralCard";
 import { set, useFormContext } from "react-hook-form";
 import TextArea from "@src/components/common/TextArea";
+import useRadioGroupInput from "@src/hooks/useRadioGroupInput";
 
 interface IGenerateProps {
     className?: string;
@@ -16,7 +17,7 @@ interface IGenerateProps {
     }[];
 }
 
-const RadioList = [
+const options = [
     {
         label: "Manual",
         descriptionTag:
@@ -27,13 +28,17 @@ const RadioList = [
         descriptionTag:
             "Products matched with the following conditions will be automatically assigned to this category.",
     },
-] as const;
+];
 
 const conditionRadioList = ["All Conditions", "Any Conditions"] as const;
 
 type TSetSelected = Dispatch<SetStateAction<string>>;
 
 const General = () => {
+    const [RadioGroup, selectedOption, setSelectedOption] = useRadioGroupInput({
+        options: options,
+    });
+
     const { register } = useFormContext();
     const [selected, setSelected]: [string, TSetSelected] = React.useState('');
     const [conditionSelected, setConditionSelected]: [string, TSetSelected] = React.useState('');
@@ -71,6 +76,7 @@ const General = () => {
             {/* Automation */}
             <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
                 <h3 className="text-xl font-semibold">Automation</h3>
+                <RadioGroup />
             </Card>
         </div>
     );
