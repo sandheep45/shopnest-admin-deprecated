@@ -41,18 +41,12 @@ const General: React.FC<IGeneratProps> = ({
 }) => {
   const router = useRouter();
   const { register, setValue, watch } = useFormContext<IProduct>();
-  const { isLoading, isFetching } =
-    api.variants.searchAllVariantOptionsOfaProduct.useQuery(
-      {
-        productId: (router.query.productId as string) || "",
-        searchString: "",
-      },
-      {
-        onSuccess: (data) => {
-          setValue("option", data ? data : []);
-        },
-      }
-    );
+
+  const handleVariantOptionChange = (index: number, value: string) => {
+    setValue(`option.${index}.name`, value);
+  };
+
+  console.log(watch("option"));
 
   return (
     <div
@@ -68,33 +62,24 @@ const General: React.FC<IGeneratProps> = ({
       <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
         <h3 className="text-xl font-semibold">Variants Options</h3>
 
-        {watch("option")?.map((item) => (
-          <div key={item.id} className="flex w-full flex-wrap items-end gap-4">
-            {isLoading || isFetching ? (
-              <>
-                <DropDown
-                  list={
-                    item.values.map((item) => ({
-                      name: item,
-                      value: item,
-                    })) || []
-                  }
-                  {...register("variant.name")}
-                  label={`${item.name}`}
-                  id="add-variants"
-                />
-                <Input
-                  // {...register("")}
-                  label="Variation"
-                  hideLabel
-                  id="variantion"
-                />
-              </>
-            ) : (
-              <Loader />
-            )}
-          </div>
-        ))}
+        <div className="flex w-full flex-wrap items-end gap-4">
+          {watch("option")?.map((item, index) => (
+            <React.Fragment key={item.id}>
+              <DropDown
+                aria-label="Variant option"
+                placeholder="Select a variant option"
+                onValueChange={(e) => handleVariantOptionChange(index, e)}
+                list={[]}
+              />
+              <Input
+                // {...register("")}
+                label="Variation"
+                hideLabel
+                id="variantion"
+              />
+            </React.Fragment>
+          ))}
+        </div>
       </Card>
 
       {/* meta option */}

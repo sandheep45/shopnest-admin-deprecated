@@ -13,7 +13,7 @@ interface IStatus {
 }
 
 const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
-  const { register, watch } = useFormContext<IStatus>();
+  const { watch, setValue } = useFormContext<IStatus>();
 
   return (
     <Card className="flex-col gap-4 py-8">
@@ -23,7 +23,10 @@ const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
       </div>
 
       <DropDown
-        {...register("status")}
+        aria-label="Status"
+        label="Status"
+        onValueChange={(value) => setValue("status", value as Status)}
+        placeholder="Select a status"
         descriptionTag="Set the product status."
         list={statusOption}
         value={watch("status")}
