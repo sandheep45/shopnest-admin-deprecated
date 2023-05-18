@@ -108,9 +108,9 @@ const Advanced: React.FC<IAdvanceProps> = ({
 
         <div className="flex w-full flex-wrap gap-7">
           <DropDown
+            aria-label="tax-class"
             {...register("variant.image.alt")}
             descriptionTag="Set the product tax class."
-            className="flex-1"
             label="Tax Class"
             list={statusOption}
           />

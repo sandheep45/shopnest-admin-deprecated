@@ -122,7 +122,7 @@ const Products: NextPage = () => {
               hideLabel
             />
             <div className="flex flex-col items-center sm:flex-row sm:gap-6 md:gap-8">
-              <DropDown id="status" className="pr-6" list={statusOption} />
+              <DropDown aria-label="filter-by-status" list={statusOption} />
 
               <Link className="" href={`/add-product`}>
                 Add Product
