@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import { SlArrowDown } from "react-icons/sl";
 import * as DropDownPrimitive from "@radix-ui/react-select";
+import * as ScrollArea from "@radix-ui/react-scroll-area";
 
 interface IDropDownProps
   extends React.ComponentProps<typeof DropDownPrimitive.Root> {
@@ -32,19 +33,27 @@ const DropDown = forwardRef<HTMLButtonElement, IDropDownProps>((props, ref) => {
             <SlArrowDown />
           </DropDownPrimitive.Icon>
         </DropDownPrimitive.Trigger>
-        <DropDownPrimitive.Content className="max-h-fit overflow-hidden rounded-md bg-white p-3 shadow-2xl dark:bg-[#1e1e2d] dark:shadow-slate-950">
-          <DropDownPrimitive.Viewport className="p-[5px]">
-            <DropDownPrimitive.Group className="">
-              <DropDownPrimitive.Label className="pb-3 leading-[25px]">
-                Select {props.label}
-              </DropDownPrimitive.Label>
-              {props.list.map((item) => (
-                <SelectItem key={item.name} value={item.value}>
-                  {item.name}
-                </SelectItem>
-              ))}
-            </DropDownPrimitive.Group>
-          </DropDownPrimitive.Viewport>
+        <DropDownPrimitive.Content className="rounded-md bg-white p-3 shadow-2xl dark:bg-[#1e1e2d] dark:shadow-slate-950">
+          <ScrollArea.Root className="h-full w-full" type="auto">
+            <DropDownPrimitive.Viewport className="h-full w-full p-[5px]">
+              <DropDownPrimitive.Group className="">
+                <DropDownPrimitive.Label className="pb-3 leading-[25px]">
+                  Select {props.label}
+                </DropDownPrimitive.Label>
+                {props.list.map((item) => (
+                  <SelectItem key={item.name} value={item.value}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              </DropDownPrimitive.Group>
+            </DropDownPrimitive.Viewport>
+            <ScrollArea.Scrollbar
+              className="w-[4px] px-[2px] py-[5px]"
+              orientation="vertical"
+            >
+              <ScrollArea.Thumb className="" />
+            </ScrollArea.Scrollbar>
+          </ScrollArea.Root>
         </DropDownPrimitive.Content>
       </DropDownPrimitive.Root>
     </div>
