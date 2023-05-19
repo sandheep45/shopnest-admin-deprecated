@@ -1,4 +1,10 @@
-import { type Product as TProduct } from "@prisma/client";
+import type {
+  MetaData,
+  Variant,
+  Product as TProduct,
+  CustomerReview,
+  VariantOption,
+} from "@prisma/client";
 import LeftSection from "@src/components/Pages/product/LeftSection";
 import RightSection from "@src/components/Pages/product/RightSection";
 import Loader from "@src/components/common/Loader";
@@ -8,9 +14,16 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+interface IProduct extends TProduct {
+  MetaData: MetaData[];
+  Variant: Variant[];
+  CustomerReview: CustomerReview[];
+  option: VariantOption[];
+}
+
 const Product = () => {
   const { productId } = useRouter().query;
-  const methods = useForm<TProduct>();
+  const methods = useForm<IProduct>();
   const { isLoading, isFetching, refetch } = api.product.getProduct.useQuery(
     (productId as string) || "",
     {
@@ -21,6 +34,8 @@ const Product = () => {
           tags: data?.tags,
           status: data?.status,
           image: data?.image,
+          option: data?.option,
+          categoryId: data?.categoryId,
         });
       },
       refetchOnWindowFocus: false,

@@ -9,7 +9,6 @@ import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
 import TextArea from "@src/components/common/TextArea";
-import { useRouter } from "next/router";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { IoCloudUpload } from "react-icons/io5";
@@ -34,7 +33,6 @@ const Advanced: React.FC<IAdvanceProps> = ({
   statusOption,
   setCurrentTabIndex,
 }) => {
-  const { productId } = useRouter().query;
   const { register } = useFormContext<IProduct>();
   return (
     <div
@@ -108,9 +106,9 @@ const Advanced: React.FC<IAdvanceProps> = ({
 
         <div className="flex w-full flex-wrap gap-7">
           <DropDown
+            aria-label="tax-class"
             {...register("variant.image.alt")}
             descriptionTag="Set the product tax class."
-            className="flex-1"
             label="Tax Class"
             list={statusOption}
           />
@@ -218,7 +216,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
           className="w-fit rounded-md bg-[#0095e8] px-6 py-2 text-white"
           type="button"
         >
-          Save {productId ? "Changes" : "Product"}
+          Add Variants
         </Button>
       </div>
     </div>

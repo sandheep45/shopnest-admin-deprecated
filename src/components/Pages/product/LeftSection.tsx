@@ -14,7 +14,7 @@ interface IProduct extends Product {
 }
 
 const LeftSection = () => {
-  const { register, watch } = useFormContext<IProduct>();
+  const { register, watch, setValue } = useFormContext<IProduct>();
   const { data: categoryList } = useGetAllcategoryNameAndId();
   const statusOption = useMemo(() => productStatusOptions, []);
   const categoryOptions = useMemo(
@@ -39,7 +39,11 @@ const LeftSection = () => {
         <div className="flex w-full flex-col justify-between gap-1">
           <h3>Categories</h3>
           <DropDown
-            {...register("categoryId")}
+            className="w-full"
+            aria-label="Category"
+            label="Category"
+            placeholder="Select a category"
+            onValueChange={(value) => setValue("categoryId", value)}
             descriptionTag="Add product to a category."
             list={categoryOptions ? categoryOptions : []}
             value={watch("categoryId")}
@@ -72,6 +76,10 @@ const LeftSection = () => {
         <h2 className="text-xl font-semibold">Product Template</h2>
 
         <DropDown
+          className="w-full"
+          aria-label="Template"
+          placeholder="Select Template"
+          label="Template"
           {...register("variant.barcode")}
           descriptionTag="Assign a template from your current theme to define how a single
                 product is displayed."

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
@@ -9,14 +9,17 @@ import type {
   Product,
   MetaData,
   CustomerReview,
-  VariantOption,
 } from "@prisma/client";
 import TextArea from "@src/components/common/TextArea";
 import { api } from "@src/utils/api";
 import Button from "@src/components/common/Button";
 import { useRouter } from "next/router";
 import Loader from "@src/components/common/Loader";
-
+import { GiCancel } from "react-icons/gi";
+import { IoAdd } from "react-icons/io5";
+import { MdDownloadDone } from "react-icons/md";
+import { productVariantOptions } from "@src/utils/constants";
+import { useToast } from "@src/context/ToastContextProvider";
 interface IGeneratProps {
   className?: string;
   isCurrentTab?: boolean;
@@ -27,12 +30,17 @@ interface IGeneratProps {
   }[];
 }
 
+interface IOptions {
+  name: string;
+  values: string[];
+}
+
 interface IProduct extends Product {
   variant: Variant;
   metaData: MetaData;
   productMetaData: MetaData;
   customerReview: CustomerReview;
-  option: VariantOption[] | undefined;
+  option: IOptions[];
 }
 
 const General: React.FC<IGeneratProps> = ({
@@ -40,19 +48,64 @@ const General: React.FC<IGeneratProps> = ({
   setCurrentTabIndex,
 }) => {
   const router = useRouter();
+  const newOption = {
+    name: "",
+    value: "",
+  };
+  const [input, setInput] = useState([newOption]);
   const { register, setValue, watch } = useFormContext<IProduct>();
-  const { isLoading, isFetching } =
-    api.variants.searchAllVariantOptionsOfaProduct.useQuery(
-      {
-        productId: (router.query.productId as string) || "",
-        searchString: "",
-      },
-      {
-        onSuccess: (data) => {
-          setValue("option", data ? data : []);
-        },
-      }
+  const options = useMemo(() => productVariantOptions, []);
+  const { addToast } = useToast();
+
+  const handleAddOptionButton = (name: string, values: string) => {
+    if (!name || !values) {
+      addToast("error", "Please fill all the fields");
+      return;
+    }
+    if (input.filter((item) => item.name === name).length > 1) {
+      addToast("error", "Option already added");
+      return;
+    }
+
+    const option = {
+      name,
+      values: values.split(",").map((value) => value.trim()),
+    };
+    const updatedOption = [...(watch("option") || []), option];
+    setValue("option", updatedOption);
+    setInput([...input, newOption]);
+  };
+
+  const handleDropDownChange = (value: string, index: number) => {
+    setInput((currentInput) =>
+      currentInput.map((item, i) =>
+        i === index ? { ...item, name: value } : item
+      )
     );
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    setInput((currentInput) =>
+      currentInput.map((item, i) =>
+        i === index ? { ...item, value: e.target.value } : item
+      )
+    );
+  };
+
+  const handleDeleteOption = (index: number) => {
+    setInput((currentInput) =>
+      currentInput.filter((_, i) =>
+        currentInput.length === 1 ? true : i !== index
+      )
+    );
+  };
+
+  const saveUpdateProduct = () => {
+    setCurrentTabIndex(1);
+  };
 
   return (
     <div
@@ -66,35 +119,51 @@ const General: React.FC<IGeneratProps> = ({
 
       {/* variants */}
       <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
-        <h3 className="text-xl font-semibold">Variants Options</h3>
+        <h3 className="text-xl font-semibold">Create New Variants Options</h3>
 
-        {watch("option")?.map((item) => (
-          <div key={item.id} className="flex w-full flex-wrap items-end gap-4">
-            {isLoading || isFetching ? (
-              <>
-                <DropDown
-                  list={
-                    item.values.map((item) => ({
-                      name: item,
-                      value: item,
-                    })) || []
-                  }
-                  {...register("variant.name")}
-                  label={`${item.name}`}
-                  id="add-variants"
-                />
-                <Input
-                  // {...register("")}
-                  label="Variation"
-                  hideLabel
-                  id="variantion"
-                />
-              </>
-            ) : (
-              <Loader />
-            )}
-          </div>
-        ))}
+        <div className="flex w-full flex-col gap-4">
+          {input.map((option, index) => (
+            <div className="flex items-center gap-4" key={option.name}>
+              <DropDown
+                aria-label="Variant option"
+                placeholder="Option name"
+                onValueChange={(e) => handleDropDownChange(e, index)}
+                value={input[index]?.name}
+                list={options}
+              />
+              <Input
+                className=" placeholder:text-[13px]"
+                value={input[index]?.value}
+                placeholder="Option Value"
+                onChange={(e) => handleInputChange(e, index)}
+                label="Variation"
+                hideLabel
+                id="variantion"
+              />
+              <Button
+                type="button"
+                className="rounded-md bg-gray-600/10 p-[10px] text-blue-500 transition-all duration-300 hover:bg-blue-600 hover:text-gray-100"
+                aria-label="select-option"
+                onClick={() =>
+                  handleAddOptionButton(
+                    input[index]?.name || "",
+                    input[index]?.value || ""
+                  )
+                }
+              >
+                <MdDownloadDone size={18} />
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleDeleteOption(index)}
+                className="rounded-md bg-gray-600/10 p-[10px] text-red-500 transition-all duration-300 hover:bg-red-600 hover:text-gray-100"
+                aria-label="delete-option"
+              >
+                <GiCancel size={18} />
+              </Button>
+            </div>
+          ))}
+        </div>
       </Card>
 
       {/* meta option */}
@@ -133,9 +202,9 @@ const General: React.FC<IGeneratProps> = ({
         <Button
           className="w-fit rounded-md bg-[#0095e8] px-6 py-2 text-white"
           type="button"
-          onClick={() => setCurrentTabIndex(1)}
+          onClick={() => saveUpdateProduct()}
         >
-          Add Variant
+          {router.query.productId ? "Update" : "Create"} Product
         </Button>
       </div>
     </div>

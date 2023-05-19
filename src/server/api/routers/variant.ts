@@ -46,4 +46,34 @@ export const variantRouter = createTRPCRouter({
         console.log(error, "searchAllVariantOptionsOfaProduct");
       }
     }),
+
+  createAProductVariantOption: protectedProcedure
+    .input(
+      z.object({
+        productId: z.string().optional(),
+        payload: z.array(
+          z.object({
+            name: z.string(),
+            values: z.array(z.string()),
+          })
+        ),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        return await ctx.prisma.$transaction([
+          ...input.payload.map((item) =>
+            ctx.prisma.variantOption.create({
+              data: {
+                name: item.name,
+                productId: input.productId,
+                values: item.values,
+              },
+            })
+          ),
+        ]);
+      } catch (error) {
+        console.log(error, "createAProductVariantOption");
+      }
+    }),
 });
