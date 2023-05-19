@@ -5,3 +5,19 @@
 html {
   overflow: hidden;
 }
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-enter {
+  animation-name: toast-enter;
+  animation-duration: 300ms;
+}

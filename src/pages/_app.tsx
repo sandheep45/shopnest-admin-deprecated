@@ -8,6 +8,7 @@ import "@src/styles/globals.css";
 import MainLayout from "@src/components/Layouts/MainLayout";
 import ThemeContextProvider from "@src/context/ThemeContextProvider";
 import { useRouter } from "next/router";
+import { ToastProvider } from "@src/context/ToastContextProvider";
 
 function cleanUrl(url: string): string {
   const regex = /^([^?]+)/;
@@ -28,13 +29,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ThemeContextProvider>
-        {pathToExclude.includes(cleanUrl(router.asPath)) ? (
-          <Component {...pageProps} />
-        ) : (
-          <MainLayout>
+        <ToastProvider>
+          {pathToExclude.includes(cleanUrl(router.asPath)) ? (
             <Component {...pageProps} />
-          </MainLayout>
-        )}
+          ) : (
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          )}
+        </ToastProvider>
       </ThemeContextProvider>
     </SessionProvider>
   );

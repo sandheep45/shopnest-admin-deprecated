@@ -23,6 +23,7 @@ const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
       </div>
 
       <DropDown
+        className="w-full"
         aria-label="Status"
         label="Status"
         onValueChange={(value) => setValue("status", value as Status)}

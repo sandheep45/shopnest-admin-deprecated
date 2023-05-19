@@ -13,50 +13,51 @@ interface IDropDownProps
   "aria-label": string;
   placeholder?: string;
   descriptionTag?: string;
+  className?: string;
 }
 
 const DropDown = forwardRef<HTMLButtonElement, IDropDownProps>((props, ref) => {
   const value = props.list.find((item) => item.value === props.value)?.name;
 
   return (
-    <div className="flex w-full">
-      <DropDownPrimitive.Root {...props}>
-        <DropDownPrimitive.Trigger
-          className="flex h-[40px] w-full items-center justify-between gap-[5px] rounded border border-gray-300 px-[15px] text-[13px] leading-none outline-none data-[placeholder]:text-gray-700 dark:border-gray-700 dark:data-[placeholder]:text-gray-300"
-          ref={ref}
-          aria-label={props["aria-label"]}
-        >
-          <DropDownPrimitive.Value placeholder={props.placeholder}>
-            {props.value ? value : props.placeholder}
-          </DropDownPrimitive.Value>
-          <DropDownPrimitive.Icon className="text-gray-700 dark:text-gray-300">
-            <SlArrowDown />
-          </DropDownPrimitive.Icon>
-        </DropDownPrimitive.Trigger>
-        <DropDownPrimitive.Content className="rounded-md bg-white p-3 shadow-2xl dark:bg-[#1e1e2d] dark:shadow-slate-950">
-          <ScrollArea.Root className="h-full w-full" type="auto">
-            <DropDownPrimitive.Viewport className="h-full w-full p-[5px]">
-              <DropDownPrimitive.Group className="">
-                <DropDownPrimitive.Label className="pb-3 leading-[25px]">
-                  Select {props.label}
-                </DropDownPrimitive.Label>
-                {props.list.map((item) => (
-                  <SelectItem key={item.name} value={item.value}>
-                    {item.name}
-                  </SelectItem>
-                ))}
-              </DropDownPrimitive.Group>
-            </DropDownPrimitive.Viewport>
-            <ScrollArea.Scrollbar
-              className="w-[4px] px-[2px] py-[5px]"
-              orientation="vertical"
-            >
-              <ScrollArea.Thumb className="" />
-            </ScrollArea.Scrollbar>
-          </ScrollArea.Root>
-        </DropDownPrimitive.Content>
-      </DropDownPrimitive.Root>
-    </div>
+    <DropDownPrimitive.Root {...props}>
+      <DropDownPrimitive.Trigger
+        className={`flex h-[40px] w-auto items-center justify-between gap-5 rounded border border-gray-300 px-[15px] text-[13px] leading-none outline-none data-[placeholder]:text-gray-700 dark:border-gray-700 dark:data-[placeholder]:text-gray-300 ${
+          props.className ? props.className : ""
+        }`}
+        ref={ref}
+        aria-label={props["aria-label"]}
+      >
+        <DropDownPrimitive.Value placeholder={props.placeholder}>
+          {props.value ? value : props.placeholder}
+        </DropDownPrimitive.Value>
+        <DropDownPrimitive.Icon className="text-gray-700 dark:text-gray-300">
+          <SlArrowDown />
+        </DropDownPrimitive.Icon>
+      </DropDownPrimitive.Trigger>
+      <DropDownPrimitive.Content className="z-[8] rounded-md bg-white p-3 shadow-2xl dark:bg-[#1e1e2d] dark:shadow-slate-950">
+        <ScrollArea.Root className="h-full w-full" type="auto">
+          <DropDownPrimitive.Viewport className="h-full w-full p-[5px]">
+            <DropDownPrimitive.Group className="">
+              <DropDownPrimitive.Label className="pb-3 leading-[25px]">
+                Select {props.label}
+              </DropDownPrimitive.Label>
+              {props.list.map((item) => (
+                <SelectItem key={item.name} value={item.value}>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </DropDownPrimitive.Group>
+          </DropDownPrimitive.Viewport>
+          <ScrollArea.Scrollbar
+            className="w-[4px] px-[2px] py-[5px]"
+            orientation="vertical"
+          >
+            <ScrollArea.Thumb className="" />
+          </ScrollArea.Scrollbar>
+        </ScrollArea.Root>
+      </DropDownPrimitive.Content>
+    </DropDownPrimitive.Root>
   );
 });
 

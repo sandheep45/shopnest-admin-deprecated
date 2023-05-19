@@ -39,6 +39,7 @@ const LeftSection = () => {
         <div className="flex w-full flex-col justify-between gap-1">
           <h3>Categories</h3>
           <DropDown
+            className="w-full"
             aria-label="Category"
             label="Category"
             placeholder="Select a category"
@@ -75,6 +76,7 @@ const LeftSection = () => {
         <h2 className="text-xl font-semibold">Product Template</h2>
 
         <DropDown
+          className="w-full"
           aria-label="Template"
           placeholder="Select Template"
           label="Template"

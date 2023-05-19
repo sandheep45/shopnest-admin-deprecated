@@ -16,3 +16,22 @@ export const productStatusOptions = [
     value: "DRAFT",
   },
 ];
+
+export const productVariantOptions = [
+  {
+    name: "Color",
+    value: "color",
+  },
+  {
+    name: "Size",
+    value: "size",
+  },
+  {
+    name: "Material",
+    value: "material",
+  },
+  {
+    name: "Style",
+    value: "style",
+  },
+];
