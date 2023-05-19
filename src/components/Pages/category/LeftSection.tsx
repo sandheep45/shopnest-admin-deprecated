@@ -21,7 +21,7 @@ const LeftSection = () => {
                 <h2 className="text-xl font-semibold">Store Template</h2>
 
                 <DropDown
-                    {...register("template")}
+                    {...register("categoryStoreTemplate")}
                     descriptionTag="Assign a template from your current theme to define how a single category is displayed."
                     list={statusOption}
                 />

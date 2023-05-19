@@ -1,20 +1,15 @@
 import React, { type Dispatch, type SetStateAction } from "react";
 import Card from "@src/components/common/Card";
-import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
-import { IoCloudUpload } from "react-icons/io5";
 import GeneralCard from "../global/GeneralCard";
-import { set, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import TextArea from "@src/components/common/TextArea";
 import useRadioGroupInput from "@src/hooks/useRadioGroupInput";
+import { type MetaData, type Category, type Status } from "@prisma/client";
 
-interface IGenerateProps {
-    className?: string;
-    isCurrentTab?: boolean;
-    statusOption: {
-        name: string;
-        value: string;
-    }[];
+interface ICategory extends Category {
+    categoryStoreTemplate: Status;
+    categoryMetaData: MetaData;
 }
 
 const options = [
@@ -32,16 +27,12 @@ const options = [
 
 const conditionRadioList = ["All Conditions", "Any Conditions"] as const;
 
-type TSetSelected = Dispatch<SetStateAction<string>>;
-
 const General = () => {
     const [RadioGroup, selectedOption, setSelectedOption] = useRadioGroupInput({
         options: options,
     });
 
-    const { register } = useFormContext();
-    const [selected, setSelected]: [string, TSetSelected] = React.useState('');
-    const [conditionSelected, setConditionSelected]: [string, TSetSelected] = React.useState('');
+    const { register } = useFormContext<ICategory>();
 
     return (
         <div
@@ -54,19 +45,19 @@ const General = () => {
                 <h3 className="text-xl font-semibold">Meta Options</h3>
 
                 <Input
-                    {...register("meta.tag.name")}
+                    {...register("categoryMetaData.title")}
                     descriptionTag="Set a meta tag title. Recommended to be simple and precise keywords."
                     label="Meta Tag Title"
                     id="metaTagTitle"
                 />
                 <TextArea
-                    {...register("meta.tag.description")}
+                    {...register("categoryMetaData.description")}
                     lable="Meta Tag Description"
                     descriptionTag="Set a meta tag description to the category for increased SEO ranking."
                     id="metaTagDescription"
                 />
                 <Input
-                    {...register("meta.tag.keywords")}
+                    {...register("categoryMetaData.keywords")}
                     descriptionTag="Set a list of keywords that the category is related to. Separate the keywords by adding a comma , between each keyword."
                     label="Meta Tag Keywords"
                     id="metaTagKeywords"
@@ -77,6 +68,11 @@ const General = () => {
             <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
                 <h3 className="text-xl font-semibold">Automation</h3>
                 <RadioGroup />
+                {
+                    selectedOption === "Automatic" && (
+                        <div>condition</div>
+                    )
+                }
             </Card>
         </div>
     );

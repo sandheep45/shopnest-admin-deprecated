@@ -1,15 +1,21 @@
 import Head from "next/head";
 import React from "react";
 
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 import LeftSection from "@src/components/Pages/category/LeftSection";
 import RightSection from "@src/components/Pages/category/RightSection";
 
+import type { Category, MetaData, Status, } from '@prisma/client'
+
+interface ICategory extends Category {
+  categoryStoreTemplate: Status;
+  categoryMetaData: MetaData
+}
 
 
 const AddCategory = () => {
-  const methods = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const methods = useForm<ICategory>();
+  const onSubmit: SubmitHandler<ICategory> = (data) => console.log("category info :", data);
   return (
     <>
       <Head>
@@ -27,6 +33,7 @@ const AddCategory = () => {
 
           {/* right section */}
           <RightSection />
+          <button className="bg-gray-500 text-white rounded-lg p-2 flex absolute" type="submit">Submit Category</button>
         </form>
       </FormProvider>
     </>

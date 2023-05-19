@@ -21,13 +21,15 @@ const useRadioGroupInput: UseRadioGroupInput = ({ options, }) => {
         return (
             <>
                 <RadioGroup.Root
+                    value={selectedOption}
+                    onValueChange={(value) => setSelectedOption(value)}
                     className="flex flex-col gap-2.5"
                 >
                     {
                         options.map((item, indx) => (
                             <div
-                                key={`${indx}`}
-                                className="w-full h-full flex items-center justify-center gap-3"
+                                key={`${item.label}`}
+                                className="w-full h-full flex items-center justify-start gap-3"
                             >
                                 <span
                                     className="w-12 h-12 flex items-center justify-center"
