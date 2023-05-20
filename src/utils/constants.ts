@@ -20,18 +20,18 @@ export const productStatusOptions = [
 export const productVariantOptions = [
   {
     name: "Color",
-    value: "color",
+    value: "Color",
   },
   {
     name: "Size",
-    value: "size",
+    value: "Size",
   },
   {
     name: "Material",
-    value: "material",
+    value: "Material",
   },
   {
     name: "Style",
-    value: "style",
+    value: "Style",
   },
 ];

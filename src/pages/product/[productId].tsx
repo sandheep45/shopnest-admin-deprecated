@@ -18,7 +18,7 @@ interface IProduct extends TProduct {
   MetaData: MetaData[];
   Variant: Variant[];
   CustomerReview: CustomerReview[];
-  option: VariantOption[];
+  VariantOption: VariantOption[];
 }
 
 const Product = () => {
@@ -34,7 +34,7 @@ const Product = () => {
           tags: data?.tags,
           status: data?.status,
           image: data?.image,
-          option: data?.option,
+          VariantOption: data?.option,
           categoryId: data?.categoryId,
         });
       },
@@ -62,11 +62,7 @@ const Product = () => {
       </Head>
       <FormProvider {...methods}>
         <div className="item-center relative flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start">
-          {(isLoading || isFetching) && (
-            <div className="fixed bottom-0 left-0 right-0 top-0 z-50 flex h-full w-full items-center justify-center backdrop-blur-sm">
-              <Loader className=" h-20 w-20" />
-            </div>
-          )}
+          {(isLoading || isFetching) && <Loader className=" h-20 w-20" />}
           {/* left section */}
           <LeftSection />
 

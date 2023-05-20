@@ -40,7 +40,7 @@ interface IProduct extends Product {
   metaData: MetaData;
   productMetaData: MetaData;
   customerReview: CustomerReview;
-  option: IOptions[];
+  VariantOption: IOptions[];
 }
 
 const General: React.FC<IGeneratProps> = ({
@@ -57,12 +57,18 @@ const General: React.FC<IGeneratProps> = ({
   const options = useMemo(() => productVariantOptions, []);
   const { addToast } = useToast();
 
-  const handleAddOptionButton = (name: string, values: string) => {
+  const handleAddOptionButton = (
+    name: string | undefined,
+    values: string | undefined
+  ) => {
     if (!name || !values) {
       addToast("error", "Please fill all the fields");
       return;
     }
-    if (input.filter((item) => item.name === name).length > 1) {
+    if (
+      input.filter((item) => item.name === name).length > 1 ||
+      watch("VariantOption")?.filter((item) => item.name === name).length > 0
+    ) {
       addToast("error", "Option already added");
       return;
     }
@@ -71,8 +77,8 @@ const General: React.FC<IGeneratProps> = ({
       name,
       values: values.split(",").map((value) => value.trim()),
     };
-    const updatedOption = [...(watch("option") || []), option];
-    setValue("option", updatedOption);
+    const updatedOption = [...(watch("VariantOption") || []), option];
+    setValue("VariantOption", updatedOption);
     setInput([...input, newOption]);
   };
 
@@ -123,8 +129,12 @@ const General: React.FC<IGeneratProps> = ({
 
         <div className="flex w-full flex-col gap-4">
           {input.map((option, index) => (
-            <div className="flex items-center gap-4" key={option.name}>
+            <div
+              className="flex flex-wrap items-center gap-4"
+              key={option.name}
+            >
               <DropDown
+                className="min-w-[200px]"
                 aria-label="Variant option"
                 placeholder="Option name"
                 onValueChange={(e) => handleDropDownChange(e, index)}
@@ -145,10 +155,7 @@ const General: React.FC<IGeneratProps> = ({
                 className="rounded-md bg-gray-600/10 p-[10px] text-blue-500 transition-all duration-300 hover:bg-blue-600 hover:text-gray-100"
                 aria-label="select-option"
                 onClick={() =>
-                  handleAddOptionButton(
-                    input[index]?.name || "",
-                    input[index]?.value || ""
-                  )
+                  handleAddOptionButton(input[index]?.name, input[index]?.value)
                 }
               >
                 <MdDownloadDone size={18} />

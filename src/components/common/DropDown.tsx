@@ -17,7 +17,7 @@ interface IDropDownProps
 }
 
 const DropDown = forwardRef<HTMLButtonElement, IDropDownProps>((props, ref) => {
-  const value = props.list.find((item) => item.value === props.value)?.name;
+  const value = props?.list?.find((item) => item.value === props.value)?.name;
 
   return (
     <DropDownPrimitive.Root {...props}>
@@ -42,7 +42,7 @@ const DropDown = forwardRef<HTMLButtonElement, IDropDownProps>((props, ref) => {
               <DropDownPrimitive.Label className="pb-3 leading-[25px]">
                 Select {props.label}
               </DropDownPrimitive.Label>
-              {props.list.map((item) => (
+              {props?.list?.map((item) => (
                 <SelectItem key={item.name} value={item.value}>
                   {item.name}
                 </SelectItem>

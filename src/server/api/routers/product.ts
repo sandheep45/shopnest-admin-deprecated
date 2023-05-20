@@ -38,7 +38,6 @@ export const productRouter = createTRPCRouter({
           include: {
             CustomerReview: true,
             MetaData: true,
-            Variant: true,
             option: true,
           },
         });

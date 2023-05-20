@@ -8,10 +8,15 @@ import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
+import Loader from "@src/components/common/Loader";
 import TextArea from "@src/components/common/TextArea";
-import React from "react";
+import { useToast } from "@src/context/ToastContextProvider";
+import { api } from "@src/utils/api";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IoCloudUpload } from "react-icons/io5";
+import { MdOutlineManageSearch } from "react-icons/md";
 
 interface IAdvanceProps {
   isCurrentTab?: boolean;
@@ -22,10 +27,17 @@ interface IAdvanceProps {
   }[];
 }
 
+interface IOptions {
+  name: string;
+  values: string[];
+  selectedValue: string;
+}
+
 interface IProduct extends Product {
   variant: Variant;
   variantMetaData: MetaData;
   customerReview: CustomerReview;
+  VariantOption: IOptions[];
 }
 
 const Advanced: React.FC<IAdvanceProps> = ({
@@ -33,7 +45,56 @@ const Advanced: React.FC<IAdvanceProps> = ({
   statusOption,
   setCurrentTabIndex,
 }) => {
-  const { register } = useFormContext<IProduct>();
+  const { productId } = useRouter().query;
+  const utils = api.useContext();
+  const { addToast } = useToast();
+  const { register, watch, setValue } = useFormContext<IProduct>();
+  const [variantOption, setVariantOption] = useState<IOptions[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { VariantOption } = watch();
+
+  const searchVariant = async () => {
+    setIsLoading(true);
+    try {
+      const data = await utils.variants.getVariantUsingOption.fetch({
+        productId: productId as string,
+        payload: variantOption.map((option) => ({
+          optionName: option.name,
+          optionValue: option.selectedValue,
+        })),
+      });
+
+      if (!data) {
+        addToast("error", "No variant found with this option");
+        return;
+      }
+      setValue("variant", data);
+    } catch (error) {
+      addToast("error", "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const newOption = VariantOption?.map((option) => ({
+      name: option.name,
+      values: option.values,
+      selectedValue: "",
+    }));
+    setVariantOption(newOption || []);
+  }, [VariantOption]);
+
+  const handleOptionChange = (value: string, variantOption: IOptions) => {
+    setVariantOption((currentOption) =>
+      currentOption.map((option) =>
+        option.name === variantOption.name
+          ? { ...option, selectedValue: value }
+          : option
+      )
+    );
+  };
+
   return (
     <div
       className={`flex w-full flex-col gap-6 transition-all duration-300 ${
@@ -42,9 +103,41 @@ const Advanced: React.FC<IAdvanceProps> = ({
           : "pointer-events-none absolute bottom-0 left-0 right-0 top-0 overflow-hidden opacity-0"
       }`}
     >
+      {isLoading && <Loader />}
       {/* inventory */}
       <Card className="w-full flex-col gap-8 px-8 pb-12 pt-8">
         <h3 className="text-xl font-semibold">Inventory</h3>
+
+        {variantOption.length > 0 && (
+          <div className="flex w-full flex-wrap items-center gap-4">
+            {variantOption.map((variantOption) => (
+              <DropDown
+                className="min-w-[150px]"
+                key={variantOption.name}
+                onValueChange={(value) => {
+                  handleOptionChange(value, variantOption);
+                }}
+                value={variantOption.selectedValue}
+                aria-label="stock-status"
+                descriptionTag="Set the product stock status."
+                placeholder={variantOption.name}
+                list={variantOption.values?.map((value) => ({
+                  name: value,
+                  value,
+                }))}
+              />
+            ))}
+            {productId && (
+              <Button
+                onClick={searchVariant}
+                type="button"
+                aria-label="search-variants"
+              >
+                <MdOutlineManageSearch size={30} />
+              </Button>
+            )}
+          </div>
+        )}
 
         <Input
           {...register("variant.sku")}

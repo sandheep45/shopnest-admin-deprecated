@@ -38,6 +38,11 @@ type Quantity {
     inWareHouse Int
 }
 
+type Options {
+    name   String
+    values String
+}
+
 model Media {
     id    String  @id @default(auto()) @map("_id") @db.ObjectId
     image Image[]
@@ -73,6 +78,7 @@ model Variant {
     name        String
     description String
     image       Image
+    options     Options[]
     price       Int
     sku         String
     barcode     String
