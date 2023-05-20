@@ -6,6 +6,8 @@ import LeftSection from "@src/components/Pages/category/LeftSection";
 import RightSection from "@src/components/Pages/category/RightSection";
 
 import type { Category, MetaData, Status, } from '@prisma/client'
+import useUploadFileToCloudinary from "@src/hooks/api/useUploadFileToCloudinary";
+import { api } from "@src/utils/api";
 
 interface ICategory extends Category {
   categoryStoreTemplate: Status;
@@ -15,7 +17,38 @@ interface ICategory extends Category {
 
 const AddCategory = () => {
   const methods = useForm<ICategory>();
-  const onSubmit: SubmitHandler<ICategory> = (data) => console.log("category info :", data);
+  const { uploadImage } = useUploadFileToCloudinary();
+
+  const utils = api.useContext();
+  const { mutate } = api.category.createCategory.useMutation({
+    onSuccess: async () => {
+      await utils.category.getAllCategory.invalidate();
+    },
+  });
+
+  // const onSubmit: SubmitHandler<ICategory> = async (data) => {
+  const onSubmit: SubmitHandler<ICategory> = (data) => {
+    console.log("category info :", data)
+    // const image = await uploadImage({
+    //   contentType: "image",
+    //   file: data.image.url,
+    //   public_id: "category"
+    // });
+
+    // mutate({
+    //   name: data.name,
+    //   description: data.description,
+    //   image: {
+    //     alt: image.original_filename,
+    //     url: image.secure_url,
+    //     height: image.height,
+    //     width: image.width,
+    //   },
+    //   status: data.status,
+    //   categoryMetaData: data.categoryMetaData,
+    // })
+
+  }
   return (
     <>
       <Head>

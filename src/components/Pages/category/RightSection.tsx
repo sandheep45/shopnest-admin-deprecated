@@ -15,8 +15,8 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
     <button
         onClick={onClick}
         className={`text-lg hover:underline hover:decoration-blue-600 hover:underline-offset-[16px] ${isCurrentTab
-                ? "text-blue-600 underline underline-offset-[16px]"
-                : "text-gray-500"
+            ? "text-blue-600 underline underline-offset-[16px]"
+            : "text-gray-500"
             }`}
     >
         {tab}
@@ -24,8 +24,6 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 );
 
 const RightSection = () => {
-    const { categoryId } = useRouter().query;
-    const statusOption = useMemo(() => productStatusOptions, []);
 
     return (
         <div className="flex flex-1 flex-col gap-10">
