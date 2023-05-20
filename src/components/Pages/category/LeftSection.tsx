@@ -8,27 +8,27 @@ import { useFormContext } from "react-hook-form";
 import { productStatusOptions } from "@src/utils/constants";
 
 const LeftSection = () => {
-  const { register } = useFormContext();
-  const statusOption = useMemo(() => productStatusOptions, []);
-  return (
-    <div className="flex w-full flex-col gap-6 md:w-72">
-      <ThumbnailCard />
+    const { register } = useFormContext();
+    const statusOption = useMemo(() => productStatusOptions, []);
+    return (
+        <div className="flex w-full flex-col gap-6 md:w-72">
+            <ThumbnailCard />
 
-      <StatusCard statusOption={statusOption} />
+            <StatusCard statusOption={statusOption} />
 
-      {/* store template card */}
-      <Card className="flex-col gap-4 pb-12 pt-8">
-        <h2 className="text-xl font-semibold">Store Template</h2>
+            {/* store template card */}
+            <Card className="flex-col gap-4 pb-12 pt-8">
+                <h2 className="text-xl font-semibold">Store Template</h2>
 
-        <DropDown
-          aria-label="template"
-          {...register("template")}
-          descriptionTag="Assign a template from your current theme to define how a single category is displayed."
-          list={statusOption}
-        />
-      </Card>
-    </div>
-  );
+                <DropDown
+                    aria-label="status"
+                    {...register("categoryStoreTemplate")}
+                    descriptionTag="Assign a template from your current theme to define how a single category is displayed."
+                    list={statusOption}
+                />
+            </Card>
+        </div>
+    );
 };
 
 export default LeftSection;
