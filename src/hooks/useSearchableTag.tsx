@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Props {
-  options: string[]; // Array of options to search through
+  options: string; // comma separated string
   placeholder?: string;
 }
 
@@ -14,15 +14,27 @@ const useSearchableTags = ({ options, placeholder = "Search..." }: Props) => {
   const [inputValue, setInputValue] = useState("");
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
-  const filteredOptions = options.filter(
-    (option) =>
-      option.toLowerCase().indexOf(inputValue.toLowerCase()) > -1 &&
-      !selectedTags.some((tag) => tag.label === option)
-  );
+  useEffect(() => {
+    setSelectedTags(
+      options.split(",").map((option) => ({
+        label: option,
+        id: Math.random().toString(36).substring(7),
+      }))
+    );
+  }, [options]);
+
+  const filteredOptions = options
+    .split(",")
+    .filter(
+      (option) =>
+        option.toLowerCase().indexOf(inputValue.toLowerCase()) > -1 &&
+        !selectedTags.some((tag) => tag.label === option)
+    );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { key } = event;
     if (key === "Enter" && inputValue) {
+      event.preventDefault();
       const newTag: Tag = {
         label: inputValue,
         id: Math.random().toString(36).substring(7),
@@ -31,6 +43,7 @@ const useSearchableTags = ({ options, placeholder = "Search..." }: Props) => {
       setInputValue("");
     }
     if (key === "Backspace" && !inputValue) {
+      event.preventDefault();
       setSelectedTags(selectedTags.slice(0, selectedTags.length - 1));
     }
     //on tab press, select the first element in the filteredOptions

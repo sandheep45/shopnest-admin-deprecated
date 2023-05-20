@@ -3,13 +3,6 @@ export enum Role {
   USER = "USER",
 }
 
-export enum Status {
-  PUBLISHED = "PUBLISHED",
-  DRAFT = "DRAFT",
-  INACTIVE = "INACTIVE",
-  SCHEDULED = "SCHEDULED",
-}
-
 export type Image = {
   url: string;
   alt: string;
@@ -59,20 +52,20 @@ export type Variant = {
 export type TProduct = {
   id: string;
   name: string;
-  image: FileList | Image;
+  image: Image;
   description: string;
-  tags: string[];
-  status?: Status;
+  tags: string;
+  status: "PUBLISHED" | "DRAFT" | "INACTIVE" | "SCHEDULED";
   price: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 
-  Variant?: Variant[];
-  MetaData?: MetaData[];
-  CustomerReview?: CustomerReview[];
+  Variant: Variant[];
+  MetaData: MetaData[];
+  CustomerReview: CustomerReview[];
 
-  categoryId?: string;
-  Category?: Category;
+  categoryId: string;
+  Category: Category;
 };
 
 export type CustomerReview = {
@@ -95,7 +88,7 @@ export type Category = {
   id: string;
   name: string;
   description: string;
-  status?: Status;
+  status?: "PUBLISHED" | "DRAFT" | "INACTIVE" | "SCHEDULED";
   image: Image;
   createdAt?: Date;
   updatedAt: Date;

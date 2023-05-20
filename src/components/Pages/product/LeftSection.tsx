@@ -7,10 +7,14 @@ import Tagify from "@src/components/common/Tagify";
 import { useFormContext } from "react-hook-form";
 import { productStatusOptions } from "@src/utils/constants";
 import useGetAllcategoryNameAndId from "@src/hooks/api/useGetAllcategoryNameAndId";
-import { type TProduct } from "@src/utils/types";
+import type { Product, Variant } from "@prisma/client";
+
+interface IProduct extends Product {
+  variant: Variant;
+}
 
 const LeftSection = () => {
-  const { register, watch } = useFormContext<TProduct>();
+  const { register, watch, setValue } = useFormContext<IProduct>();
   const { data: categoryList } = useGetAllcategoryNameAndId();
   const statusOption = useMemo(() => productStatusOptions, []);
   const categoryOptions = useMemo(
@@ -21,8 +25,9 @@ const LeftSection = () => {
       })),
     [categoryList]
   );
+
   return (
-    <div className="flex w-full flex-col gap-6 md:w-72">
+    <div className="flex w-full flex-col gap-6 sm:w-72">
       <ThumbnailCard />
 
       <StatusCard statusOption={statusOption} />
@@ -34,16 +39,23 @@ const LeftSection = () => {
         <div className="flex w-full flex-col justify-between gap-1">
           <h3>Categories</h3>
           <DropDown
-            {...register("categoryId")}
+            className="w-full"
+            aria-label="Category"
+            label="Category"
+            placeholder="Select a category"
+            onValueChange={(value) => setValue("categoryId", value)}
             descriptionTag="Add product to a category."
             list={categoryOptions ? categoryOptions : []}
-            value={""}
+            value={watch("categoryId")}
           />
         </div>
 
         <div className="flex w-full flex-col justify-between gap-1">
           <h4>Tags</h4>
-          <Tagify descriptionTag="Add tags to a category." tags={[]} />
+          <Tagify
+            descriptionTag="Add tags to a category."
+            tags={watch("tags") || ""}
+          />
         </div>
       </Card>
 
@@ -64,7 +76,11 @@ const LeftSection = () => {
         <h2 className="text-xl font-semibold">Product Template</h2>
 
         <DropDown
-          {...register("Category.description")}
+          className="w-full"
+          aria-label="Template"
+          placeholder="Select Template"
+          label="Template"
+          {...register("variant.barcode")}
           descriptionTag="Assign a template from your current theme to define how a single
                 product is displayed."
           list={statusOption}

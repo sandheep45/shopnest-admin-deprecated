@@ -15,11 +15,10 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 }) => (
   <button
     onClick={onClick}
-    className={`text-lg hover:underline hover:decoration-blue-600 hover:underline-offset-[16px] ${
-      isCurrentTab
+    className={`text-lg hover:underline hover:decoration-blue-600 hover:underline-offset-[16px] ${isCurrentTab
         ? "text-blue-600 underline underline-offset-[16px]"
         : "text-gray-500"
-    }`}
+      }`}
   >
     {tab}
   </button>
@@ -28,7 +27,7 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 const RightSection = () => {
   const { productId } = useRouter().query;
   const [tabs, SetTabs] = useState(MAIN_TABS);
-  const [Tabs, currentTabIndex] = useTabs({
+  const [Tabs, currentTabIndex, setCurrentTabIndex] = useTabs({
     TabComponent: MainTabButton,
     tabs: tabs,
   });
@@ -52,12 +51,17 @@ const RightSection = () => {
       <div className="flex-1">
         <div className="relative flex-1">
           <General
-            isCurrentTab={currentTabIndex === 0}
             statusOption={statusOption}
+            setCurrentTabIndex={setCurrentTabIndex}
+            isCurrentTab={currentTabIndex === 0}
           />
         </div>
         <div className="relative flex-1">
-          <Advanced isCurrentTab={currentTabIndex === 1} />
+          <Advanced
+            setCurrentTabIndex={setCurrentTabIndex}
+            statusOption={statusOption}
+            isCurrentTab={currentTabIndex === 1}
+          />
         </div>
         {productId && (
           <div className="relative flex-1">
@@ -65,7 +69,6 @@ const RightSection = () => {
           </div>
         )}
       </div>
-      <button type="submit">Submit</button>
     </div>
   );
 };

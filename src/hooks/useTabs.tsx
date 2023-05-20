@@ -11,7 +11,14 @@ type UseTabsProps = {
   TabComponent: React.FC<ITabComponentProps>;
 };
 
-type UseTabs = ({ TabComponent, tabs }: UseTabsProps) => [React.FC, number];
+type UseTabs = ({
+  TabComponent,
+  tabs,
+}: UseTabsProps) => [
+  React.FC,
+  number,
+  React.Dispatch<React.SetStateAction<number>>
+];
 
 const useTabs: UseTabs = ({ TabComponent, tabs }) => {
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
@@ -31,7 +38,7 @@ const useTabs: UseTabs = ({ TabComponent, tabs }) => {
     );
   };
 
-  return [Tabs, currentTabIndex];
+  return [Tabs, currentTabIndex, setCurrentTabIndex];
 };
 
 export default useTabs;

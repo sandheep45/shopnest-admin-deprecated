@@ -5,39 +5,49 @@ import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import LeftSection from "@src/components/Pages/product/LeftSection";
 import RightSection from "@src/components/Pages/product/RightSection";
 import useUploadFileToCloudinary from "@src/hooks/api/useUploadFileToCloudinary";
-import type { TProduct } from "@src/utils/types";
-import { imageToBase64 } from "@src/utils/convertImageToBlog";
+import type {
+  Variant,
+  Product,
+  MetaData,
+  CustomerReview,
+} from "@prisma/client";
+
+interface IProduct extends Product {
+  variant: Variant;
+  variantMetaData: MetaData;
+  productMetaData: MetaData;
+  customerReview: CustomerReview;
+}
 
 const AddProduct = () => {
   const utils = api.useContext();
   const { uploadImage } = useUploadFileToCloudinary();
-  const methods = useForm<TProduct>();
+  const methods = useForm<IProduct>();
   const { mutate } = api.product.createProduct.useMutation({
     onSuccess: async () => {
       await utils.product.getAllProducts.invalidate();
     },
   });
 
-  const onSubmit: SubmitHandler<TProduct> = async (data) => {
-    const blob = await imageToBase64((data.image as FileList)[0] as File);
-    const image = await uploadImage({
-      contentType: "image",
-      file: blob,
-      public_id: "product",
-    });
-    mutate({
-      categoryId: data.categoryId as string,
-      description: data.description,
-      image: {
-        alt: image.original_filename,
-        url: image.secure_url,
-        height: image.height,
-        width: image.width,
-      },
-      name: data.name,
-      price: data.price,
-      // tags: data.tags as string[],
-    });
+  const onSubmit: SubmitHandler<IProduct> = (data) => {
+    console.log(data);
+    // const image = await uploadImage({
+    //   contentType: "image",
+    //   file: data.image.url,
+    //   public_id: "product",
+    // });
+    // mutate({
+    //   categoryId: data.categoryId,
+    //   description: data.description,
+    //   image: {
+    //     alt: image.original_filename,
+    //     url: image.secure_url,
+    //     height: image.height,
+    //     width: image.width,
+    //   },
+    //   name: data.name,
+    //   tags: data.tags,
+    // });
   };
 
   return (
@@ -50,7 +60,7 @@ const AddProduct = () => {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          className="item-center flex flex-col justify-center gap-8 p-8 transition-all duration-300 md:flex-row md:items-start"
+          className="item-center flex flex-col justify-center gap-8 p-4 transition-all duration-300 sm:flex-row sm:items-start sm:p-8"
         >
           {/* left section */}
           <LeftSection />

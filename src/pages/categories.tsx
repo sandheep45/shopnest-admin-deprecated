@@ -87,7 +87,7 @@ const columns = [
     header: () => <span className="">Action</span>,
     cell: (info) => (
       <span className="flex items-center  gap-3">
-        <Button onPress={() => alert(info.getValue())}>Delete</Button>
+        <Button onClick={() => alert(info.getValue())}>Delete</Button>
       </span>
     ),
   }),
@@ -116,17 +116,15 @@ const Categories: NextPage = () => {
         <Card className="h-screen w-full flex-col gap-5 px-8 pb-12 pt-8">
           <div className="flex w-full flex-col items-center justify-between sm:flex-row sm:gap-5">
             <Input
-              wrapperClassName="w-full sm:w-1/2 md:max-w-xs"
+              wrapperClassName=""
               className="w-full"
               id="search"
               label="search"
               hideLabel
             />
-            <div className="flex w-full flex-col items-center sm:max-w-fit sm:flex-row sm:gap-6 md:gap-8">
-              <DropDown
-                className="min-w-max pr-6 md:max-w-min"
-                list={statusOption}
-              />
+            <div className="flex flex-col items-center sm:flex-row sm:gap-6 md:gap-8">
+              <DropDown aria-label="filter-by-status" list={statusOption} />
+
               <Link className="min-w-fit md:max-w-fit" href={`/add-category`}>
                 Add Category
               </Link>

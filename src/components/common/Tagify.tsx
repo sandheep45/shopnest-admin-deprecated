@@ -1,18 +1,19 @@
 import useSearchableTags from "@src/hooks/useSearchableTag";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import Input from "./Input";
 import Card from "./Card";
 import { useFormContext } from "react-hook-form";
+import { type TProduct } from "@src/utils/types";
 
 interface ITagifyProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
-  tags: string[];
+  tags: string;
   descriptionTag?: string;
 }
 
 const Tagify: React.FC<ITagifyProps> = (props) => {
-  const { register } = useFormContext();
+  const { setValue } = useFormContext<TProduct>();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const {
@@ -28,6 +29,16 @@ const Tagify: React.FC<ITagifyProps> = (props) => {
     placeholder: "Search...",
   });
 
+  useEffect(() => {
+    setValue(
+      "tags",
+      selectedTags
+        .map((tag) => tag.label)
+        .filter((tag) => tag.trim() !== "")
+        .join(",") || ""
+    );
+  }, [selectedTags, setValue]);
+
   function focusInputOnClickDiv() {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -38,22 +49,23 @@ const Tagify: React.FC<ITagifyProps> = (props) => {
     <div className="flex w-full flex-col gap-1">
       <div className="flex w-full flex-wrap rounded-md border border-gray-300 p-2 dark:border-gray-700 dark:bg-[#1e1e2d] dark:text-gray-300">
         <div onClick={focusInputOnClickDiv} className="flex w-full flex-wrap">
-          {selectedTags.map((option) => (
-            <span
-              key={option.id}
-              className="mb-2 mr-2 flex items-center gap-2 rounded-md bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 dark:bg-[#2b2b40] dark:text-gray-400"
-            >
-              {option.label}
-              <RxCross2
-                className="cursor-pointer"
-                onClick={() => handleRemoveTag(option.id)}
-              />
-            </span>
-          ))}
+          {selectedTags.map((option) =>
+            option.label === "" ? null : (
+              <span
+                key={option.id}
+                className="mb-2 mr-2 flex items-center gap-2 rounded-md bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 dark:bg-[#2b2b40] dark:text-gray-400"
+              >
+                {option.label}
+                <RxCross2
+                  className="cursor-pointer"
+                  onClick={() => handleRemoveTag(option.id)}
+                />
+              </span>
+            )
+          )}
         </div>
         <div className="relative flex w-full">
           <Input
-            {...register("tags")}
             label="Tags"
             hideLabel
             id="tags"

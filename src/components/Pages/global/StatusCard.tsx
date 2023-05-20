@@ -1,3 +1,4 @@
+import { type Status } from "@prisma/client";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
 import React from "react";
@@ -7,8 +8,13 @@ interface IStatusCardProps {
   statusOption: { name: string; value: string }[];
 }
 
+interface IStatus {
+  status: Status;
+}
+
 const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
-  const { register } = useFormContext();
+  const { watch, setValue } = useFormContext<IStatus>();
+
   return (
     <Card className="flex-col gap-4 py-8">
       <div className="flex w-full items-center justify-between">
@@ -17,9 +23,14 @@ const StatusCard: React.FC<IStatusCardProps> = ({ statusOption }) => {
       </div>
 
       <DropDown
-        {...register("status")}
+        className="w-full"
+        aria-label="Status"
+        label="Status"
+        onValueChange={(value) => setValue("status", value as Status)}
+        placeholder="Select a status"
         descriptionTag="Set the product status."
         list={statusOption}
+        value={watch("status")}
       />
     </Card>
   );
