@@ -32,7 +32,7 @@ interface IGeneratProps {
 
 interface IOptions {
   name: string;
-  values: string[];
+  values: string;
 }
 
 interface IProduct extends Product {
@@ -75,7 +75,7 @@ const General: React.FC<IGeneratProps> = ({
 
     const option = {
       name,
-      values: values.split(",").map((value) => value.trim()),
+      values,
     };
     const updatedOption = [...(watch("VariantOption") || []), option];
     setValue("VariantOption", updatedOption);

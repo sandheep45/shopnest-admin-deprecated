@@ -50,6 +50,12 @@ export const productRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
+        option: z.array(
+          z.object({
+            name: z.string(),
+            values: z.string(),
+          })
+        ),
         description: z.string(),
         categoryId: z.string(),
         variants: z.array(z.string()).optional(),
@@ -66,9 +72,9 @@ export const productRouter = createTRPCRouter({
         taxPercent: z.number(),
         metaData: z
           .object({
-            keywords: z.array(z.string()).optional(),
-            description: z.string().optional(),
-            title: z.string().optional(),
+            keywords: z.string(),
+            description: z.string(),
+            title: z.string(),
           })
           .optional(),
       })
@@ -93,7 +99,22 @@ export const productRouter = createTRPCRouter({
                 id: variantId,
               })),
             },
+            ...(input.metaData && {
+              MetaData: {
+                create: {
+                  keywords: input.metaData?.keywords,
+                  description: input.metaData?.description,
+                  title: input.metaData?.title,
+                },
+              },
+            }),
             status: input.status,
+            option: {
+              create: input.option?.map((option) => ({
+                name: option.name,
+                values: option.values,
+              })),
+            },
           },
         });
       } catch (error) {

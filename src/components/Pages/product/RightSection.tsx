@@ -15,10 +15,11 @@ const MainTabButton: React.FC<ITabComponentProps> = ({
 }) => (
   <button
     onClick={onClick}
-    className={`text-lg hover:underline hover:decoration-blue-600 hover:underline-offset-[16px] ${isCurrentTab
+    className={`text-lg hover:underline hover:decoration-blue-600 hover:underline-offset-[16px] ${
+      isCurrentTab
         ? "text-blue-600 underline underline-offset-[16px]"
         : "text-gray-500"
-      }`}
+    }`}
   >
     {tab}
   </button>
@@ -59,7 +60,6 @@ const RightSection = () => {
         <div className="relative flex-1">
           <Advanced
             setCurrentTabIndex={setCurrentTabIndex}
-            statusOption={statusOption}
             isCurrentTab={currentTabIndex === 1}
           />
         </div>

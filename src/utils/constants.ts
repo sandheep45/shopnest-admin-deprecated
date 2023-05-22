@@ -35,3 +35,14 @@ export const productVariantOptions = [
     value: "Style",
   },
 ];
+
+export const taxClassOptions = [
+  {
+    name: "Taxable Goods",
+    value: "taxableGoods",
+  },
+  {
+    name: "Tax Free Goods",
+    value: "taxFreeGoods",
+  },
+];

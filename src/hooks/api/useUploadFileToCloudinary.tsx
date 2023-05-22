@@ -1,5 +1,6 @@
 import { env } from "@src/env.mjs";
 import CryptoJS from "crypto-js";
+import { useState } from "react";
 
 interface IProps {
   public_id: string;
@@ -32,33 +33,39 @@ export interface CloudinaryUploadImageResponse {
 }
 
 const useUploadFileToCloudinary = () => {
+  const [isImageLoading, setIsImageLoading] = useState(false);
+  const uploadImage = async ({ contentType, file, public_id }: IProps) => {
+    const API_KEY = env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
+    const SECRET = env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+    const CLOUD_NAME = env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const timestamp = ((Date.now() / 1000) | 0).toString();
+    const apiKey = API_KEY;
+    const apiSecret = SECRET;
+    const cloud = CLOUD_NAME;
+    const hashString = `public_id=${public_id}&timestamp=${timestamp}${apiSecret}`;
+    const signature = CryptoJS.SHA1(hashString).toString();
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/${contentType}/upload`;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("timestamp", timestamp);
+    formData.append("public_id", public_id);
+    formData.append("api_key", apiKey);
+    formData.append("signature", signature);
+
+    setIsImageLoading(true);
+
+    const response = await fetch(uploadUrl, {
+      method: "post",
+      body: formData,
+    });
+    const data = (await response.json()) as CloudinaryUploadImageResponse;
+    setIsImageLoading(false);
+    return data;
+  };
   return {
-    uploadImage: async ({ contentType, file, public_id }: IProps) => {
-      const API_KEY = env.CLOUDINARY_API_KEY;
-      const SECRET = env.CLOUDINARY_SECRET;
-      const CLOUD_NAME = env.CLOUDINARY_CLOUD_NAME;
-      const timestamp = ((Date.now() / 1000) | 0).toString();
-      const apiKey = API_KEY;
-      const apiSecret = SECRET;
-      const cloud = CLOUD_NAME;
-      const hashString = `public_id=${public_id}&timestamp=${timestamp}${apiSecret}`;
-      const signature = CryptoJS.SHA1(hashString).toString();
-      const uploadUrl = `https://api.cloudinary.com/v1_1/${cloud}/${contentType}/upload`;
-
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("timestamp", timestamp);
-      formData.append("public_id", public_id);
-      formData.append("api_key", apiKey);
-      formData.append("signature", signature);
-
-      const response = await fetch(uploadUrl, {
-        method: "post",
-        body: formData,
-      });
-      const data = (await response.json()) as CloudinaryUploadImageResponse;
-      return data;
-    },
+    isImageLoading,
+    uploadImage,
   };
 };
 
