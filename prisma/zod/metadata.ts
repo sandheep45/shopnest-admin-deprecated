@@ -1,6 +1,12 @@
-import * as z from "zod"
-import * as imports from "../null"
-import { CompleteCategory, RelatedCategoryModel, CompleteProduct, RelatedProductModel, CompleteVariant, RelatedVariantModel } from "./index"
+import * as z from "zod";
+import {
+  type CompleteCategory,
+  RelatedCategoryModel,
+  type CompleteProduct,
+  RelatedProductModel,
+  type CompleteVariant,
+  RelatedVariantModel,
+} from "./index";
 
 export const MetaDataModel = z.object({
   id: z.string(),
@@ -10,12 +16,12 @@ export const MetaDataModel = z.object({
   categoryId: z.string().nullish(),
   productId: z.string().nullish(),
   variantId: z.string().nullish(),
-})
+});
 
 export interface CompleteMetaData extends z.infer<typeof MetaDataModel> {
-  Category?: CompleteCategory | null
-  Product?: CompleteProduct | null
-  Variant?: CompleteVariant | null
+  Category?: CompleteCategory | null;
+  Product?: CompleteProduct | null;
+  Variant?: CompleteVariant | null;
 }
 
 /**
@@ -23,8 +29,10 @@ export interface CompleteMetaData extends z.infer<typeof MetaDataModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedMetaDataModel: z.ZodSchema<CompleteMetaData> = z.lazy(() => MetaDataModel.extend({
-  Category: RelatedCategoryModel.nullish(),
-  Product: RelatedProductModel.nullish(),
-  Variant: RelatedVariantModel.nullish(),
-}))
+export const RelatedMetaDataModel: z.ZodSchema<CompleteMetaData> = z.lazy(() =>
+  MetaDataModel.extend({
+    Category: RelatedCategoryModel.nullish(),
+    Product: RelatedProductModel.nullish(),
+    Variant: RelatedVariantModel.nullish(),
+  })
+);

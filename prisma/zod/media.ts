@@ -1,13 +1,12 @@
-import * as z from "zod"
-import * as imports from "../null"
-import { CompleteImage, RelatedImageModel } from "./index"
+import * as z from "zod";
+import { type CompleteImage, RelatedImageModel } from "./index";
 
 export const MediaModel = z.object({
   id: z.string(),
-})
+});
 
 export interface CompleteMedia extends z.infer<typeof MediaModel> {
-  image: CompleteImage[]
+  image: CompleteImage[];
 }
 
 /**
@@ -15,6 +14,8 @@ export interface CompleteMedia extends z.infer<typeof MediaModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedMediaModel: z.ZodSchema<CompleteMedia> = z.lazy(() => MediaModel.extend({
-  image: RelatedImageModel.array(),
-}))
+export const RelatedMediaModel: z.ZodSchema<CompleteMedia> = z.lazy(() =>
+  MediaModel.extend({
+    image: RelatedImageModel.array(),
+  })
+);

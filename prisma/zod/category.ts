@@ -1,7 +1,13 @@
-import * as z from "zod"
-import * as imports from "../null"
-import { Status } from "@prisma/client"
-import { CompleteImage, RelatedImageModel, CompleteProduct, RelatedProductModel, CompleteMetaData, RelatedMetaDataModel } from "./index"
+import * as z from "zod";
+import { Status } from "@prisma/client";
+import {
+  type CompleteImage,
+  RelatedImageModel,
+  type CompleteProduct,
+  RelatedProductModel,
+  type CompleteMetaData,
+  RelatedMetaDataModel,
+} from "./index";
 
 export const CategoryModel = z.object({
   id: z.string(),
@@ -10,12 +16,12 @@ export const CategoryModel = z.object({
   status: z.nativeEnum(Status),
   createdAt: z.date(),
   updatedAt: z.date(),
-})
+});
 
 export interface CompleteCategory extends z.infer<typeof CategoryModel> {
-  image: CompleteImage
-  Product: CompleteProduct[]
-  MetaData: CompleteMetaData[]
+  image: CompleteImage;
+  Product: CompleteProduct[];
+  MetaData: CompleteMetaData[];
 }
 
 /**
@@ -23,8 +29,10 @@ export interface CompleteCategory extends z.infer<typeof CategoryModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedCategoryModel: z.ZodSchema<CompleteCategory> = z.lazy(() => CategoryModel.extend({
-  image: RelatedImageModel,
-  Product: RelatedProductModel.array(),
-  MetaData: RelatedMetaDataModel.array(),
-}))
+export const RelatedCategoryModel: z.ZodSchema<CompleteCategory> = z.lazy(() =>
+  CategoryModel.extend({
+    image: RelatedImageModel,
+    Product: RelatedProductModel.array(),
+    MetaData: RelatedMetaDataModel.array(),
+  })
+);
