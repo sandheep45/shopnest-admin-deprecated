@@ -54,7 +54,7 @@ export const variantRouter = createTRPCRouter({
         payload: z.array(
           z.object({
             name: z.string(),
-            values: z.array(z.string()),
+            values: z.string(),
           })
         ),
       })

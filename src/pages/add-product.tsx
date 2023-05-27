@@ -30,24 +30,25 @@ const AddProduct = () => {
   });
 
   const onSubmit: SubmitHandler<IProduct> = (data) => {
-    console.log(data);
+    if (!data.categoryId) return;
     // const image = await uploadImage({
     //   contentType: "image",
     //   file: data.image.url,
     //   public_id: "product",
     // });
-    // mutate({
-    //   categoryId: data.categoryId,
-    //   description: data.description,
-    //   image: {
-    //     alt: image.original_filename,
-    //     url: image.secure_url,
-    //     height: image.height,
-    //     width: image.width,
-    //   },
-    //   name: data.name,
-    //   tags: data.tags,
-    // });
+    mutate({
+      categoryId: data.categoryId,
+      description: data.description,
+      image: {
+        alt: "image.original_filename",
+        url: "https://res.cloudinary.com/dsvm26gtf/image/upload/v1685169216/product.png",
+        height: 100,
+        width: 100,
+      },
+      name: data.name,
+      tags: data.tags,
+      taxPercent: 100,
+    });
   };
 
   return (

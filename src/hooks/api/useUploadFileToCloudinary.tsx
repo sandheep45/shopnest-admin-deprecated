@@ -34,9 +34,9 @@ export interface CloudinaryUploadImageResponse {
 const useUploadFileToCloudinary = () => {
   return {
     uploadImage: async ({ contentType, file, public_id }: IProps) => {
-      const API_KEY = env.CLOUDINARY_API_KEY;
-      const SECRET = env.CLOUDINARY_SECRET;
-      const CLOUD_NAME = env.CLOUDINARY_CLOUD_NAME;
+      const API_KEY = env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
+      const SECRET = env.NEXT_PUBLIC_CLOUDINARY_SECRET;
+      const CLOUD_NAME = env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
       const timestamp = ((Date.now() / 1000) | 0).toString();
       const apiKey = API_KEY;
       const apiSecret = SECRET;

@@ -46,7 +46,7 @@ const LeftSection = () => {
             onValueChange={(value) => setValue("categoryId", value)}
             descriptionTag="Add product to a category."
             list={categoryOptions ? categoryOptions : []}
-            value={watch("categoryId")}
+            value={watch("categoryId") || ""}
           />
         </div>
 

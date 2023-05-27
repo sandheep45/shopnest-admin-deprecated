@@ -1,6 +1,7 @@
 import type {
   CustomerReview,
   MetaData,
+  Options,
   Product,
   Variant,
 } from "@prisma/client";
@@ -10,7 +11,7 @@ import DropDown from "@src/components/common/DropDown";
 import Input from "@src/components/common/Input";
 import Loader from "@src/components/common/Loader";
 import TextArea from "@src/components/common/TextArea";
-import { useToast } from "@src/context/ToastContextProvider";
+// import { useToast } from "@src/context/ToastContextProvider";
 import { api } from "@src/utils/api";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -27,9 +28,7 @@ interface IAdvanceProps {
   }[];
 }
 
-interface IOptions {
-  name: string;
-  values: string[];
+interface IOptions extends Options {
   selectedValue: string;
 }
 
@@ -47,7 +46,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
 }) => {
   const { productId } = useRouter().query;
   const utils = api.useContext();
-  const { addToast } = useToast();
+  // const { addToast } = useToast();
   const { register, watch, setValue } = useFormContext<IProduct>();
   const [variantOption, setVariantOption] = useState<IOptions[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,12 +64,12 @@ const Advanced: React.FC<IAdvanceProps> = ({
       });
 
       if (!data) {
-        addToast("error", "No variant found with this option");
+        // addToast("error", "No variant found with this option");
         return;
       }
       setValue("variant", data);
     } catch (error) {
-      addToast("error", "Something went wrong");
+      // addToast("error", "Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -121,7 +120,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
                 aria-label="stock-status"
                 descriptionTag="Set the product stock status."
                 placeholder={variantOption.name}
-                list={variantOption.values?.map((value) => ({
+                list={variantOption.values?.split(",")?.map((value) => ({
                   name: value,
                   value,
                 }))}
@@ -155,7 +154,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
 
         <div className="flex w-full flex-wrap items-center gap-3">
           <Input
-            {...register("variant.quantity")}
+            {...register("variant.quantity.onSelf")}
             id="quantity"
             descriptionTag="Enter the product quantity."
             className="flex-1"
@@ -200,13 +199,12 @@ const Advanced: React.FC<IAdvanceProps> = ({
         <div className="flex w-full flex-wrap gap-7">
           <DropDown
             aria-label="tax-class"
-            {...register("variant.image.alt")}
             descriptionTag="Set the product tax class."
             label="Tax Class"
             list={statusOption}
           />
           <Input
-            {...register("variant.image.width")}
+            {...register("variant.taxPercent", { valueAsNumber: true })}
             id="vat"
             descriptionTag="Set the product VAT about."
             className="flex-1"
@@ -237,7 +235,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
         <h3 className="text-xl font-semibold">Shipping</h3>
 
         <Input
-          {...register("customerReview")}
+          {...register("variant.weight")}
           descriptionTag="Set a product weight in kilograms (kg)."
           label="Weight"
           id="weight"
@@ -247,7 +245,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
           <h4 className="text-sm font-semibold">Dimention</h4>
           <div className="flex w-full flex-wrap items-start gap-3">
             <Input
-              {...register("variant")}
+              {...register("variant.width")}
               descriptionTag="Enter the product dimensions(cm)."
               className="flex-1"
               id="width"
@@ -255,14 +253,14 @@ const Advanced: React.FC<IAdvanceProps> = ({
               hideLabel
             />
             <Input
-              {...register("variant")}
+              {...register("variant.height")}
               label="Height"
               hideLabel
               id="height"
               className="flex-1"
             />
             <Input
-              {...register("variant")}
+              {...register("variant.length")}
               label="length"
               hideLabel
               id="length"
@@ -307,7 +305,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
         </Button>
         <Button
           className="w-fit rounded-md bg-[#0095e8] px-6 py-2 text-white"
-          type="button"
+          type="submit"
         >
           Add Variants
         </Button>

@@ -38,7 +38,7 @@ export const productRouter = createTRPCRouter({
           include: {
             CustomerReview: true,
             MetaData: true,
-            option: true,
+            VariantOption: true,
           },
         });
       } catch (error) {
@@ -86,7 +86,6 @@ export const productRouter = createTRPCRouter({
               width: input.image.width,
             },
             tags: input.tags,
-            taxPercent: input.taxPercent,
             categoryId: input.categoryId,
             Variant: {
               connect: input.variants?.map((variantId) => ({
@@ -136,7 +135,6 @@ export const productRouter = createTRPCRouter({
               width: input.image.width,
             },
             tags: input.tags,
-            taxPercent: input.taxPercent,
             categoryId: input.categoryId,
             Variant: {
               connect: input.variants?.map((variantId) => ({

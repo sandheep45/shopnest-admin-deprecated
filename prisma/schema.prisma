@@ -81,6 +81,7 @@ model Variant {
     options     Options[]
     price       Int
     sku         String
+    taxPercent  Int
     barcode     String
     quantity    Quantity
     MetaData    MetaData[]
@@ -97,7 +98,6 @@ model Product {
     image       Image
     description String
     tags        String
-    taxPercent  Int
     status      Status   @default(DRAFT)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt

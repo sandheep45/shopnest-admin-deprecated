@@ -9,6 +9,7 @@ import type {
   Product,
   MetaData,
   CustomerReview,
+  Options,
 } from "@prisma/client";
 import TextArea from "@src/components/common/TextArea";
 import { api } from "@src/utils/api";
@@ -30,17 +31,12 @@ interface IGeneratProps {
   }[];
 }
 
-interface IOptions {
-  name: string;
-  values: string[];
-}
-
 interface IProduct extends Product {
   variant: Variant;
   metaData: MetaData;
   productMetaData: MetaData;
   customerReview: CustomerReview;
-  VariantOption: IOptions[];
+  VariantOption: Options[];
 }
 
 const General: React.FC<IGeneratProps> = ({
@@ -75,7 +71,7 @@ const General: React.FC<IGeneratProps> = ({
 
     const option = {
       name,
-      values: values.split(",").map((value) => value.trim()),
+      values,
     };
     const updatedOption = [...(watch("VariantOption") || []), option];
     setValue("VariantOption", updatedOption);
