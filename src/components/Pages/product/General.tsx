@@ -9,6 +9,7 @@ import type {
   Product,
   MetaData,
   CustomerReview,
+  Options,
 } from "@prisma/client";
 import TextArea from "@src/components/common/TextArea";
 import { api } from "@src/utils/api";
@@ -20,6 +21,7 @@ import { IoAdd } from "react-icons/io5";
 import { MdDownloadDone } from "react-icons/md";
 import { productVariantOptions } from "@src/utils/constants";
 import { useToast } from "@src/context/ToastContextProvider";
+import { type CreateProductInput } from "@src/schema";
 interface IGeneratProps {
   className?: string;
   isCurrentTab?: boolean;
@@ -30,17 +32,12 @@ interface IGeneratProps {
   }[];
 }
 
-interface IOptions {
-  name: string;
-  values: string;
-}
-
 interface IProduct extends Product {
   variant: Variant;
   metaData: MetaData;
   productMetaData: MetaData;
   customerReview: CustomerReview;
-  VariantOption: IOptions[];
+  VariantOption: Options[];
 }
 
 const General: React.FC<IGeneratProps> = ({
@@ -53,7 +50,7 @@ const General: React.FC<IGeneratProps> = ({
     value: "",
   };
   const [input, setInput] = useState([newOption]);
-  const { register, setValue, watch } = useFormContext<IProduct>();
+  const { register, setValue, watch } = useFormContext<CreateProductInput>();
   const options = useMemo(() => productVariantOptions, []);
   const { addToast } = useToast();
 
@@ -178,21 +175,18 @@ const General: React.FC<IGeneratProps> = ({
         <h3 className="text-xl font-semibold">Meta Options for Product</h3>
 
         <Input
-          {...register("productMetaData.title")}
           descriptionTag="Set a meta tag title. Recommended to be simple and precise keywords."
           label="Meta Tag Title"
           id="meta-tag-title"
         />
 
         <TextArea
-          {...register("productMetaData.description")}
           descriptionTag="Set a description to the product for better visibility."
           lable="Meta Tag Description"
           id="meta-tag-description"
         />
 
         <Input
-          {...register("productMetaData.keywords")}
           descriptionTag="Set a list of keywords that the product is related to. Separate the keywords by adding a comma , between each keyword."
           label="Meta Tag Keywords"
           id="meta-tag-keywords"

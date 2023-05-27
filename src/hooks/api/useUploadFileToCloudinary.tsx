@@ -5,7 +5,7 @@ import { useState } from "react";
 interface IProps {
   public_id: string;
   contentType: string;
-  file: string;
+  file: string | undefined;
 }
 
 export interface CloudinaryUploadImageResponse {
@@ -35,6 +35,8 @@ export interface CloudinaryUploadImageResponse {
 const useUploadFileToCloudinary = () => {
   const [isImageLoading, setIsImageLoading] = useState(false);
   const uploadImage = async ({ contentType, file, public_id }: IProps) => {
+    if (!file) return null;
+
     const API_KEY = env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
     const SECRET = env.NEXT_PUBLIC_CLOUDINARY_SECRET;
     const CLOUD_NAME = env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;

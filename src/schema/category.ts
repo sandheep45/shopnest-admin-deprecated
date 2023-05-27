@@ -3,8 +3,8 @@ import { Status } from "@prisma/client";
 import {
   type CompleteImage,
   RelatedImageModel,
-  type CompleteProduct,
-  RelatedProductModel,
+  type ReadCompleteProduct,
+  ReadRelatedProductModel,
   type CompleteMetaData,
   RelatedMetaDataModel,
 } from "./index";
@@ -13,15 +13,15 @@ export const CategoryModel = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
-  status: z.nativeEnum(Status),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  status: z.nativeEnum(Status).nullish(),
+  createdAt: z.date().nullish(),
+  updatedAt: z.date().nullish(),
 });
 
 export interface CompleteCategory extends z.infer<typeof CategoryModel> {
   image: CompleteImage;
-  Product: CompleteProduct[];
-  MetaData: CompleteMetaData[];
+  Product: ReadCompleteProduct[];
+  CategoryMetaData: CompleteMetaData[];
 }
 
 /**
@@ -32,7 +32,7 @@ export interface CompleteCategory extends z.infer<typeof CategoryModel> {
 export const RelatedCategoryModel: z.ZodSchema<CompleteCategory> = z.lazy(() =>
   CategoryModel.extend({
     image: RelatedImageModel,
-    Product: RelatedProductModel.array(),
-    MetaData: RelatedMetaDataModel.array(),
+    Product: ReadRelatedProductModel.array(),
+    CategoryMetaData: RelatedMetaDataModel.array(),
   })
 );

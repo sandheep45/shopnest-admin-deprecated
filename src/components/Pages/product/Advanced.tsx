@@ -1,9 +1,4 @@
-import type {
-  CustomerReview,
-  MetaData,
-  Product,
-  Variant,
-} from "@prisma/client";
+import type { Options } from "@prisma/client";
 import Button from "@src/components/common/Button";
 import Card from "@src/components/common/Card";
 import DropDown from "@src/components/common/DropDown";
@@ -11,10 +6,11 @@ import Input from "@src/components/common/Input";
 import Loader from "@src/components/common/Loader";
 import TextArea from "@src/components/common/TextArea";
 import { useToast } from "@src/context/ToastContextProvider";
+import { type CreateProductInput } from "@src/schema";
 import { api } from "@src/utils/api";
 import { taxClassOptions } from "@src/utils/constants";
 import { useRouter } from "next/router";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { IoCloudUpload } from "react-icons/io5";
 import { MdOutlineManageSearch } from "react-icons/md";
@@ -24,17 +20,8 @@ interface IAdvanceProps {
   setCurrentTabIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-interface IOptions {
-  name: string;
-  values: string[];
+interface IOptions extends Options {
   selectedValue: string;
-}
-
-interface IProduct extends Product {
-  variant: Variant;
-  variantMetaData: MetaData;
-  customerReview: CustomerReview;
-  VariantOption: IOptions[];
 }
 
 const Advanced: React.FC<IAdvanceProps> = ({
@@ -44,29 +31,17 @@ const Advanced: React.FC<IAdvanceProps> = ({
   const { productId } = useRouter().query;
   const utils = api.useContext();
   const { addToast } = useToast();
-  const { register, watch, setValue } = useFormContext<IProduct>();
+  const { register, watch, setValue } = useFormContext<CreateProductInput>();
   const [variantOption, setVariantOption] = useState<IOptions[]>([]);
+  const [numberOfVariants, setNumberOfVariants] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { VariantOption } = watch();
 
   const taxOption = useMemo(() => taxClassOptions, []);
 
-  const searchVariant = async () => {
+  const searchVariant = () => {
     setIsLoading(true);
     try {
-      const data = await utils.variants.getVariantUsingOption.fetch({
-        productId: productId as string,
-        payload: variantOption.map((option) => ({
-          optionName: option.name,
-          optionValue: option.selectedValue,
-        })),
-      });
-
-      if (!data) {
-        addToast("error", "No variant found with this option");
-        return;
-      }
-      setValue("variant", data);
     } catch (error) {
       addToast("error", "Something went wrong");
     } finally {
@@ -116,10 +91,10 @@ const Advanced: React.FC<IAdvanceProps> = ({
                   handleOptionChange(value, variantOption)
                 }
                 value={variantOption.selectedValue}
-                aria-label="stock-status"
-                descriptionTag="Set the product stock status."
+                aria-label="variant-option"
+                descriptionTag={`Set the product variant ${variantOption.name} option.`}
                 placeholder={variantOption.name}
-                list={variantOption.values?.map((value) => ({
+                list={variantOption.values?.split(",").map((value) => ({
                   name: value,
                   value,
                 }))}
@@ -138,16 +113,16 @@ const Advanced: React.FC<IAdvanceProps> = ({
         )}
 
         <Input
+          {...register(`Variant.sku`)}
           placeholder="SKU number"
-          {...register("variant.sku")}
           descriptionTag="Enter the product SKU."
           label="SKU"
           id="sku"
         />
 
         <Input
+          {...register(`Variant.barcode`)}
           placeholder="Barcode number"
-          {...register("variant.barcode")}
           descriptionTag="Enter the product barcode number."
           label="Barcode"
           id="barcode"
@@ -157,16 +132,16 @@ const Advanced: React.FC<IAdvanceProps> = ({
           <h4 className="text-sm font-semibold">Quantity</h4>
           <div className="flex w-full flex-wrap items-center gap-3">
             <Input
+              {...register(`Variant.quantity.onSelf`)}
               placeholder="On Self"
-              {...register("variant.quantity.onSelf")}
               id="quantity"
               wrapperClassName="flex-1"
               label="Quantity"
               hideLabel
             />
             <Input
+              {...register(`Variant.quantity.inWareHouse`)}
               placeholder="In Warehouse"
-              {...register("variant.quantity.inWareHouse")}
               label="Ware house"
               id="ware-house"
               hideLabel
@@ -184,7 +159,7 @@ const Advanced: React.FC<IAdvanceProps> = ({
         <h3 className="text-xl font-semibold">Pricing</h3>
 
         <Input
-          {...register("variant.price")}
+          {...register(`Variant.price`)}
           descriptionTag="Base price is the original price of the product."
           label="Base Price"
           id="price"
@@ -216,8 +191,9 @@ const Advanced: React.FC<IAdvanceProps> = ({
             list={taxOption}
           />
           <Input
+            {...register(`Variant.taxPercent`)}
+            type="number"
             wrapperClassName="flex-1"
-            {...register("variant.taxPercent")}
             id="vat"
             descriptionTag="Set the product VAT about."
             className="flex-1"
@@ -248,9 +224,9 @@ const Advanced: React.FC<IAdvanceProps> = ({
         <h3 className="text-xl font-semibold">Shipping</h3>
 
         <Input
+          {...register(`Variant.weight`, { valueAsNumber: true })}
           type="number"
           placeholder="Weight"
-          {...register("variant.weight")}
           descriptionTag="Set a product weight in kilograms (kg)."
           label="Weight"
           id="weight"
@@ -260,10 +236,12 @@ const Advanced: React.FC<IAdvanceProps> = ({
           <h4 className="text-sm font-semibold">Dimention</h4>
           <div className="flex w-full flex-wrap items-start gap-3">
             <Input
+              {...register(`Variant.width`, {
+                valueAsNumber: true,
+              })}
               type="number"
               placeholder="Width (W)"
               wrapperClassName="flex-1"
-              {...register("variant.width")}
               descriptionTag="Enter the product dimensions(cm)."
               className="flex-1"
               id="width"
@@ -271,20 +249,24 @@ const Advanced: React.FC<IAdvanceProps> = ({
               hideLabel
             />
             <Input
+              {...register(`Variant.height`, {
+                valueAsNumber: true,
+              })}
               type="number"
               placeholder="Height (H)"
               wrapperClassName="flex-1"
-              {...register("variant.height")}
               label="Height"
               hideLabel
               id="height"
               className="flex-1"
             />
             <Input
+              {...register(`Variant.length`, {
+                valueAsNumber: true,
+              })}
               placeholder="Length (L)"
               type="number"
               wrapperClassName="flex-1"
-              {...register("variant.length")}
               label="length"
               hideLabel
               id="length"
@@ -299,26 +281,24 @@ const Advanced: React.FC<IAdvanceProps> = ({
         <h3 className="text-xl font-semibold">Meta Options for Varinat</h3>
 
         <Input
-          {...register("variantMetaData.title")}
           descriptionTag="Set a meta tag title. Recommended to be simple and precise keywords."
           label="Meta Tag Title"
           id="meta-tag-title"
         />
 
         <TextArea
-          {...register("variantMetaData.description")}
           descriptionTag="Set a description to the product for better visibility."
           lable="Meta Tag Description"
           id="meta-tag-description"
         />
 
         <Input
-          {...register("variantMetaData.keywords")}
           descriptionTag="Set a list of keywords that the product is related to. Separate the keywords by adding a comma , between each keyword."
           label="Meta Tag Keywords"
           id="meta-tag-keywords"
         />
       </Card>
+
       <div className="flex w-full justify-end gap-4">
         <Button
           onClick={() => setCurrentTabIndex(0)}
@@ -328,10 +308,17 @@ const Advanced: React.FC<IAdvanceProps> = ({
           Cancel
         </Button>
         <Button
-          type="submit"
+          onClick={() => setNumberOfVariants(numberOfVariants + 1)}
+          type="button"
           className="w-fit rounded-md bg-[#0095e8] px-6 py-2 text-white"
         >
           Add Variants
+        </Button>
+        <Button
+          type="submit"
+          className="w-fit rounded-md bg-[#0095e8] px-6 py-2 text-white"
+        >
+          Save
         </Button>
       </div>
     </div>

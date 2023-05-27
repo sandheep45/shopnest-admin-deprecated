@@ -6,19 +6,7 @@ interface IUseGetAllProduct {
 }
 
 const useGetAllProduct = ({ limit, offset }: IUseGetAllProduct) => {
-  const allProducts = api.product.getAllProducts.useQuery(
-    {
-      limit,
-      offset,
-    },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      staleTime: 1000 * 20, // 20 seconds
-    }
-  );
-  return allProducts;
+  return {};
 };
 
 export default useGetAllProduct;

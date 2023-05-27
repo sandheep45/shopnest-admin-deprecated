@@ -19,11 +19,11 @@ const server = z.object({
     process.env.VERCEL ? z.string().min(1) : z.string().url()
   ),
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
-  // DISCORD_CLIENT_ID: z.string(),
+  // DISCORD_CLIENT_id: z.string().nullish(),
   // DISCORD_CLIENT_SECRET: z.string(),
-  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_id: z.string().nullish(),
   GOOGLE_CLIENT_SECRET: z.string(),
-  FACEBOOK_CLIENT_ID: z.string(),
+  FACEBOOK_CLIENT_id: z.string().nullish(),
   FACEBOOK_CLIENT_SECRET: z.string(),
 });
 

@@ -6,7 +6,6 @@ import DropDown from "@src/components/common/DropDown";
 import Tagify from "@src/components/common/Tagify";
 import { useFormContext } from "react-hook-form";
 import { productStatusOptions } from "@src/utils/constants";
-import useGetAllcategoryNameAndId from "@src/hooks/api/useGetAllcategoryNameAndId";
 import type { Product, Variant } from "@prisma/client";
 
 interface IProduct extends Product {
@@ -14,17 +13,8 @@ interface IProduct extends Product {
 }
 
 const LeftSection = () => {
-  const { register, watch, setValue } = useFormContext<IProduct>();
-  const { data: categoryList } = useGetAllcategoryNameAndId();
+  const { register, watch, setValue } = useFormContext();
   const statusOption = useMemo(() => productStatusOptions, []);
-  const categoryOptions = useMemo(
-    () =>
-      categoryList?.map((category) => ({
-        name: category.name,
-        value: category.id,
-      })),
-    [categoryList]
-  );
 
   return (
     <div className="flex w-full flex-col gap-6 sm:w-72">
@@ -45,8 +35,8 @@ const LeftSection = () => {
             placeholder="Select a category"
             onValueChange={(value) => setValue("categoryId", value)}
             descriptionTag="Add product to a category."
-            list={categoryOptions ? categoryOptions : []}
-            value={watch("categoryId")}
+            list={[]}
+            // value={watch("categoryId") || ""}
           />
         </div>
 
@@ -54,7 +44,8 @@ const LeftSection = () => {
           <h4>Tags</h4>
           <Tagify
             descriptionTag="Add tags to a category."
-            tags={watch("tags") || ""}
+            tags={""}
+            // tags={watch("tags") || ""}
           />
         </div>
       </Card>
@@ -80,7 +71,6 @@ const LeftSection = () => {
           aria-label="Template"
           placeholder="Select Template"
           label="Template"
-          {...register("variant.barcode")}
           descriptionTag="Assign a template from your current theme to define how a single
                 product is displayed."
           list={statusOption}

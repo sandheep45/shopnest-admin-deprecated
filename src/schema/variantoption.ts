@@ -1,8 +1,8 @@
 import * as z from "zod";
-import { type CompleteProduct, RelatedProductModel } from "./index";
+import { type ReadCompleteProduct, ReadRelatedProductModel } from "./index";
 
 export const VariantOptionModel = z.object({
-  id: z.string(),
+  id: z.string().nullish(),
   name: z.string(),
   values: z.string(),
   productId: z.string().nullish(),
@@ -10,7 +10,7 @@ export const VariantOptionModel = z.object({
 
 export interface CompleteVariantOption
   extends z.infer<typeof VariantOptionModel> {
-  Product?: CompleteProduct | null;
+  Product?: ReadCompleteProduct | null;
 }
 
 /**
@@ -21,6 +21,6 @@ export interface CompleteVariantOption
 export const RelatedVariantOptionModel: z.ZodSchema<CompleteVariantOption> =
   z.lazy(() =>
     VariantOptionModel.extend({
-      Product: RelatedProductModel.nullish(),
+      Product: ReadRelatedProductModel.nullish(),
     })
   );

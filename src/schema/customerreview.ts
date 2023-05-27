@@ -2,8 +2,8 @@ import * as z from "zod";
 import {
   type CompleteUser,
   RelatedUserModel,
-  type CompleteProduct,
-  RelatedProductModel,
+  type ReadCompleteProduct,
+  ReadRelatedProductModel,
 } from "./index";
 
 export const CustomerReviewModel = z.object({
@@ -12,16 +12,16 @@ export const CustomerReviewModel = z.object({
   email: z.string(),
   rating: z.number().int(),
   comment: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  userId: z.string(),
-  productId: z.string(),
+  createdAt: z.date().nullish(),
+  updatedAt: z.date().nullish(),
+  userId: z.string().nullish(),
+  productId: z.string().nullish(),
 });
 
 export interface CompleteCustomerReview
   extends z.infer<typeof CustomerReviewModel> {
-  customer: CompleteUser;
-  product: CompleteProduct;
+  customer?: CompleteUser | null;
+  product?: ReadCompleteProduct | null;
 }
 
 /**
@@ -32,7 +32,7 @@ export interface CompleteCustomerReview
 export const RelatedCustomerReviewModel: z.ZodSchema<CompleteCustomerReview> =
   z.lazy(() =>
     CustomerReviewModel.extend({
-      customer: RelatedUserModel,
-      product: RelatedProductModel,
+      customer: RelatedUserModel.nullish(),
+      product: ReadRelatedProductModel.nullish(),
     })
   );

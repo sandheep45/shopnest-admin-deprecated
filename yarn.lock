@@ -82,6 +82,11 @@
     "@floating-ui/dom" "^0.5.3"
     use-isomorphic-layout-effect "^1.1.1"
 
+"@hookform/resolvers@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-3.1.0.tgz#ff83ef4aa6078173201da131ceea4c3583b67034"
+  integrity sha512-z0A8K+Nxq+f83Whm/ajlwE6VtQlp/yPHZnXw7XWVPIGm1Vx0QV8KThU3BpbBRfAZ7/dYqCKKBNnQh85BkmBKkA==
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.8.tgz"
@@ -3628,7 +3633,7 @@ prisma-trpc-shield-generator@0.1.0:
     prettier "^2.8.1"
     zod "^3.20.2"
 
-prisma-zod-generator@^0.8.11:
+prisma-zod-generator@^0.8.11, prisma-zod-generator@^0.8.13:
   version "0.8.13"
   resolved "https://registry.yarnpkg.com/prisma-zod-generator/-/prisma-zod-generator-0.8.13.tgz#90f360063fdc29e5d42ff1b8e8415091a1df176b"
   integrity sha512-X455pyEO2LgEetEiKC5vzasB1+ga58y8ODKbCBJJ5ZK03Gjm5oQedXVa//fu2joXiovHC9YutbT+qLXf0UsLEw==

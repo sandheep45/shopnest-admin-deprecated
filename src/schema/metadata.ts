@@ -2,10 +2,10 @@ import * as z from "zod";
 import {
   type CompleteCategory,
   RelatedCategoryModel,
-  type CompleteProduct,
-  RelatedProductModel,
-  type CompleteVariant,
-  RelatedVariantModel,
+  type ReadCompleteProduct,
+  ReadRelatedProductModel,
+  type ReadCompleteVariant,
+  ReadRelatedVariantModel,
 } from "./index";
 
 export const MetaDataModel = z.object({
@@ -20,8 +20,8 @@ export const MetaDataModel = z.object({
 
 export interface CompleteMetaData extends z.infer<typeof MetaDataModel> {
   Category?: CompleteCategory | null;
-  Product?: CompleteProduct | null;
-  Variant?: CompleteVariant | null;
+  Product?: ReadCompleteProduct | null;
+  Variant?: ReadCompleteVariant | null;
 }
 
 /**
@@ -32,7 +32,7 @@ export interface CompleteMetaData extends z.infer<typeof MetaDataModel> {
 export const RelatedMetaDataModel: z.ZodSchema<CompleteMetaData> = z.lazy(() =>
   MetaDataModel.extend({
     Category: RelatedCategoryModel.nullish(),
-    Product: RelatedProductModel.nullish(),
-    Variant: RelatedVariantModel.nullish(),
+    Product: ReadRelatedProductModel.nullish(),
+    Variant: ReadRelatedVariantModel.nullish(),
   })
 );
